@@ -1,0 +1,13 @@
+body {
+    background-color: #131316;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.constructor-container {
+    gap: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
