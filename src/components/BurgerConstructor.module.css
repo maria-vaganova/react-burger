@@ -14,6 +14,23 @@
     scrollbar-gutter: stable;
 }
 
+.cart {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-right: 4px;
+}
+
+.bunItem {
+    align-self: flex-end;
+    margin-right: 4px;
+}
+
+.cartItemContent {
+    display: flex;
+    align-items: center;
+}
+
 .orderSum {
     margin-top: 40px;
     margin-right: 16px;

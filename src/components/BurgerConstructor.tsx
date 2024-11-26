@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import constructor from './BurgerConstructor.module.css';
-import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../utils/util";
 import {BUN_TYPE} from "../utils/data";
 import {Ingredient} from "../utils/types";
@@ -33,23 +33,27 @@ function BurgerConstructor({cart, setCart}: BurgerConstructorProps) {
         <div style={{width: '600px'}}>
             <div className={constructor.main}>
                 <div className={constructor.scrollableContainer}>
-                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                    <div className={constructor.cart}>
                         {(bun !== undefined) ? (<ConstructorElement
                             type="top"
                             isLocked={true}
                             text={bun.name + " (верх)"}
                             price={bun.price}
                             thumbnail={bun.image}
+                            extraClass={constructor.bunItem}
                         />) : <></>}
                         {cartList?.map((elem, index) => {
                             return (
-                                <ConstructorElement
-                                    key={index}
-                                    text={elem.ingredient.name}
-                                    price={elem.ingredient.price}
-                                    thumbnail={elem.ingredient.image}
-                                    handleClose={() => discardIngredientFromCart(cart, setCart, elem.ingredient._id)}
-                                />
+                                <div className={constructor.cartItemContent}>
+                                    <DragIcon type="primary" className={"mr-2"}/>
+                                    <ConstructorElement
+                                        key={index}
+                                        text={elem.ingredient.name}
+                                        price={elem.ingredient.price}
+                                        thumbnail={elem.ingredient.image}
+                                        handleClose={() => discardIngredientFromCart(cart, setCart, elem.ingredient._id)}
+                                    />
+                                </div>
                             )
                         })}
                         {bun && (<ConstructorElement
@@ -58,6 +62,7 @@ function BurgerConstructor({cart, setCart}: BurgerConstructorProps) {
                             text={bun.name + " (низ)"}
                             price={bun.price}
                             thumbnail={bun.image}
+                            extraClass={constructor.bunItem}
                         />)}
                     </div>
                 </div>
