@@ -1,7 +1,6 @@
 .ingredientCard {
     display: block;
     width: fit-content;
-    justify-content: space-evenly;
     position: relative;
 }
 

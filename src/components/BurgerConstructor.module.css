@@ -1,0 +1,25 @@
+.main {
+    margin-top: 100px;
+    margin-left: 16px;
+    width: 600px;
+}
+
+.scrollableContainer {
+    display: block;
+    height: 60vh;
+    max-width: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+}
+
+.orderSum {
+    margin-top: 40px;
+    margin-right: 16px;
+    /*gap: 40px;*/
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
