@@ -1,39 +1,40 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import card from './IngredientCard.module.css';
-import {dataList} from "../utils/data";
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {addIngredientToCart, discardIngredientFromCart, fulfilIngredient} from "../utils/util";
+import {Ingredient} from "../utils/types";
 
 export interface IngredientCardProps {
-    id: string
+    id: string,
+    cart: [{ id: string, type: string, count: number }] | undefined,
+    setCart: Function
 }
 
-function IngredientCard({id}: IngredientCardProps) {
+function IngredientCard({id, cart, setCart}: IngredientCardProps) {
 
-    let ingredient = dataList.find(item => item._id === id);
     const [counter, setCounter] = React.useState(0);
+    const ingredient: Ingredient = fulfilIngredient(id);
 
-    if (ingredient === undefined) {
-        ingredient = {
-            _id: "0",
-            name: "Не найдено",
-            type: "none",
-            proteins: 0,
-            fat: 0,
-            carbohydrates: 0,
-            calories: 0,
-            price: 0,
-            image: "none",
-            image_mobile: "none",
-            image_large: "none",
-            __v: 0
+    useEffect(() => {
+        const index = cart?.findIndex(elem => elem.id === id);
+        if (cart === undefined || index === undefined || index === -1) {
+            setCounter(0);
+        } else {
+            setCounter(cart[index].count);
         }
-    }
+    }, [id, cart]);
 
     return (
         <div className={card.ingredientCard}
-             onClick={() => setCounter(counter + 1)}
+             onClick={() => {
+                 setCounter(counter + 1);
+                 addIngredientToCart(cart, setCart, ingredient._id, ingredient.type);
+             }}
              onContextMenu={() => {
-                 if (counter > 0) setCounter(counter - 1)
+                 if (counter > 0) {
+                     setCounter(counter - 1);
+                     discardIngredientFromCart(cart, setCart, ingredient._id);
+                 }
              }}>
             <div>
                 {counter > 0 && (

@@ -1,7 +1,6 @@
 .main {
     margin-top: 100px;
     margin-left: 16px;
-    width: 600px;
 }
 
 .scrollableContainer {
@@ -18,7 +17,6 @@
 .orderSum {
     margin-top: 40px;
     margin-right: 16px;
-    /*gap: 40px;*/
     display: flex;
     justify-content: right;
     align-items: center;

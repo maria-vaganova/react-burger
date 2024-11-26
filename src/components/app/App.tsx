@@ -5,12 +5,14 @@ import BurgerIngredients from "../BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor";
 
 function App() {
+    const [cart, setCart] = React.useState<[{ id: string, type: string, count: number }]>();
+
     return (
         <div>
             <AppHeader/>
             <div className={app.constructorContainer}>
-                <BurgerIngredients />
-                <BurgerConstructor />
+                <BurgerIngredients cart={cart} setCart={setCart}/>
+                <BurgerConstructor cart={cart} setCart={setCart}/>
             </div>
         </div>
     );

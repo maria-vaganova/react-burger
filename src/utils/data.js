@@ -1,3 +1,7 @@
+export const BUN_TYPE = "bun";
+export const SAUCE_TYPE = "sauce";
+export const MAIN_TYPE = "main";
+
 export const dataList = [
     {
         "_id":"60666c42cc7b410027a1a9b1",
@@ -211,7 +215,7 @@ export const dataList = [
     }
 ]
 
-export const dataIds = dataList.map((item) => ({
-    id: item._id,
-    type: item.type
+export const dataIds = dataList.map((elem) => ({
+    id: elem._id,
+    type: elem.type
 }));
