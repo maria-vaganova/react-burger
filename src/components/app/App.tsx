@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.module.css';
+import app from './App.module.css';
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../BurgerIngredients";
 
@@ -7,7 +7,8 @@ function App() {
     return (
         <div>
             <AppHeader/>
-            <div className={"constructor-container"}>
+            {/*<div>*/}
+            <div className={app.constructorContainer}>
                 <BurgerIngredients />
                 <BurgerIngredients />
             </div>

@@ -1,4 +1,4 @@
-.header-container {
+.headerContainer {
     background-color: #1C1C21;
     display: flex;
     justify-content: space-evenly;
@@ -7,7 +7,7 @@
     padding: 16px 0 16px 0;
 }
 
-.button-content {
+.buttonContent {
     display: flex;
     align-items: center;
 }
@@ -16,12 +16,12 @@
     position: static;
 }
 
-.left-buttons {
+.leftButtons {
     position: absolute;
     left: 200px;
 }
 
-.right-button {
+.rightButton {
     position: absolute;
     right: 200px;
 }
