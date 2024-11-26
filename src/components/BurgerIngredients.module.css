@@ -1,0 +1,17 @@
+.scrollableContainer {
+    display: block;
+    height: 65vh;
+    max-width: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+}
+
+.ingredients {
+    display: grid;
+    row-gap: 32px;
+    column-gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+}

@@ -210,3 +210,8 @@ export const dataList = [
         "__v":0
     }
 ]
+
+export const dataIds = dataList.map((item) => ({
+    id: item._id,
+    type: item.type
+}));
