@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../utils/util";
-import {BUN_TYPE} from "../utils/data";
-import {Ingredient} from "../utils/types";
+import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../../utils/util";
+import {BUN_TYPE} from "../../utils/data";
+import {Ingredient} from "../../utils/types";
 
 export interface BurgerConstructorProps {
     cart: [{ id: string, type: string, count: number }] | undefined,

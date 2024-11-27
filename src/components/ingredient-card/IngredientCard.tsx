@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {addIngredientToCart, discardIngredientFromCart, fulfilIngredient} from "../utils/util";
-import {Ingredient} from "../utils/types";
+import {addIngredientToCart, discardIngredientFromCart, fulfilIngredient} from "../../utils/util";
+import {Ingredient} from "../../utils/types";
 
 export interface IngredientCardProps {
     id: string,

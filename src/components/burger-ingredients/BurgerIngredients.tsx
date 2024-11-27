@@ -1,8 +1,8 @@
 import React from 'react';
 import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientCard from "./IngredientCard";
-import {BUN_TYPE, dataIds, MAIN_TYPE, SAUCE_TYPE} from "../utils/data";
+import IngredientCard from "../ingredient-card/IngredientCard";
+import {BUN_TYPE, dataIds, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
 
 export interface BurgerIngredientsProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
