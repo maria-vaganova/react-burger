@@ -2,14 +2,17 @@ import React from 'react';
 import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCard from "../ingredient-card/IngredientCard";
-import {BUN_TYPE, dataIds, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
+import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
+import {Ingredient} from "../../utils/types";
+import {getDataIds} from "../../utils/util";
 
 export interface BurgerIngredientsProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function
+    setCart: Function,
+    data: Ingredient[]
 }
 
-function BurgerIngredients({cart, setCart}: BurgerIngredientsProps) {
+function BurgerIngredients({cart, setCart, data}: BurgerIngredientsProps) {
     const [current, setCurrent] = React.useState<string>(BUN_TYPE);
 
     function setActiveTab(tabName: string) {
@@ -21,10 +24,10 @@ function BurgerIngredients({cart, setCart}: BurgerIngredientsProps) {
     }
 
     function getCardList(type: string) {
-        return dataIds
+        return getDataIds(data)
             .filter(elem => elem.type === type)
             .map((elem) => (
-                <IngredientCard id={elem.id} key={elem.id} cart={cart} setCart={setCart}/>
+                <IngredientCard id={elem.id} key={elem.id} cart={cart} setCart={setCart} data={data}/>
             ))
     }
 

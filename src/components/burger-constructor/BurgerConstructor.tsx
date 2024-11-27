@@ -3,23 +3,25 @@ import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../../utils/util";
 import {BUN_TYPE} from "../../utils/data";
+import {Ingredient} from "../../utils/types";
 
 export interface BurgerConstructorProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function
+    setCart: Function,
+    data: Ingredient[]
 }
 
-function BurgerConstructor({cart, setCart}: BurgerConstructorProps) {
+function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
-    const bun = getBunFromCart(cart);
-    let cartSum = getCartSum(cart);
+    const bun = getBunFromCart(cart, data);
+    let cartSum = getCartSum(cart, data);
 
     const cartList = useMemo(() => {
         if (cart) {
             return cart
                 .filter(elem => elem.type !== BUN_TYPE)
                 .flatMap(elem => {
-                    const ingredient = fulfilIngredient(elem.id);
+                    const ingredient = fulfilIngredient(elem.id, data);
                     return Array.from({length: elem.count}, () => ({ingredient: ingredient}));
                 });
         }

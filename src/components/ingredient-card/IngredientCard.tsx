@@ -7,13 +7,14 @@ import {Ingredient} from "../../utils/types";
 export interface IngredientCardProps {
     id: string,
     cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function
+    setCart: Function,
+    data: Ingredient[]
 }
 
-function IngredientCard({id, cart, setCart}: IngredientCardProps) {
+function IngredientCard({id, cart, setCart, data}: IngredientCardProps) {
 
     const [counter, setCounter] = React.useState(0);
-    const ingredient: Ingredient = fulfilIngredient(id);
+    const ingredient: Ingredient = fulfilIngredient(id, data);
 
     useEffect(() => {
         const index = cart?.findIndex(elem => elem.id === id);
