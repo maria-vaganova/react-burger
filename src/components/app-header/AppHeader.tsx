@@ -6,26 +6,26 @@ function AppHeader() {
     return (
         <div className={appHeader.headerContainer}>
             <div className={appHeader.leftButtons + " mt-4 mb-4"}>
-                <Button htmlType={"button"} type="secondary">
+                <a className={"text text_type_main-default"}>
                     <div className={appHeader.buttonContent}>
                         <BurgerIcon type="primary" className={"ml-5 mr-2"}/>
                         Конструктор
                     </div>
-                </Button>
-                <Button htmlType={"button"} type="secondary" disabled={true} extraClass={"ml-2"}>
+                </a>
+                <a className={"text text_type_main-default text_color_inactive ml-2"}>
                     <div className={appHeader.buttonContent}>
                         <ListIcon type="secondary" className={"ml-5 mr-2"}/>
                         Лента заказов
                     </div>
-                </Button>
+                </a>
             </div>
             <Logo className={appHeader.logo}/>
-            <Button htmlType={"button"} type="secondary" disabled={true} extraClass={appHeader.rightButton}>
+            <a className={"text text_type_main-default text_color_inactive " + appHeader.rightButton}>
                 <div className={appHeader.buttonContent}>
                     <ProfileIcon type="secondary" className={"ml-5 mr-2"}/>
                     Личный кабинет
                 </div>
-            </Button>
+            </a>
         </div>
     );
 }
