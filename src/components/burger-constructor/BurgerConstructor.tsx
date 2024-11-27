@@ -44,7 +44,7 @@ function BurgerConstructor({cart, setCart}: BurgerConstructorProps) {
                         />) : <></>}
                         {cartList?.map((elem, index) => {
                             return (
-                                <div className={constructor.cartItemContent}>
+                                <div key={index} className={constructor.cartItemContent}>
                                     <DragIcon type="primary" className={"mr-2"}/>
                                     <ConstructorElement
                                         key={index}

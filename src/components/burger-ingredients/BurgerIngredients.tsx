@@ -67,8 +67,8 @@ function BurgerIngredients({cart, setCart}: BurgerIngredientsProps) {
                 <div className={"mt-6 mb-10 mr-4 ml-4 " + ingredients.ingredients}>
                     {dataIds
                         .filter(elem => elem.type === MAIN_TYPE)
-                        .map(elem => (
-                            <IngredientCard id={elem.id} cart={cart} setCart={setCart}/>
+                        .map((elem) => (
+                            <IngredientCard id={elem.id} key={elem.id} cart={cart} setCart={setCart}/>
                         ))
                     }
                 </div>
