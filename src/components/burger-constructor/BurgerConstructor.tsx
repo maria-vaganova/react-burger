@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../../utils/util";
 import {BUN_TYPE} from "../../utils/data";
-import {Ingredient} from "../../utils/types";
 
 export interface BurgerConstructorProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
@@ -12,21 +11,19 @@ export interface BurgerConstructorProps {
 
 function BurgerConstructor({cart, setCart}: BurgerConstructorProps) {
 
-    const [cartList, setCartList] = useState<{ ingredient: Ingredient }[] | undefined>();
-
     const bun = getBunFromCart(cart);
     let cartSum = getCartSum(cart);
 
-    useEffect(() => {
+    const cartList = useMemo(() => {
         if (cart) {
-            const newCartList = cart
+            return cart
                 .filter(elem => elem.type !== BUN_TYPE)
                 .flatMap(elem => {
                     const ingredient = fulfilIngredient(elem.id);
                     return Array.from({length: elem.count}, () => ({ingredient: ingredient}));
                 });
-            setCartList(newCartList);
         }
+        return [];
     }, [cart]);
 
     return (
