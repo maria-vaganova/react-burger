@@ -1,0 +1,27 @@
+.ingredientCard {
+    display: block;
+    width: fit-content;
+    position: relative;
+}
+
+.counter {
+    position: absolute;
+    width: fit-content;
+    right: 0;
+}
+
+.priceContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.cardLabel {
+    height: 3.6em;
+    text-align: center;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+}

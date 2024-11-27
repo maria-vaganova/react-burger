@@ -1,0 +1,40 @@
+.main {
+    margin-top: 100px;
+    margin-left: 16px;
+}
+
+.scrollableContainer {
+    display: block;
+    height: 60vh;
+    max-width: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+}
+
+.cart {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-right: 4px;
+}
+
+.bunItem {
+    align-self: flex-end;
+    margin-right: 4px;
+}
+
+.cartItemContent {
+    display: flex;
+    align-items: center;
+}
+
+.orderSum {
+    margin-top: 40px;
+    margin-right: 16px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}

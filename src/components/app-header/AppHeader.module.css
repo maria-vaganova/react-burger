@@ -1,0 +1,31 @@
+.headerContainer {
+    background-color: #1C1C21;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+    padding: 16px 0 16px 0;
+}
+
+.buttonContent {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    height: 48px;
+}
+
+.logo {
+    position: static;
+}
+
+.leftButtons {
+    display: flex;
+    position: absolute;
+    left: 200px;
+}
+
+.rightButton {
+    position: absolute;
+    right: 200px;
+}
+
