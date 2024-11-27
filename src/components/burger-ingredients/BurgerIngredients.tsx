@@ -10,36 +10,40 @@ export interface BurgerIngredientsProps {
 }
 
 function BurgerIngredients({cart, setCart}: BurgerIngredientsProps) {
-    const [current, setCurrent] = React.useState('Булки');
+    const [current, setCurrent] = React.useState<string>(BUN_TYPE);
+
+    function setActiveTab(tabName: string) {
+        setCurrent(tabName)
+        const element = document.getElementById(tabName)
+        element?.scrollIntoView({
+            behavior: 'smooth'
+        })
+    }
+
+    function getCardList(type: string) {
+        return dataIds
+            .filter(elem => elem.type === type)
+            .map((elem) => (
+                <IngredientCard id={elem.id} key={elem.id} cart={cart} setCart={setCart}/>
+            ))
+    }
 
     return (
         <div>
             <h1 className="text_type_main-large mt-10 mb-5">Соберите бургер</h1>
             <div style={{display: 'flex'}}>
-                <Tab value="one" active={current === 'Булки'} onClick={() => {
-                    setCurrent('Булки')
-                    const element = document.getElementById('bun')
-                    element?.scrollIntoView({
-                        behavior: 'smooth'
-                    })
+                <Tab value={BUN_TYPE} active={current === BUN_TYPE} onClick={() => {
+                    setActiveTab(BUN_TYPE)
                 }}>
                     Булки
                 </Tab>
-                <Tab value="two" active={current === 'Соусы'} onClick={() => {
-                    setCurrent('Соусы')
-                    const element = document.getElementById('sauce')
-                    element?.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                <Tab value={SAUCE_TYPE} active={current === SAUCE_TYPE} onClick={() => {
+                    setActiveTab(SAUCE_TYPE)
                 }}>
                     Соусы
                 </Tab>
-                <Tab value="three" active={current === 'Начинки'} onClick={() => {
-                    setCurrent('Начинки')
-                    const element = document.getElementById('main')
-                    element?.scrollIntoView({
-                        behavior: 'smooth'
-                    })
+                <Tab value={MAIN_TYPE} active={current === MAIN_TYPE} onClick={() => {
+                    setActiveTab(MAIN_TYPE)
                 }}>
                     Начинки
                 </Tab>
@@ -47,30 +51,15 @@ function BurgerIngredients({cart, setCart}: BurgerIngredientsProps) {
             <div className={"mt-10 " + ingredients.scrollableContainer}>
                 <p id="bun" className={"text text_type_main-medium"}>Булки</p>
                 <div className={"mt-6 mb-10 mr-4 ml-4 " + ingredients.ingredients}>
-                    {dataIds
-                        .filter(elem => elem.type === BUN_TYPE)
-                        .map(elem => (
-                            <IngredientCard id={elem.id} cart={cart} setCart={setCart}/>
-                        ))
-                    }
+                    {getCardList(BUN_TYPE)}
                 </div>
                 <p id="sauce" className={"text text_type_main-medium"}>Соусы</p>
                 <div className={"mt-6 mb-10 mr-4 ml-4 " + ingredients.ingredients}>
-                    {dataIds
-                        .filter(elem => elem.type === SAUCE_TYPE)
-                        .map(elem => (
-                            <IngredientCard id={elem.id} cart={cart} setCart={setCart}/>
-                        ))
-                    }
+                    {getCardList(SAUCE_TYPE)}
                 </div>
                 <p id="main" className={"text text_type_main-medium"}>Начинки</p>
                 <div className={"mt-6 mb-10 mr-4 ml-4 " + ingredients.ingredients}>
-                    {dataIds
-                        .filter(elem => elem.type === MAIN_TYPE)
-                        .map((elem) => (
-                            <IngredientCard id={elem.id} key={elem.id} cart={cart} setCart={setCart}/>
-                        ))
-                    }
+                    {getCardList(MAIN_TYPE)}
                 </div>
             </div>
         </div>
