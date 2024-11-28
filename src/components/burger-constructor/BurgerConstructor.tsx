@@ -1,9 +1,10 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../../utils/util";
 import {BUN_TYPE} from "../../utils/data";
 import {Ingredient} from "../../utils/types";
+import OrderDetails from "../order-details/OrderDetails";
 
 export interface BurgerConstructorProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
@@ -14,7 +15,8 @@ export interface BurgerConstructorProps {
 function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
     const bun = getBunFromCart(cart, data);
-    let cartSum = getCartSum(cart, data);
+    const cartSum = getCartSum(cart, data);
+    const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
     const cartList = useMemo(() => {
         if (cart) {
@@ -26,10 +28,21 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                 });
         }
         return [];
-    }, [cart]);
+    }, [cart, data]);
+
+    const openModal = () => {
+        setOrderDetailsOpen(true);
+    };
+
+    const closeModal = () => {
+        setOrderDetailsOpen(false);
+    };
 
     return (
         <div style={{width: '600px'}}>
+            {isOrderDetailsOpen && (
+                <OrderDetails isOpen={isOrderDetailsOpen} closeModal={closeModal}/>
+            )}
             <div className={constructor.main}>
                 <div className={constructor.scrollableContainer}>
                     <div className={constructor.cart}>
@@ -68,7 +81,7 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                 <div className={constructor.orderSum}>
                     <p className="text text_type_digits-medium">{cartSum}</p>
                     <CurrencyIcon type="primary" className={"ml-2"}/>
-                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"}>
+                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={openModal}>
                         Оформить заказ
                     </Button>
                 </div>

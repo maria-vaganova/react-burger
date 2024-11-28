@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import app from './App.module.css';
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
@@ -7,8 +7,8 @@ import {Ingredient} from "../../utils/types";
 import {fetchData} from '../../utils/util';
 
 function App() {
-    const [cart, setCart] = React.useState<[{ id: string, type: string, count: number }]>();
-    const [data, setData] = React.useState<Ingredient[]>([]);
+    const [cart, setCart] = useState<[{ id: string, type: string, count: number }]>();
+    const [data, setData] = useState<Ingredient[]>([]);
 
     useEffect(() => {
         fetchData()
