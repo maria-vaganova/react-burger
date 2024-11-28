@@ -1,16 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCard from "../ingredient-card/IngredientCard";
-import {BUN_TYPE, dataIds, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
+import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
+import {Ingredient} from "../../utils/types";
+import {fulfilIngredient, getDataIds} from "../../utils/util";
+import IngredientDetails from "../ingredient-details/IngredientDetails";
+import ModalOverlay from "../modal/ModalOverlay";
+import Modal from "../modal/Modal";
 
 export interface BurgerIngredientsProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function
+    setCart: Function,
+    data: Ingredient[]
 }
 
-function BurgerIngredients({cart, setCart}: BurgerIngredientsProps) {
-    const [current, setCurrent] = React.useState<string>(BUN_TYPE);
+function BurgerIngredients({cart, setCart, data}: BurgerIngredientsProps) {
+    const [current, setCurrent] = useState<string>(BUN_TYPE);
+    const [isIngredientDetailsOpen, setIngredientDetailsOpen] = useState(false);
+    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
+
+    const openModal = (ingredientId: string) => {
+        setIngredientDetailsOpen(true);
+        setSelectedIngredient(fulfilIngredient(ingredientId, data));
+    };
+
+    const closeModal = () => {
+        setIngredientDetailsOpen(false);
+    };
 
     function setActiveTab(tabName: string) {
         setCurrent(tabName)
@@ -21,15 +38,28 @@ function BurgerIngredients({cart, setCart}: BurgerIngredientsProps) {
     }
 
     function getCardList(type: string) {
-        return dataIds
+        return getDataIds(data)
             .filter(elem => elem.type === type)
             .map((elem) => (
-                <IngredientCard id={elem.id} key={elem.id} cart={cart} setCart={setCart}/>
+                <IngredientCard
+                    id={elem.id}
+                    key={elem.id}
+                    cart={cart}
+                    setCart={setCart}
+                    data={data}
+                    onClick={() => openModal(elem.id)}
+                />
             ))
     }
 
     return (
         <div>
+            {isIngredientDetailsOpen && <ModalOverlay onClose={closeModal}/>}
+            {isIngredientDetailsOpen && (
+                <Modal onClose={closeModal}>
+                    <IngredientDetails ingredient={selectedIngredient}/>
+                </Modal>
+            )}
             <h1 className="text_type_main-large mt-10 mb-5">Соберите бургер</h1>
             <div style={{display: 'flex'}}>
                 <Tab value={BUN_TYPE} active={current === BUN_TYPE} onClick={() => {

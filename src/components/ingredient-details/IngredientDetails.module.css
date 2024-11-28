@@ -1,0 +1,34 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    width: 640px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.illustration {
+    display: flex;
+    align-items: center;
+    width: 520px;
+    height: 240px;
+}
+
+.info {
+    width: 520px;
+    gap: 20px;
+    display: flex;
+    align-content: space-between;
+}
+
+.nutrient {
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}

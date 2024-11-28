@@ -1,19 +1,21 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {addIngredientToCart, discardIngredientFromCart, fulfilIngredient} from "../../utils/util";
+import {fulfilIngredient} from "../../utils/util";
 import {Ingredient} from "../../utils/types";
 
 export interface IngredientCardProps {
     id: string,
     cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function
+    setCart: Function,
+    data: Ingredient[],
+    onClick: () => void
 }
 
-function IngredientCard({id, cart, setCart}: IngredientCardProps) {
+function IngredientCard({id, cart, setCart, data, onClick}: IngredientCardProps) {
 
-    const [counter, setCounter] = React.useState(0);
-    const ingredient: Ingredient = fulfilIngredient(id);
+    const [counter, setCounter] = useState(0);
+    const ingredient: Ingredient = fulfilIngredient(id, data);
 
     useEffect(() => {
         const index = cart?.findIndex(elem => elem.id === id);
@@ -25,17 +27,7 @@ function IngredientCard({id, cart, setCart}: IngredientCardProps) {
     }, [id, cart]);
 
     return (
-        <div className={card.ingredientCard}
-             onClick={() => {
-                 setCounter(counter + 1);
-                 addIngredientToCart(cart, setCart, ingredient._id, ingredient.type);
-             }}
-             onContextMenu={() => {
-                 if (counter > 0) {
-                     setCounter(counter - 1);
-                     discardIngredientFromCart(cart, setCart, ingredient._id);
-                 }
-             }}>
+        <div className={card.ingredientCard} onClick={onClick}>
             <div>
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass={card.counter}/>
@@ -48,7 +40,6 @@ function IngredientCard({id, cart, setCart}: IngredientCardProps) {
             </div>
             <div className={"text_type_main-small " + card.cardLabel}>{ingredient.name}</div>
         </div>
-
     );
 }
 

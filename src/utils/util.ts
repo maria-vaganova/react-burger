@@ -1,5 +1,5 @@
 import {Ingredient} from "./types";
-import {BUN_TYPE, dataList} from "./data";
+import {BUN_TYPE, API_URL} from "./data";
 
 export function addIngredientToCart(
     cart: [{
@@ -59,22 +59,22 @@ export function getBunFromCart(cart: [{
     id: string,
     type: string,
     count: number
-}] | undefined): Ingredient | undefined {
+}] | undefined, data: Ingredient[]): Ingredient | undefined {
     const bun = cart?.find(elem => elem.type === BUN_TYPE);
     if (bun === undefined) return undefined;
-    return fulfilIngredient(bun.id);
+    return fulfilIngredient(bun.id, data);
 }
 
 export function getCartSum(cart: [{
     id: string,
     type: string,
     count: number
-}] | undefined): number {
-    return cart ? cart.reduce((sum, elem) => sum + fulfilIngredient(elem.id).price * elem.count, 0) : 0;
+}] | undefined, data: Ingredient[]): number {
+    return cart ? cart.reduce((sum, elem) => sum + fulfilIngredient(elem.id, data).price * elem.count, 0) : 0;
 }
 
-export function fulfilIngredient(id: string): Ingredient {
-    const findIngredient = dataList.find(elem => elem._id === id);
+export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
+    const findIngredient = data.find(elem => elem._id === id);
     return findIngredient ? findIngredient : {
         _id: "0",
         name: "Не найдено",
@@ -89,4 +89,19 @@ export function fulfilIngredient(id: string): Ingredient {
         image_large: "",
         __v: 0
     };
+}
+
+export function getDataIds(data: Ingredient[]): { id: string, type: string }[] {
+    return data.map((elem) => ({
+        id: elem._id,
+        type: elem.type
+    }));
+}
+
+export async function fetchData(): Promise<Ingredient[]> {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+        throw new Error('Ошибка сети');
+    }
+    return (await response.json()).data as Ingredient[];
 }
