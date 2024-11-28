@@ -6,6 +6,8 @@ import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
 import {Ingredient} from "../../utils/types";
 import {fulfilIngredient, getDataIds} from "../../utils/util";
 import IngredientDetails from "../ingredient-details/IngredientDetails";
+import ModalOverlay from "../modal/ModalOverlay";
+import Modal from "../modal/Modal";
 
 export interface BurgerIngredientsProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
@@ -52,9 +54,11 @@ function BurgerIngredients({cart, setCart, data}: BurgerIngredientsProps) {
 
     return (
         <div>
+            {isIngredientDetailsOpen && <ModalOverlay onClose={closeModal}/>}
             {isIngredientDetailsOpen && (
-                <IngredientDetails isOpen={isIngredientDetailsOpen} closeModal={closeModal}
-                                   ingredient={selectedIngredient}/>
+                <Modal onClose={closeModal}>
+                    <IngredientDetails ingredient={selectedIngredient}/>
+                </Modal>
             )}
             <h1 className="text_type_main-large mt-10 mb-5">Соберите бургер</h1>
             <div style={{display: 'flex'}}>

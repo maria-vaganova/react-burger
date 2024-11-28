@@ -1,5 +1,4 @@
 import React from 'react';
-import ModalOverlay from "../modal/ModalOverlay";
 import Modal from "../modal/Modal";
 import Done from "../../images/done.svg";
 import orderDetails from './OrderDetails.module.css';
@@ -12,7 +11,6 @@ export interface OrderDetailsProps {
 function OrderDetails({isOpen, closeModal}: OrderDetailsProps) {
     return (
         <div>
-            {isOpen && <ModalOverlay onClose={closeModal}/>}
             {isOpen && (
                 <Modal onClose={closeModal}>
                     <div className={orderDetails.content}>
