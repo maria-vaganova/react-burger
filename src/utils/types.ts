@@ -12,3 +12,11 @@ export interface Ingredient {
     image_large: string;
     __v: number;
 }
+
+export interface TotalPriceState {
+    count: number;
+}
+export interface TotalPriceAction {
+    type: "increment" | "decrement" | "reset";
+    ingredient?: Ingredient;
+}

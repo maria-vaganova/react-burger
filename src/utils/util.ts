@@ -65,14 +65,6 @@ export function getBunFromCart(cart: [{
     return fulfilIngredient(bun.id, data);
 }
 
-export function getCartSum(cart: [{
-    id: string,
-    type: string,
-    count: number
-}] | undefined, data: Ingredient[]): number {
-    return cart ? cart.reduce((sum, elem) => sum + fulfilIngredient(elem.id, data).price * elem.count, 0) : 0;
-}
-
 export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
     const findIngredient = data.find(elem => elem._id === id);
     return findIngredient ? findIngredient : {

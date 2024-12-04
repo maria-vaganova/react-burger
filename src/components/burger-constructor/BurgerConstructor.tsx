@@ -1,9 +1,9 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useState, useReducer, useEffect} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../../utils/util";
+import {discardIngredientFromCart, fulfilIngredient, getBunFromCart} from "../../utils/util";
 import {BUN_TYPE} from "../../utils/data";
-import {Ingredient} from "../../utils/types";
+import {Ingredient, TotalPriceState, TotalPriceAction} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 
 export interface BurgerConstructorProps {
@@ -14,8 +14,24 @@ export interface BurgerConstructorProps {
 
 function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
+    const initialState: TotalPriceState = {count: 0};
+
+    function reducer(state: TotalPriceState, action: TotalPriceAction): any {
+        switch (action.type) {
+            case "reset":
+                return {count: 0};
+            case "increment":
+                return {count: action.ingredient ? state.count + action.ingredient.price : state.count};
+            case "decrement":
+                return {count: action.ingredient ? state.count - action.ingredient.price : state.count};
+            default:
+                throw new Error(`Wrong type of action: ${action.type}`);
+        }
+    }
+
+    const [totalPriceState, totalPriceDispatcher] = useReducer(reducer, initialState);
+
     const bun = getBunFromCart(cart, data);
-    const cartSum = getCartSum(cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
     const cartList = useMemo(() => {
@@ -29,6 +45,15 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
         }
         return [];
     }, [cart, data]);
+
+    useEffect(() => {
+        totalPriceDispatcher({type: "reset"});
+        cart?.forEach(elem => {
+            for (let i = 0; i < elem.count; i++) {
+                totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
+            }
+        });
+    }, [cartList]);
 
     const openModal = () => {
         setOrderDetailsOpen(true);
@@ -79,7 +104,7 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                     </div>
                 </div>
                 <div className={constructor.orderSum}>
-                    <p className="text text_type_digits-medium">{cartSum}</p>
+                    <p className="text text_type_digits-medium">{totalPriceState.count}</p>
                     <CurrencyIcon type="primary" className={"ml-2"}/>
                     <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={openModal}>
                         Оформить заказ
