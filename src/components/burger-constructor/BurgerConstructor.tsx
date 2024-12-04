@@ -1,8 +1,9 @@
 import React, {useMemo, useState, useReducer, useEffect} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {discardIngredientFromCart, fulfilIngredient, getBunFromCart} from "../../utils/util";
-import {BUN_TYPE} from "../../utils/data";
+import {
+    discardIngredientFromCart, fulfilIngredient, getBunFromCart, getDataIds, postOrder, restoreIngredientListFromCart
+} from "../../utils/util";
 import {Ingredient, TotalPriceState, TotalPriceAction} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 
@@ -34,14 +35,9 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
     const bun = getBunFromCart(cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
-    const cartList = useMemo(() => {
+    const cartList: Ingredient[] = useMemo(() => {
         if (cart) {
-            return cart
-                .filter(elem => elem.type !== BUN_TYPE)
-                .flatMap(elem => {
-                    const ingredient = fulfilIngredient(elem.id, data);
-                    return Array.from({length: elem.count}, () => ({ingredient: ingredient}));
-                });
+            return restoreIngredientListFromCart(cart, false, data);
         }
         return [];
     }, [cart, data]);
@@ -61,6 +57,16 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
     const closeModal = () => {
         setOrderDetailsOpen(false);
+    };
+
+    const placeOrder = () => {
+        postOrder(getDataIds(restoreIngredientListFromCart(cart, true, data)))
+            .then(orderInfo => {
+                console.log('Order successful:', orderInfo);
+            })
+            .catch(error => {
+                console.error('Error posting order:', error);
+            });
     };
 
     return (
@@ -85,10 +91,10 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                                     <DragIcon type="primary" className={"mr-2"}/>
                                     <ConstructorElement
                                         key={index}
-                                        text={elem.ingredient.name}
-                                        price={elem.ingredient.price}
-                                        thumbnail={elem.ingredient.image}
-                                        handleClose={() => discardIngredientFromCart(cart, setCart, elem.ingredient._id)}
+                                        text={elem.name}
+                                        price={elem.price}
+                                        thumbnail={elem.image}
+                                        handleClose={() => discardIngredientFromCart(cart, setCart, elem._id)}
                                     />
                                 </div>
                             )
@@ -106,7 +112,7 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                 <div className={constructor.orderSum}>
                     <p className="text text_type_digits-medium">{totalPriceState.count}</p>
                     <CurrencyIcon type="primary" className={"ml-2"}/>
-                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={openModal}>
+                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={placeOrder}>
                         Оформить заказ
                     </Button>
                 </div>

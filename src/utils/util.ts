@@ -1,5 +1,5 @@
-import {Ingredient} from "./types";
-import {BUN_TYPE, API_URL} from "./data";
+import {Ingredient, OrderInfo} from "./types";
+import {BUN_TYPE, API_URL, ORDER_POST_URL} from "./data";
 
 export function addIngredientToCart(
     cart: [{
@@ -55,6 +55,22 @@ export function discardIngredientFromCart(
     }
 }
 
+export function restoreIngredientListFromCart(
+    cart: [{
+        id: string,
+        type: string,
+        count: number
+    }] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
+    if (cart) {
+        return (isBunIncluded ? cart : cart.filter(elem => elem.type !== BUN_TYPE))
+            .flatMap(elem => {
+                const ingredient = fulfilIngredient(elem.id, data);
+                return Array.from({length: elem.count}, (): Ingredient => (ingredient));
+            });
+    }
+    return [];
+}
+
 export function getBunFromCart(cart: [{
     id: string,
     type: string,
@@ -83,11 +99,15 @@ export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
     };
 }
 
-export function getDataIds(data: Ingredient[]): { id: string, type: string }[] {
+export function getDataIdsWithType(data: Ingredient[]): { id: string, type: string }[] {
     return data.map((elem) => ({
         id: elem._id,
         type: elem.type
     }));
+}
+
+export function getDataIds(data: Ingredient[]): string[] {
+    return data.map((elem) => elem._id);
 }
 
 export async function fetchData(): Promise<Ingredient[]> {
@@ -96,4 +116,18 @@ export async function fetchData(): Promise<Ingredient[]> {
         throw new Error('Ошибка сети');
     }
     return (await response.json()).data as Ingredient[];
+}
+
+export async function postOrder(ingredients: string[]): Promise<OrderInfo> {
+    const response = await fetch(ORDER_POST_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ingredients})
+    });
+    if (!response.ok) {
+        throw new Error('Ошибка сети: ' + response.status + " " + response.statusText);
+    }
+    return await response.json() as OrderInfo;
 }

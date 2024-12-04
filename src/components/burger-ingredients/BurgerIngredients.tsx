@@ -4,7 +4,7 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCard from "../ingredient-card/IngredientCard";
 import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
 import {Ingredient} from "../../utils/types";
-import {fulfilIngredient, getDataIds} from "../../utils/util";
+import {fulfilIngredient, getDataIdsWithType} from "../../utils/util";
 import IngredientDetails from "../ingredient-details/IngredientDetails";
 import ModalOverlay from "../modal/ModalOverlay";
 import Modal from "../modal/Modal";
@@ -38,7 +38,7 @@ function BurgerIngredients({cart, setCart, data}: BurgerIngredientsProps) {
     }
 
     function getCardList(type: string) {
-        return getDataIds(data)
+        return getDataIdsWithType(data)
             .filter(elem => elem.type === type)
             .map((elem) => (
                 <IngredientCard
