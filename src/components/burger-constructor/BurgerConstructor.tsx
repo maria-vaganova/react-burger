@@ -1,11 +1,13 @@
-import React, {useMemo, useState, useReducer, useEffect} from 'react';
+import React, {useMemo, useState, useReducer, useEffect, useContext} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
     discardIngredientFromCart, fulfilIngredient, getBunFromCart, getDataIds, postOrder, restoreIngredientListFromCart
 } from "../../utils/util";
-import {Ingredient, TotalPriceState, TotalPriceAction} from "../../utils/types";
+import {Ingredient, TotalPriceState, TotalPriceAction, OrderInfo} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
+import {BUN_TYPE, EMPTY_ORDER_INFO} from "../../utils/data";
+import {OrderNumberContext} from "../../services/appContext";
 
 export interface BurgerConstructorProps {
     cart: [{ id: string, type: string, count: number }] | undefined,
@@ -16,6 +18,7 @@ export interface BurgerConstructorProps {
 function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
     const initialState: TotalPriceState = {count: 0};
+    const orderNumber = useContext(OrderNumberContext);
 
     function reducer(state: TotalPriceState, action: TotalPriceAction): any {
         switch (action.type) {
@@ -47,6 +50,9 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
         cart?.forEach(elem => {
             for (let i = 0; i < elem.count; i++) {
                 totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
+                if (elem.type === BUN_TYPE) {
+                    totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
+                }
             }
         });
     }, [cartList]);
@@ -60,13 +66,20 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
     };
 
     const placeOrder = () => {
+        getOrderInfo();
+        openModal();
+    }
+
+    const getOrderInfo = (): OrderInfo => {
         postOrder(getDataIds(restoreIngredientListFromCart(cart, true, data)))
             .then(orderInfo => {
-                console.log('Order successful:', orderInfo);
+                orderNumber?.setOrderNumber(orderInfo.order.number);
+                return orderInfo;
             })
             .catch(error => {
                 console.error('Error posting order:', error);
             });
+        return EMPTY_ORDER_INFO;
     };
 
     return (

@@ -1,8 +1,12 @@
+import {OrderInfo} from "./types";
+
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
 export const MAIN_TYPE = "main";
 export const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 export const ORDER_POST_URL = 'https://norma.nomoreparties.space/api/orders';
+
+export const EMPTY_ORDER_INFO: OrderInfo = {name: "Ingredient ids must be provided", order: {number: 0}, success: false};
 
 export const backupDataList = [
     {
