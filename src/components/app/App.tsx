@@ -6,6 +6,8 @@ import BurgerConstructor from "../burger-constructor/BurgerConstructor";
 import {CartItem, Ingredient} from "../../utils/types";
 import {fetchData} from '../../utils/util';
 import {OrderNumberContext, CartContext} from "../../services/appContext";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 function App() {
     const [cart, setCart] = useState<CartItem[]>([]);
@@ -27,10 +29,12 @@ function App() {
             <OrderNumberContext.Provider value={{orderNumber, setOrderNumber}}>
                 <CartContext.Provider value={{cart, setCart}}>
                     <AppHeader/>
-                    <div className={app.constructorContainer}>
-                        <BurgerIngredients data={data}/>
-                        <BurgerConstructor data={data}/>
-                    </div>
+                    <DndProvider backend={HTML5Backend}>
+                        <div className={app.constructorContainer}>
+                            <BurgerIngredients data={data}/>
+                            <BurgerConstructor data={data}/>
+                        </div>
+                    </DndProvider>
                 </CartContext.Provider>
             </OrderNumberContext.Provider>
         </div>

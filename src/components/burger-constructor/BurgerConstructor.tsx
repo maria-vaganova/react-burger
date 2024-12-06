@@ -2,12 +2,20 @@ import {useMemo, useState, useReducer, useEffect, useContext} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
-    discardIngredientFromCart, fulfilIngredient, getBunFromCart, getDataIds, postOrder, restoreIngredientListFromCart
+    addIngredientToCart,
+    discardIngredientFromCart,
+    fulfilIngredient,
+    getBunFromCart,
+    getDataIds,
+    getIngredientTypeById,
+    postOrder,
+    restoreIngredientListFromCart
 } from "../../utils/util";
-import {Ingredient, TotalPriceState, TotalPriceAction, OrderInfo} from "../../utils/types";
+import {Ingredient, TotalPriceState, TotalPriceAction, OrderInfo, CartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, EMPTY_ORDER_INFO} from "../../utils/data";
 import {CartContext, OrderNumberContext} from "../../services/appContext";
+import {useDrop} from "react-dnd";
 
 export interface BurgerConstructorProps {
     data: Ingredient[]
@@ -18,6 +26,17 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
     const initialState: TotalPriceState = {count: 0};
     const orderNumber = useContext(OrderNumberContext);
     const cartTotal = useContext(CartContext);
+
+    const [, dropTarget] = useDrop({
+        accept: "ingredient",
+        drop(ingredient: CartItem) {
+            handleDrop(ingredient.id);
+        },
+    });
+
+    const handleDrop = (ingredientId: string) => {
+        addIngredientToCart(cartTotal.cart, cartTotal.setCart, ingredientId, getIngredientTypeById(ingredientId, data));
+    };
 
     function reducer(state: TotalPriceState, action: TotalPriceAction): any {
         switch (action.type) {
@@ -87,7 +106,7 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
                 <OrderDetails isOpen={isOrderDetailsOpen} closeModal={closeModal}/>
             )}
             <div className={constructor.main}>
-                <div className={constructor.scrollableContainer}>
+                <div ref={dropTarget} className={constructor.scrollableContainer}>
                     <div className={constructor.cart}>
                         {(bun !== undefined) ? (<ConstructorElement
                             type="top"

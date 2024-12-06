@@ -94,6 +94,11 @@ export function getDataIds(data: Ingredient[]): string[] {
     return data.map((elem) => elem._id);
 }
 
+export function getIngredientTypeById(id: string, data: Ingredient[]): string {
+    const ingredient = data.find(elem => elem._id === id);
+    return ingredient ? ingredient.type : "";
+}
+
 export async function fetchData(): Promise<Ingredient[]> {
     const response = await fetch(API_URL);
     if (!response.ok) {
