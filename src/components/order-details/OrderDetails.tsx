@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import {useContext} from 'react';
 import Modal from "../modal/Modal";
 import Done from "../../images/done.svg";
 import orderDetails from './OrderDetails.module.css';
@@ -16,7 +16,7 @@ function OrderDetails({isOpen, closeModal}: OrderDetailsProps) {
             {isOpen && (
                 <Modal onClose={closeModal}>
                     <div className={orderDetails.content}>
-                        <p className="text text_type_digits-large">{orderNumber ? orderNumber.orderNumber : 0}</p>
+                        <p className="text text_type_digits-large">{orderNumber.orderNumber}</p>
                         <p className="text text_type_main-medium mt-8">идентификатор заказа</p>
                         <img alt={"Done"} src={Done} className={"mt-15 mb-15"}/>
                         <p className="text text_type_main-default mb-2">Ваш заказ начали готовить</p>

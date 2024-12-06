@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCard from "../ingredient-card/IngredientCard";
@@ -10,12 +10,10 @@ import ModalOverlay from "../modal/ModalOverlay";
 import Modal from "../modal/Modal";
 
 export interface BurgerIngredientsProps {
-    cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function,
     data: Ingredient[]
 }
 
-function BurgerIngredients({cart, setCart, data}: BurgerIngredientsProps) {
+function BurgerIngredients({data}: BurgerIngredientsProps) {
     const [current, setCurrent] = useState<string>(BUN_TYPE);
     const [isIngredientDetailsOpen, setIngredientDetailsOpen] = useState(false);
     const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
@@ -44,8 +42,6 @@ function BurgerIngredients({cart, setCart, data}: BurgerIngredientsProps) {
                 <IngredientCard
                     id={elem.id}
                     key={elem.id}
-                    cart={cart}
-                    setCart={setCart}
                     data={data}
                     onClick={() => openModal(elem.id)}
                 />

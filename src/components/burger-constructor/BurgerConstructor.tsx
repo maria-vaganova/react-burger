@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useReducer, useEffect, useContext} from 'react';
+import {useMemo, useState, useReducer, useEffect, useContext} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -7,18 +7,17 @@ import {
 import {Ingredient, TotalPriceState, TotalPriceAction, OrderInfo} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, EMPTY_ORDER_INFO} from "../../utils/data";
-import {OrderNumberContext} from "../../services/appContext";
+import {CartContext, OrderNumberContext} from "../../services/appContext";
 
 export interface BurgerConstructorProps {
-    cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function,
     data: Ingredient[]
 }
 
-function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
+function BurgerConstructor({data}: BurgerConstructorProps) {
 
     const initialState: TotalPriceState = {count: 0};
     const orderNumber = useContext(OrderNumberContext);
+    const cartTotal = useContext(CartContext);
 
     function reducer(state: TotalPriceState, action: TotalPriceAction): any {
         switch (action.type) {
@@ -35,19 +34,19 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
     const [totalPriceState, totalPriceDispatcher] = useReducer(reducer, initialState);
 
-    const bun = getBunFromCart(cart, data);
+    const bun = getBunFromCart(cartTotal.cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
     const cartList: Ingredient[] = useMemo(() => {
-        if (cart) {
-            return restoreIngredientListFromCart(cart, false, data);
+        if (cartTotal.cart) {
+            return restoreIngredientListFromCart(cartTotal.cart, false, data);
         }
         return [];
-    }, [cart, data]);
+    }, [cartTotal.cart, data]);
 
     useEffect(() => {
         totalPriceDispatcher({type: "reset"});
-        cart?.forEach(elem => {
+        cartTotal.cart.forEach(elem => {
             for (let i = 0; i < elem.count; i++) {
                 totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
                 if (elem.type === BUN_TYPE) {
@@ -71,9 +70,9 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
     }
 
     const getOrderInfo = (): OrderInfo => {
-        postOrder(getDataIds(restoreIngredientListFromCart(cart, true, data)))
+        postOrder(getDataIds(restoreIngredientListFromCart(cartTotal.cart, true, data)))
             .then(orderInfo => {
-                orderNumber?.setOrderNumber(orderInfo.order.number);
+                orderNumber.setOrderNumber(orderInfo.order.number);
                 return orderInfo;
             })
             .catch(error => {
@@ -107,7 +106,7 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                                         text={elem.name}
                                         price={elem.price}
                                         thumbnail={elem.image}
-                                        handleClose={() => discardIngredientFromCart(cart, setCart, elem._id)}
+                                        handleClose={() => discardIngredientFromCart(cartTotal.cart, cartTotal.setCart, elem._id)}
                                     />
                                 </div>
                             )

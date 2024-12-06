@@ -1,3 +1,5 @@
+import {Dispatch, SetStateAction} from "react";
+
 export interface Ingredient {
     _id: string;
     name: string;
@@ -30,4 +32,20 @@ export interface OrderInfo {
 
 export interface Order {
     number: number;
+}
+
+export interface CartItem {
+    id: string;
+    type: string;
+    count: number;
+}
+
+export interface OrderNumberContextType {
+    orderNumber: number;
+    setOrderNumber: Dispatch<SetStateAction<number>>;
+}
+
+export interface CartContextType {
+    cart: CartItem[];
+    setCart: Dispatch<SetStateAction<CartItem[]>>;
 }

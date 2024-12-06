@@ -1,33 +1,39 @@
-import React, {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {fulfilIngredient} from "../../utils/util";
+import {addIngredientToCart, fulfilIngredient} from "../../utils/util";
 import {Ingredient} from "../../utils/types";
+import {CartContext} from "../../services/appContext";
 
 export interface IngredientCardProps {
     id: string,
-    cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function,
     data: Ingredient[],
     onClick: () => void
 }
 
-function IngredientCard({id, cart, setCart, data, onClick}: IngredientCardProps) {
+function IngredientCard({id, data, onClick}: IngredientCardProps) {
 
     const [counter, setCounter] = useState(0);
     const ingredient: Ingredient = fulfilIngredient(id, data);
+    const cartTotal = useContext(CartContext);
 
     useEffect(() => {
-        const index = cart?.findIndex(elem => elem.id === id);
-        if (cart === undefined || index === undefined || index === -1) {
+        const index = cartTotal.cart.findIndex(elem => elem.id === id);
+        if (index === undefined || index === -1) {
             setCounter(0);
         } else {
-            setCounter(cart[index].count);
+            setCounter(cartTotal.cart[index].count);
         }
-    }, [id, cart]);
+    }, [id, cartTotal.cart]);
 
     return (
-        <div className={card.ingredientCard} onClick={onClick}>
+        <div className={card.ingredientCard} onClick={onClick}
+             onContextMenu={(e) => {
+                 e.preventDefault();
+                 setCounter(counter + 1);
+                 addIngredientToCart(cartTotal.cart, cartTotal.setCart, ingredient._id, ingredient.type);
+             }}
+        >
             <div>
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass={card.counter}/>

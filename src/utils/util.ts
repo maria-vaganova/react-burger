@@ -1,12 +1,8 @@
-import {Ingredient, OrderInfo} from "./types";
+import {CartItem, Ingredient, OrderInfo} from "./types";
 import {BUN_TYPE, API_URL, ORDER_POST_URL} from "./data";
 
 export function addIngredientToCart(
-    cart: [{
-        id: string,
-        type: string,
-        count: number
-    }] | undefined,
+    cart: CartItem[] | undefined,
     setCart: Function,
     id: string,
     type: string) {
@@ -34,11 +30,7 @@ export function addIngredientToCart(
 }
 
 export function discardIngredientFromCart(
-    cart: [{
-        id: string,
-        type: string,
-        count: number
-    }] | undefined,
+    cart: CartItem[] | undefined,
     setCart: Function,
     id: string) {
     if (cart !== undefined && id !== "0") {
@@ -56,11 +48,7 @@ export function discardIngredientFromCart(
 }
 
 export function restoreIngredientListFromCart(
-    cart: [{
-        id: string,
-        type: string,
-        count: number
-    }] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
+    cart: CartItem[] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
     if (cart) {
         return (isBunIncluded ? cart : cart.filter(elem => elem.type !== BUN_TYPE))
             .flatMap(elem => {
@@ -71,11 +59,7 @@ export function restoreIngredientListFromCart(
     return [];
 }
 
-export function getBunFromCart(cart: [{
-    id: string,
-    type: string,
-    count: number
-}] | undefined, data: Ingredient[]): Ingredient | undefined {
+export function getBunFromCart(cart: CartItem[] | undefined, data: Ingredient[]): Ingredient | undefined {
     const bun = cart?.find(elem => elem.type === BUN_TYPE);
     if (bun === undefined) return undefined;
     return fulfilIngredient(bun.id, data);
