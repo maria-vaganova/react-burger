@@ -1,9 +1,30 @@
+import {CartContextType, OrderInfo, OrderNumberContextType} from "./types";
+
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
 export const MAIN_TYPE = "main";
 export const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
+export const ORDER_POST_URL = 'https://norma.nomoreparties.space/api/orders';
 
-export const backupDataList = [
+export const EMPTY_ORDER_INFO: OrderInfo = {
+    name: "Ingredient ids must be provided",
+    order: {number: 0},
+    success: false
+};
+
+export const EMPTY_ORDER_NUMBER_CONTEXT: OrderNumberContextType = {
+    orderNumber: 0,
+    setOrderNumber: () => {
+    }
+};
+
+export const EMPTY_CART_CONTEXT: CartContextType = {
+    cart: [],
+    setCart: () => {
+    }
+};
+
+export const BACKUP_DATA_LIST = [
     {
         "_id": "60666c42cc7b410027a1a9b1",
         "name": "Краторная булка N-200i",
@@ -46,4 +67,4 @@ export const backupDataList = [
         "image_large": "https://code.s3.yandex.net/react/code/sauce-02-large.png",
         "__v": 0
     }
-]
+];

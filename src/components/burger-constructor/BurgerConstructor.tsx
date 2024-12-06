@@ -1,34 +1,60 @@
-import React, {useMemo, useState} from 'react';
+import {useMemo, useState, useReducer, useEffect, useContext} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../../utils/util";
-import {BUN_TYPE} from "../../utils/data";
-import {Ingredient} from "../../utils/types";
+import {
+    discardIngredientFromCart, fulfilIngredient, getBunFromCart, getDataIds, postOrder, restoreIngredientListFromCart
+} from "../../utils/util";
+import {Ingredient, TotalPriceState, TotalPriceAction, OrderInfo} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
+import {BUN_TYPE, EMPTY_ORDER_INFO} from "../../utils/data";
+import {CartContext, OrderNumberContext} from "../../services/appContext";
 
 export interface BurgerConstructorProps {
-    cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function,
     data: Ingredient[]
 }
 
-function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
+function BurgerConstructor({data}: BurgerConstructorProps) {
 
-    const bun = getBunFromCart(cart, data);
-    const cartSum = getCartSum(cart, data);
+    const initialState: TotalPriceState = {count: 0};
+    const orderNumber = useContext(OrderNumberContext);
+    const cartTotal = useContext(CartContext);
+
+    function reducer(state: TotalPriceState, action: TotalPriceAction): any {
+        switch (action.type) {
+            case "reset":
+                return {count: 0};
+            case "increment":
+                return {count: action.ingredient ? state.count + action.ingredient.price : state.count};
+            case "decrement":
+                return {count: action.ingredient ? state.count - action.ingredient.price : state.count};
+            default:
+                throw new Error(`Wrong type of action: ${action.type}`);
+        }
+    }
+
+    const [totalPriceState, totalPriceDispatcher] = useReducer(reducer, initialState);
+
+    const bun = getBunFromCart(cartTotal.cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
-    const cartList = useMemo(() => {
-        if (cart) {
-            return cart
-                .filter(elem => elem.type !== BUN_TYPE)
-                .flatMap(elem => {
-                    const ingredient = fulfilIngredient(elem.id, data);
-                    return Array.from({length: elem.count}, () => ({ingredient: ingredient}));
-                });
+    const cartList: Ingredient[] = useMemo(() => {
+        if (cartTotal.cart) {
+            return restoreIngredientListFromCart(cartTotal.cart, false, data);
         }
         return [];
-    }, [cart, data]);
+    }, [cartTotal.cart, data]);
+
+    useEffect(() => {
+        totalPriceDispatcher({type: "reset"});
+        cartTotal.cart.forEach(elem => {
+            for (let i = 0; i < elem.count; i++) {
+                totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
+                if (elem.type === BUN_TYPE) {
+                    totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
+                }
+            }
+        });
+    }, [cartList]);
 
     const openModal = () => {
         setOrderDetailsOpen(true);
@@ -36,6 +62,23 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
     const closeModal = () => {
         setOrderDetailsOpen(false);
+    };
+
+    const placeOrder = () => {
+        getOrderInfo();
+        openModal();
+    }
+
+    const getOrderInfo = (): OrderInfo => {
+        postOrder(getDataIds(restoreIngredientListFromCart(cartTotal.cart, true, data)))
+            .then(orderInfo => {
+                orderNumber.setOrderNumber(orderInfo.order.number);
+                return orderInfo;
+            })
+            .catch(error => {
+                console.error('Error posting order:', error);
+            });
+        return EMPTY_ORDER_INFO;
     };
 
     return (
@@ -60,10 +103,10 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                                     <DragIcon type="primary" className={"mr-2"}/>
                                     <ConstructorElement
                                         key={index}
-                                        text={elem.ingredient.name}
-                                        price={elem.ingredient.price}
-                                        thumbnail={elem.ingredient.image}
-                                        handleClose={() => discardIngredientFromCart(cart, setCart, elem.ingredient._id)}
+                                        text={elem.name}
+                                        price={elem.price}
+                                        thumbnail={elem.image}
+                                        handleClose={() => discardIngredientFromCart(cartTotal.cart, cartTotal.setCart, elem._id)}
                                     />
                                 </div>
                             )
@@ -79,9 +122,9 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                     </div>
                 </div>
                 <div className={constructor.orderSum}>
-                    <p className="text text_type_digits-medium">{cartSum}</p>
+                    <p className="text text_type_digits-medium">{totalPriceState.count}</p>
                     <CurrencyIcon type="primary" className={"ml-2"}/>
-                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={openModal}>
+                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={placeOrder}>
                         Оформить заказ
                     </Button>
                 </div>
