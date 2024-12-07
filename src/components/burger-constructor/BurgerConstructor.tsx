@@ -9,21 +9,19 @@ import {
     getIngredientTypeById,
     restoreIngredientListFromCart
 } from "../../utils/util";
-import {Ingredient, TotalPriceState, TotalPriceAction, CartItem, OrderState} from "../../utils/types";
+import {Ingredient, TotalPriceState, TotalPriceAction, CartItem, OrderState, DataState} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, DraggableTypes} from "../../utils/data";
 import {CartContext} from "../../services/appContext";
 import {useDrop} from "react-dnd";
 import IndexedElement from "../indexed-element/IndexedElement";
 import {getOrderNumber} from "../../services/actions/orderActions";
-import store, {useAppSelector, useOrderDispatch} from '../../services/store';
+import {useAppSelector, useOrderDispatch} from '../../services/store';
 
-export interface BurgerConstructorProps {
-    data: Ingredient[]
-}
-
-function BurgerConstructor({data}: BurgerConstructorProps) {
-
+function BurgerConstructor() {
+    const {data} = useAppSelector((state: { data: DataState }) => ({
+        data: state.data.dataInfo
+    }))
     const initialState: TotalPriceState = {count: 0};
     const cartTotal = useContext(CartContext);
 

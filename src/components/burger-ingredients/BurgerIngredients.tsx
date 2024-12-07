@@ -3,7 +3,7 @@ import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCard from "../ingredient-card/IngredientCard";
 import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
-import {Ingredient, IngredientDetailState} from "../../utils/types";
+import {DataState, IngredientDetailState} from "../../utils/types";
 import {fulfilIngredient, getDataIdsWithType} from "../../utils/util";
 import IngredientDetails from "../ingredient-details/IngredientDetails";
 import ModalOverlay from "../modal/ModalOverlay";
@@ -11,13 +11,12 @@ import Modal from "../modal/Modal";
 import {fulfilIngredientDetails} from "../../services/actions/detailActions";
 import {useAppSelector, useDetailDispatch} from "../../services/store";
 
-export interface BurgerIngredientsProps {
-    data: Ingredient[]
-}
-
-function BurgerIngredients({data}: BurgerIngredientsProps) {
+function BurgerIngredients() {
     const [current, setCurrent] = useState<string>(BUN_TYPE);
     const [isIngredientDetailsOpen, setIngredientDetailsOpen] = useState(false);
+    const {data} = useAppSelector((state: { data: DataState }) => ({
+        data: state.data.dataInfo
+    }));
 
     const dispatch = useDetailDispatch();
     const {selectedIngredient} = useAppSelector((state: { ingredientDetails: IngredientDetailState }) => ({
@@ -96,7 +95,6 @@ function BurgerIngredients({data}: BurgerIngredientsProps) {
                 <IngredientCard
                     id={elem.id}
                     key={elem.id}
-                    data={data}
                     onClick={() => showIngredientDetails(elem.id)}
                 />
             ))

@@ -4,6 +4,7 @@ import {rootReducer} from "./reducers/rootReducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {OrderActions} from "./actions/orderActions";
 import {IngredientDetailActionTypes} from "./actions/detailActions";
+import {DataActions} from "./actions/dataActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 // второй занял 1,5 часа
 
@@ -20,7 +21,6 @@ export type AppDispatch = AppStore['dispatch'];
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export type OrderDispatch = ThunkDispatch<RootState, unknown, OrderActions>;
-export const useOrderDispatch: () => OrderDispatch = useDispatch;
-
+export const useOrderDispatch: () => ThunkDispatch<RootState, unknown, OrderActions> = useDispatch;
 export const useDetailDispatch: () => Dispatch<IngredientDetailActionTypes> = useDispatch;
+export const useDataDispatch: () => ThunkDispatch<RootState, unknown, DataActions> = useDispatch;

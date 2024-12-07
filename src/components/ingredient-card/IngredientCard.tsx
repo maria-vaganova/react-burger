@@ -2,18 +2,21 @@ import {useContext, useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {fulfilIngredient, getIngredientCountFromCartById} from "../../utils/util";
-import {Ingredient} from "../../utils/types";
+import {DataState, Ingredient} from "../../utils/types";
 import {CartContext} from "../../services/appContext";
 import {useDrag} from "react-dnd";
 import {DraggableTypes} from "../../utils/data";
+import {useAppSelector} from "../../services/store";
 
 export interface IngredientCardProps {
     id: string,
-    data: Ingredient[],
     onClick: () => void
 }
 
-function IngredientCard({id, data, onClick}: IngredientCardProps) {
+function IngredientCard({id, onClick}: IngredientCardProps) {
+    const {data} = useAppSelector((state: { data: DataState }) => ({
+        data: state.data.dataInfo
+    }));
 
     const [counter, setCounter] = useState(0);
     const ingredient: Ingredient = fulfilIngredient(id, data);

@@ -109,25 +109,3 @@ export function getIngredientTypeById(id: string, data: Ingredient[]): string {
     const ingredient = data.find(elem => elem._id === id);
     return ingredient ? ingredient.type : "";
 }
-
-export async function fetchData(): Promise<Ingredient[]> {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-        throw new Error('Ошибка сети');
-    }
-    return (await response.json()).data as Ingredient[];
-}
-
-export async function postOrder(ingredients: string[]): Promise<OrderInfo> {
-    const response = await fetch(ORDER_POST_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ingredients})
-    });
-    if (!response.ok) {
-        throw new Error('Ошибка сети: ' + response.status + " " + response.statusText);
-    }
-    return await response.json() as OrderInfo;
-}

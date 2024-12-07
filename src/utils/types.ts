@@ -46,6 +46,12 @@ export interface OrderState {
     orderInfo: OrderInfo;
 }
 
+export interface DataState {
+    dataRequest: boolean;
+    dataFailed: boolean;
+    dataInfo: Ingredient[];
+}
+
 export interface IngredientDetailInfo {
     image_large: string;
     name: string;
