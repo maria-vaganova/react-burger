@@ -26,11 +26,6 @@
     margin-right: 4px;
 }
 
-.cartItemContent {
-    display: flex;
-    align-items: center;
-}
-
 .orderSum {
     margin-top: 40px;
     margin-right: 16px;

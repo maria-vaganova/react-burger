@@ -1,34 +1,91 @@
-import React, {useMemo, useState} from 'react';
+import {useMemo, useState, useEffect} from 'react';
 import constructor from './BurgerConstructor.module.css';
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {discardIngredientFromCart, fulfilIngredient, getBunFromCart, getCartSum} from "../../utils/util";
-import {BUN_TYPE} from "../../utils/data";
-import {Ingredient} from "../../utils/types";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+    fulfilIngredient,
+    getBunFromCart,
+    getDataIds,
+    getIngredientTypeById,
+    restoreIngredientListFromCart
+} from "../../utils/util";
+import {Ingredient, CartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
+import {BUN_TYPE, DraggableTypes} from "../../utils/data";
+import {useDrop} from "react-dnd";
+import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
+import {
+    cartSelector,
+    dataInfoSelector,
+    orderStateToProps, totalPriceSelector,
+    useAppSelector,
+    useCartDispatch,
+    useOrderDispatch, useTotalPriceDispatch
+} from '../../services/store';
+import {addIngredientToCart} from "../../services/actions/cartActions";
+import {v4 as uuid_v4} from 'uuid';
+import {increment, resetPrice} from "../../services/actions/totalPriceActions";
+import IndexedContainer from "../indexed-container/IndexedContainer";
 
-export interface BurgerConstructorProps {
-    cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function,
-    data: Ingredient[]
-}
+function BurgerConstructor() {
+    const {data} = useAppSelector(dataInfoSelector);
+    const {cart} = useAppSelector(cartSelector);
+    const {totalPrice} = useAppSelector(totalPriceSelector);
 
-function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
+    const dispatchPrice = useTotalPriceDispatch();
+    const incrementPrice = (ingredientId: string) => {
+        dispatchPrice(increment(fulfilIngredient(ingredientId, data)));
+    }
+    const resetTotalPrice = () => {
+        dispatchPrice(resetPrice());
+    }
+
+    const dispatchCart = useCartDispatch();
+    const addIngredient = (ingredientId: string) => {
+        dispatchCart(addIngredientToCart(ingredientId, getIngredientTypeById(ingredientId, data), uuid_v4()));
+    }
+
+    const dispatchOrder = useOrderDispatch();
+    const {orderRequest, orderFailed, orderInfo} = useAppSelector(orderStateToProps);
+    const handleOrder = () => {
+        const ingredients = getDataIds(restoreIngredientListFromCart(cart, true, data));
+        const getOrderNumberThunk = getOrderNumber(ingredients);
+        dispatchOrder(getOrderNumberThunk);
+    };
+    const clearOrder = () => {
+        const clearOrderNumberThunk = clearOrderNumber();
+        dispatchOrder(clearOrderNumberThunk);
+    };
+
+    const [, dropTarget] = useDrop({
+        accept: DraggableTypes.ADDED_ITEM,
+        drop(ingredient: CartItem) {
+            handleDrop(ingredient.id);
+        },
+    });
+
+    const handleDrop = (ingredientId: string) => {
+        addIngredient(ingredientId);
+    };
 
     const bun = getBunFromCart(cart, data);
-    const cartSum = getCartSum(cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
-    const cartList = useMemo(() => {
+    const cartList: Ingredient[] = useMemo(() => {
         if (cart) {
-            return cart
-                .filter(elem => elem.type !== BUN_TYPE)
-                .flatMap(elem => {
-                    const ingredient = fulfilIngredient(elem.id, data);
-                    return Array.from({length: elem.count}, () => ({ingredient: ingredient}));
-                });
+            return restoreIngredientListFromCart(cart, false, data);
         }
         return [];
     }, [cart, data]);
+
+    useEffect(() => {
+        resetTotalPrice();
+        cart.forEach(elem => {
+            incrementPrice(elem.id);
+            if (elem.type === BUN_TYPE) {
+                incrementPrice(elem.id);
+            }
+        });
+    }, [cartList, cart, data]);
 
     const openModal = () => {
         setOrderDetailsOpen(true);
@@ -36,38 +93,38 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
 
     const closeModal = () => {
         setOrderDetailsOpen(false);
+        clearOrder();
     };
+
+    const placeOrder = () => {
+        handleOrder();
+        if (orderFailed) {
+            return alert(('Ошибка сети'));
+        } else if (orderRequest) {
+            return alert(('Загрузка...'));
+        } else {
+            console.log("orderInfo - ", orderInfo);
+            openModal();
+        }
+    }
 
     return (
         <div style={{width: '600px'}}>
             {isOrderDetailsOpen && (
-                <OrderDetails isOpen={isOrderDetailsOpen} closeModal={closeModal}/>
+                <OrderDetails isOpen={isOrderDetailsOpen} closeModal={closeModal} orderInfo={orderInfo}/>
             )}
             <div className={constructor.main}>
-                <div className={constructor.scrollableContainer}>
+                <div ref={dropTarget} className={constructor.scrollableContainer}>
                     <div className={constructor.cart}>
-                        {(bun !== undefined) ? (<ConstructorElement
+                        {bun && (<ConstructorElement
                             type="top"
                             isLocked={true}
                             text={bun.name + " (верх)"}
                             price={bun.price}
                             thumbnail={bun.image}
                             extraClass={constructor.bunItem}
-                        />) : <></>}
-                        {cartList?.map((elem, index) => {
-                            return (
-                                <div key={index} className={constructor.cartItemContent}>
-                                    <DragIcon type="primary" className={"mr-2"}/>
-                                    <ConstructorElement
-                                        key={index}
-                                        text={elem.ingredient.name}
-                                        price={elem.ingredient.price}
-                                        thumbnail={elem.ingredient.image}
-                                        handleClose={() => discardIngredientFromCart(cart, setCart, elem.ingredient._id)}
-                                    />
-                                </div>
-                            )
-                        })}
+                        />)}
+                        <IndexedContainer />
                         {bun && (<ConstructorElement
                             type="bottom"
                             isLocked={true}
@@ -79,9 +136,9 @@ function BurgerConstructor({cart, setCart, data}: BurgerConstructorProps) {
                     </div>
                 </div>
                 <div className={constructor.orderSum}>
-                    <p className="text text_type_digits-medium">{cartSum}</p>
+                    <p className="text text_type_digits-medium">{totalPrice}</p>
                     <CurrencyIcon type="primary" className={"ml-2"}/>
-                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={openModal}>
+                    <Button htmlType="button" type="primary" size="large" extraClass={"ml-10"} onClick={placeOrder}>
                         Оформить заказ
                     </Button>
                 </div>

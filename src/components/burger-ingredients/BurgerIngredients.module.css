@@ -8,10 +8,3 @@
     scrollbar-width: thin;
     scrollbar-gutter: stable;
 }
-
-.ingredients {
-    display: grid;
-    row-gap: 32px;
-    column-gap: 24px;
-    grid-template-columns: repeat(2, 1fr);
-}
