@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCard from "../ingredient-card/IngredientCard";
@@ -26,6 +26,50 @@ function BurgerIngredients({data}: BurgerIngredientsProps) {
     const closeModal = () => {
         setIngredientDetailsOpen(false);
     };
+
+    const handleScroll = () => {
+        const bun = document.getElementById("bun");
+        const sauce = document.getElementById("sauce");
+        const main = document.getElementById("main");
+
+        if (!bun || !sauce || !main) {
+            console.log("Элементы не найдены в DOM");
+            return;
+        }
+
+        const bunRect = bun.getBoundingClientRect();
+        const sauceRect = sauce.getBoundingClientRect();
+        const mainRect = main.getBoundingClientRect();
+
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        const offsets = {
+            bun: bunRect.top + scrollY,
+            sauce: sauceRect.top + scrollY,
+            main: mainRect.top + scrollY,
+        };
+
+        type IngredientsKeys = "bun" | "sauce" | "main";
+        const closestTab = Object.keys(offsets).reduce((closest, current) => {
+            const closestValue = Math.abs(offsets[closest as IngredientsKeys]);
+            const currentValue = Math.abs(offsets[current as IngredientsKeys]);
+            return currentValue < closestValue ? current : closest;
+        }, "bun" as IngredientsKeys);
+
+        setCurrent(closestTab);
+    };
+
+    useEffect(() => {
+        const container = document.getElementById('scrollable-container');
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+        }
+        return () => {
+            if (container) {
+                container.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, []);
 
     function setActiveTab(tabName: string) {
         setCurrent(tabName)
@@ -74,7 +118,7 @@ function BurgerIngredients({data}: BurgerIngredientsProps) {
                     Начинки
                 </Tab>
             </div>
-            <div className={"mt-10 " + ingredients.scrollableContainer}>
+            <div className={"mt-10 " + ingredients.scrollableContainer} id="scrollable-container">
                 <p id="bun" className={"text text_type_main-medium"}>Булки</p>
                 <div className={"mt-6 mb-10 mr-4 ml-4 " + ingredients.ingredients}>
                     {getCardList(BUN_TYPE)}
