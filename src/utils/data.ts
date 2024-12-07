@@ -1,4 +1,4 @@
-import {CartContextType, IngredientDetailInfo, OrderInfo} from "./types";
+import {IngredientDetailInfo, OrderInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
@@ -18,6 +18,9 @@ export const SHOW_INGREDIENT_DETAILS = "SHOW_INGREDIENT_DETAILS";
 export const GET_DATA = "GET_DATA";
 export const GET_DATA_FAILED = "GET_DATA_FAILED";
 export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
+export const ADD_INGREDIENT = "ADD_INGREDIENT";
+export const DISCARD_INGREDIENT = "DISCARD_INGREDIENT";
+export const MOVE_ITEMS = "MOVE_ITEMS";
 
 export const EMPTY_ORDER_INFO: OrderInfo = {
     name: "Ingredient ids must be provided",
@@ -32,18 +35,6 @@ export const EMPTY_INGREDIENT_DETAILS: IngredientDetailInfo = {
     proteins: 0,
     fat: 0,
     carbohydrates: 0
-};
-
-// export const EMPTY_ORDER_NUMBER_CONTEXT: OrderNumberContextType = {
-//     orderNumber: 0,
-//     setOrderNumber: () => {
-//     }
-// };
-
-export const EMPTY_CART_CONTEXT: CartContextType = {
-    cart: [],
-    setCart: () => {
-    }
 };
 
 export const BACKUP_DATA_LIST = [

@@ -1,5 +1,3 @@
-import {Dispatch, SetStateAction} from "react";
-
 export interface Ingredient {
     _id: string;
     name: string;
@@ -65,7 +63,6 @@ export interface IngredientDetailState {
     ingredientDetails: IngredientDetailInfo;
 }
 
-export interface CartContextType {
-    cart: CartItem[];
-    setCart: Dispatch<SetStateAction<CartItem[]>>;
+export interface CartState {
+    cartItems: CartItem[];
 }

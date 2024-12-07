@@ -2,8 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {fulfilIngredient, getIngredientCountFromCartById} from "../../utils/util";
-import {DataState, Ingredient} from "../../utils/types";
-import {CartContext} from "../../services/appContext";
+import {CartState, DataState, Ingredient} from "../../utils/types";
 import {useDrag} from "react-dnd";
 import {DraggableTypes} from "../../utils/data";
 import {useAppSelector} from "../../services/store";
@@ -20,7 +19,9 @@ function IngredientCard({id, onClick}: IngredientCardProps) {
 
     const [counter, setCounter] = useState(0);
     const ingredient: Ingredient = fulfilIngredient(id, data);
-    const cartTotal = useContext(CartContext);
+    const {cart} = useAppSelector((state: { cart: CartState }) => ({
+        cart: state.cart.cartItems
+    }))
 
     const [, dragRef] = useDrag({
         type: DraggableTypes.ADDED_ITEM,
@@ -28,8 +29,8 @@ function IngredientCard({id, onClick}: IngredientCardProps) {
     });
 
     useEffect(() => {
-        setCounter(getIngredientCountFromCartById(cartTotal.cart, id));
-    }, [id, cartTotal.cart]);
+        setCounter(getIngredientCountFromCartById(cart, id));
+    }, [id, cart]);
 
     return (
         <div className={card.ingredientCard} onClick={onClick}>

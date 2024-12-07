@@ -4,7 +4,6 @@ import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
 import BurgerConstructor from "../burger-constructor/BurgerConstructor";
 import {CartItem, DataState} from "../../utils/types";
-import {CartContext} from "../../services/appContext";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {useAppSelector, useDataDispatch} from "../../services/store";
@@ -12,7 +11,7 @@ import {getData} from "../../services/actions/dataActions";
 
 
 function App() {
-    const [cart, setCart] = useState<CartItem[]>([]);
+    // const [cart, setCart] = useState<CartItem[]>([]);
 
     const dispatch = useDataDispatch();
     const {dataRequest, dataFailed, dataInfo} = useAppSelector((state: { data: DataState }) => ({
@@ -35,15 +34,13 @@ function App() {
 
     return (
         <div>
-            <CartContext.Provider value={{cart, setCart}}>
-                <AppHeader/>
-                <DndProvider backend={HTML5Backend}>
-                    <div className={app.constructorContainer}>
-                        <BurgerIngredients/>
-                        <BurgerConstructor/>
-                    </div>
-                </DndProvider>
-            </CartContext.Provider>
+            <AppHeader/>
+            <DndProvider backend={HTML5Backend}>
+                <div className={app.constructorContainer}>
+                    <BurgerIngredients/>
+                    <BurgerConstructor/>
+                </div>
+            </DndProvider>
         </div>
     );
 }

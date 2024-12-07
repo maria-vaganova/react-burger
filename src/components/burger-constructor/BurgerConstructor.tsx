@@ -2,28 +2,46 @@ import {useMemo, useState, useReducer, useEffect, useContext, useCallback} from 
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
-    addIngredientToCart,
     fulfilIngredient,
     getBunFromCart,
     getDataIds,
     getIngredientTypeById,
     restoreIngredientListFromCart
 } from "../../utils/util";
-import {Ingredient, TotalPriceState, TotalPriceAction, CartItem, OrderState, DataState} from "../../utils/types";
+import {
+    Ingredient,
+    TotalPriceState,
+    TotalPriceAction,
+    CartItem,
+    OrderState,
+    DataState,
+    CartState
+} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, DraggableTypes} from "../../utils/data";
-import {CartContext} from "../../services/appContext";
 import {useDrop} from "react-dnd";
 import IndexedElement from "../indexed-element/IndexedElement";
 import {getOrderNumber} from "../../services/actions/orderActions";
-import {useAppSelector, useOrderDispatch} from '../../services/store';
+import {useAppSelector, useCartDispatch, useOrderDispatch} from '../../services/store';
+import {addIngredientToCart, moveItems} from "../../services/actions/cartActions";
 
 function BurgerConstructor() {
     const {data} = useAppSelector((state: { data: DataState }) => ({
         data: state.data.dataInfo
     }))
     const initialState: TotalPriceState = {count: 0};
-    const cartTotal = useContext(CartContext);
+    const {cart} = useAppSelector((state: { cart: CartState }) => ({
+        cart: state.cart.cartItems
+    }))
+
+    const dispatchCart = useCartDispatch();
+    const addIngredient = (ingredientId: string) => {
+        dispatchCart(addIngredientToCart(cart, ingredientId, getIngredientTypeById(ingredientId, data)));
+        console.log("addIngredientToCart", cart, ingredientId);
+    }
+    const moveItem = (fromIndex: number, toIndex: number) => {
+        dispatchCart(moveItems(cart, fromIndex, toIndex));
+    }
 
     const dispatch = useOrderDispatch();
     const {orderRequest, orderFailed, orderInfo} = useAppSelector((state: { order: OrderState }) => ({
@@ -32,7 +50,7 @@ function BurgerConstructor() {
         orderInfo: state.order.orderInfo
     }))
     const handleOrder = () => {
-        const ingredients = getDataIds(restoreIngredientListFromCart(cartTotal.cart, true, data));
+        const ingredients = getDataIds(restoreIngredientListFromCart(cart, true, data));
         const getOrderNumberThunk = getOrderNumber(ingredients);
         dispatch(getOrderNumberThunk);
     };
@@ -45,7 +63,7 @@ function BurgerConstructor() {
     });
 
     const handleDrop = (ingredientId: string) => {
-        addIngredientToCart(cartTotal.cart, cartTotal.setCart, ingredientId, getIngredientTypeById(ingredientId, data));
+        addIngredient(ingredientId);
     };
 
     function reducer(state: TotalPriceState, action: TotalPriceAction): any {
@@ -63,25 +81,25 @@ function BurgerConstructor() {
 
     const [totalPriceState, totalPriceDispatcher] = useReducer(reducer, initialState);
 
-    const bun = getBunFromCart(cartTotal.cart, data);
+    const bun = getBunFromCart(cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
     const cartList: Ingredient[] = useMemo(() => {
-        if (cartTotal.cart) {
-            return restoreIngredientListFromCart(cartTotal.cart, false, data);
+        if (cart) {
+            return restoreIngredientListFromCart(cart, false, data);
         }
         return [];
-    }, [cartTotal.cart, data]);
+    }, [cart, data]);
 
     useEffect(() => {
         totalPriceDispatcher({type: "reset"});
-        cartTotal.cart.forEach(elem => {
+        cart.forEach(elem => {
             totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
             if (elem.type === BUN_TYPE) {
                 totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
             }
         });
-    }, [cartList, cartTotal.cart, data]);
+    }, [cartList, cart, data]);
 
     const openModal = () => {
         setOrderDetailsOpen(true);
@@ -104,11 +122,8 @@ function BurgerConstructor() {
     }
 
     const moveElement = useCallback((fromIndex: number, toIndex: number) => {
-        const updatedList = [...cartTotal.cart];
-        const [movedItem] = updatedList.splice(fromIndex, 1);
-        updatedList.splice(toIndex, 0, movedItem);
-        cartTotal.setCart(updatedList);
-    }, [cartTotal])
+        moveItem(fromIndex, toIndex);
+    }, [cart])
 
     const renderCard = useCallback(
         (elem: CartItem, index: number) => {
@@ -140,7 +155,7 @@ function BurgerConstructor() {
                             thumbnail={bun.image}
                             extraClass={constructor.bunItem}
                         />)}
-                        {cartTotal.cart.map((elem, index) => renderCard(elem, index))}
+                        {cart.map((elem, index) => renderCard(elem, index))}
                         {bun && (<ConstructorElement
                             type="bottom"
                             isLocked={true}
