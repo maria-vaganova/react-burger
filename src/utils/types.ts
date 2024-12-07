@@ -40,9 +40,10 @@ export interface CartItem {
     displayOrder: number;
 }
 
-export interface OrderNumberContextType {
-    orderNumber: number;
-    setOrderNumber: Dispatch<SetStateAction<number>>;
+export interface OrderState {
+    orderRequest: boolean;
+    orderFailed: boolean;
+    orderInfo: OrderInfo;
 }
 
 export interface CartContextType {

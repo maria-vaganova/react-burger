@@ -5,14 +5,16 @@ import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
 import BurgerConstructor from "../burger-constructor/BurgerConstructor";
 import {CartItem, Ingredient} from "../../utils/types";
 import {fetchData} from '../../utils/util';
-import {OrderNumberContext, CartContext} from "../../services/appContext";
+import {CartContext} from "../../services/appContext";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import {Provider} from "react-redux";
+import store from "../../services/store";
+
 
 function App() {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [data, setData] = useState<Ingredient[]>([]);
-    const [orderNumber, setOrderNumber] = useState(0);
 
     useEffect(() => {
         fetchData()
@@ -25,8 +27,8 @@ function App() {
     }, []);
 
     return (
-        <div>
-            <OrderNumberContext.Provider value={{orderNumber, setOrderNumber}}>
+        <Provider store={store}>
+            <div>
                 <CartContext.Provider value={{cart, setCart}}>
                     <AppHeader/>
                     <DndProvider backend={HTML5Backend}>
@@ -36,8 +38,8 @@ function App() {
                         </div>
                     </DndProvider>
                 </CartContext.Provider>
-            </OrderNumberContext.Provider>
-        </div>
+            </div>
+        </Provider>
     );
 }
 

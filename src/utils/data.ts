@@ -1,4 +1,4 @@
-import {CartContextType, OrderInfo, OrderNumberContextType} from "./types";
+import {CartContextType, OrderInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
@@ -12,11 +12,11 @@ export const EMPTY_ORDER_INFO: OrderInfo = {
     success: false
 };
 
-export const EMPTY_ORDER_NUMBER_CONTEXT: OrderNumberContextType = {
-    orderNumber: 0,
-    setOrderNumber: () => {
-    }
-};
+// export const EMPTY_ORDER_NUMBER_CONTEXT: OrderNumberContextType = {
+//     orderNumber: 0,
+//     setOrderNumber: () => {
+//     }
+// };
 
 export const EMPTY_CART_CONTEXT: CartContextType = {
     cart: [],
@@ -28,6 +28,10 @@ export const DraggableTypes = {
     SORTED_ITEM: "card",
     ADDED_ITEM: "ingredient"
 }
+
+export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
+export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
+export const GET_ORDER_NUMBER_SUCCESS = "GET_ORDER_NUMBER_SUCCESS";
 
 export const BACKUP_DATA_LIST = [
     {

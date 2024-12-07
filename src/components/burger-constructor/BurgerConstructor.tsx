@@ -7,15 +7,16 @@ import {
     getBunFromCart,
     getDataIds,
     getIngredientTypeById,
-    postOrder,
     restoreIngredientListFromCart
 } from "../../utils/util";
-import {Ingredient, TotalPriceState, TotalPriceAction, OrderInfo, CartItem} from "../../utils/types";
+import {Ingredient, TotalPriceState, TotalPriceAction, CartItem, OrderState} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
-import {BUN_TYPE, DraggableTypes, EMPTY_ORDER_INFO} from "../../utils/data";
-import {CartContext, OrderNumberContext} from "../../services/appContext";
+import {BUN_TYPE, DraggableTypes} from "../../utils/data";
+import {CartContext} from "../../services/appContext";
 import {useDrop} from "react-dnd";
 import IndexedElement from "../indexed-element/IndexedElement";
+import {getOrderNumber} from "../../services/actions/orderActions";
+import store, {useAppSelector, useOrderDispatch} from '../../services/store';
 
 export interface BurgerConstructorProps {
     data: Ingredient[]
@@ -24,8 +25,19 @@ export interface BurgerConstructorProps {
 function BurgerConstructor({data}: BurgerConstructorProps) {
 
     const initialState: TotalPriceState = {count: 0};
-    const orderNumber = useContext(OrderNumberContext);
     const cartTotal = useContext(CartContext);
+
+    const dispatch = useOrderDispatch();
+    const {orderRequest, orderFailed, orderInfo} = useAppSelector((state: { order: OrderState }) => ({
+        orderRequest: state.order.orderRequest,
+        orderFailed: state.order.orderFailed,
+        orderInfo: state.order.orderInfo
+    }))
+    const handleOrder = () => {
+        const ingredients = getDataIds(restoreIngredientListFromCart(cartTotal.cart, true, data));
+        const getOrderNumberThunk = getOrderNumber(ingredients);
+        dispatch(getOrderNumberThunk);
+    };
 
     const [, dropTarget] = useDrop({
         accept: DraggableTypes.ADDED_ITEM,
@@ -62,6 +74,7 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
         }
         return [];
     }, [cartTotal.cart, data]);
+
     useEffect(() => {
         totalPriceDispatcher({type: "reset"});
         cartTotal.cart.forEach(elem => {
@@ -81,21 +94,16 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
     };
 
     const placeOrder = () => {
-        getOrderInfo();
-        openModal();
+        handleOrder();
+        if (orderFailed) {
+            return alert(('Ошибка сети'));
+        } else if (orderRequest) {
+            return alert(('Загрузка...'));
+        } else {
+            console.log("orderInfo - ", orderInfo);
+            openModal();
+        }
     }
-
-    const getOrderInfo = (): OrderInfo => {
-        postOrder(getDataIds(restoreIngredientListFromCart(cartTotal.cart, true, data)))
-            .then(orderInfo => {
-                orderNumber.setOrderNumber(orderInfo.order.number);
-                return orderInfo;
-            })
-            .catch(error => {
-                console.error('Error posting order:', error);
-            });
-        return EMPTY_ORDER_INFO;
-    };
 
     const moveElement = useCallback((fromIndex: number, toIndex: number) => {
         const updatedList = [...cartTotal.cart];
@@ -121,7 +129,7 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
     return (
         <div style={{width: '600px'}}>
             {isOrderDetailsOpen && (
-                <OrderDetails isOpen={isOrderDetailsOpen} closeModal={closeModal}/>
+                <OrderDetails isOpen={isOrderDetailsOpen} closeModal={closeModal} orderInfo={orderInfo}/>
             )}
             <div className={constructor.main}>
                 <div ref={dropTarget} className={constructor.scrollableContainer}>
