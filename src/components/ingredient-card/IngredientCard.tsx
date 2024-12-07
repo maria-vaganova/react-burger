@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {fulfilIngredient} from "../../utils/util";
+import {fulfilIngredient, getIngredientCountFromCartById} from "../../utils/util";
 import {Ingredient} from "../../utils/types";
 import {CartContext} from "../../services/appContext";
 import {useDrag} from "react-dnd";
@@ -24,12 +24,7 @@ function IngredientCard({id, data, onClick}: IngredientCardProps) {
     });
 
     useEffect(() => {
-        const index = cartTotal.cart.findIndex(elem => elem.id === id);
-        if (index === undefined || index === -1) {
-            setCounter(0);
-        } else {
-            setCounter(cartTotal.cart[index].count);
-        }
+        setCounter(getIngredientCountFromCartById(cartTotal.cart, id));
     }, [id, cartTotal.cart]);
 
     return (

@@ -1,9 +1,8 @@
-import {useMemo, useState, useReducer, useEffect, useContext} from 'react';
+import {useMemo, useState, useReducer, useEffect, useContext, useCallback} from 'react';
 import constructor from './BurgerConstructor.module.css';
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
     addIngredientToCart,
-    discardIngredientFromCart,
     fulfilIngredient,
     getBunFromCart,
     getDataIds,
@@ -16,6 +15,7 @@ import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, EMPTY_ORDER_INFO} from "../../utils/data";
 import {CartContext, OrderNumberContext} from "../../services/appContext";
 import {useDrop} from "react-dnd";
+import IndexedElement from "../indexed-element/IndexedElement";
 
 export interface BurgerConstructorProps {
     data: Ingredient[]
@@ -62,18 +62,15 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
         }
         return [];
     }, [cartTotal.cart, data]);
-
     useEffect(() => {
         totalPriceDispatcher({type: "reset"});
         cartTotal.cart.forEach(elem => {
-            for (let i = 0; i < elem.count; i++) {
+            totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
+            if (elem.type === BUN_TYPE) {
                 totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
-                if (elem.type === BUN_TYPE) {
-                    totalPriceDispatcher({type: "increment", ingredient: fulfilIngredient(elem.id, data)});
-                }
             }
         });
-    }, [cartList]);
+    }, [cartList, cartTotal.cart, data]);
 
     const openModal = () => {
         setOrderDetailsOpen(true);
@@ -100,6 +97,25 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
         return EMPTY_ORDER_INFO;
     };
 
+    const moveElement = useCallback((fromIndex: number, toIndex: number) => {
+        const updatedList = [...cartTotal.cart];
+        const [movedItem] = updatedList.splice(fromIndex, 1);
+        updatedList.splice(toIndex, 0, movedItem);
+        cartTotal.setCart(updatedList);
+    }, [cartTotal])
+
+    const renderCard = useCallback(
+        (elem: CartItem, index: number) => {
+            if (elem.type !== BUN_TYPE) {
+                return (
+                    <IndexedElement key={index} id={elem.id} ingredient={fulfilIngredient(elem.id, data)}
+                                    index={elem.index}
+                                    moveElement={moveElement}/>
+                )
+            }
+        }, [data, moveElement],
+    );
+
     return (
         <div style={{width: '600px'}}>
             {isOrderDetailsOpen && (
@@ -108,28 +124,15 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
             <div className={constructor.main}>
                 <div ref={dropTarget} className={constructor.scrollableContainer}>
                     <div className={constructor.cart}>
-                        {(bun !== undefined) ? (<ConstructorElement
+                        {bun && (<ConstructorElement
                             type="top"
                             isLocked={true}
                             text={bun.name + " (верх)"}
                             price={bun.price}
                             thumbnail={bun.image}
                             extraClass={constructor.bunItem}
-                        />) : <></>}
-                        {cartList?.map((elem, index) => {
-                            return (
-                                <div key={index} className={constructor.cartItemContent}>
-                                    <DragIcon type="primary" className={"mr-2"}/>
-                                    <ConstructorElement
-                                        key={index}
-                                        text={elem.name}
-                                        price={elem.price}
-                                        thumbnail={elem.image}
-                                        handleClose={() => discardIngredientFromCart(cartTotal.cart, cartTotal.setCart, elem._id)}
-                                    />
-                                </div>
-                            )
-                        })}
+                        />)}
+                        {cartTotal.cart.map((elem, index) => renderCard(elem, index))}
                         {bun && (<ConstructorElement
                             type="bottom"
                             isLocked={true}

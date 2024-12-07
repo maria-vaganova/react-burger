@@ -7,24 +7,24 @@ export function addIngredientToCart(
     id: string,
     type: string) {
     if (id !== "0") {
+        let innerIndex: number = 0;
         if (cart === undefined) {
-            setCart([{id: id, type: type, count: 1}]);
+            setCart([{id: id, type: type, index: innerIndex}]);
         } else {
             let newCart = [...cart];
+            const index = newCart.pop()?.index;
+            innerIndex = index !== undefined ? index + 1 : 0;
+            if (innerIndex === 0 && type !== BUN_TYPE) innerIndex = 1;
+            newCart = [...cart];
             if (type === BUN_TYPE) {
                 const bun = cart.find(elem => elem.type === BUN_TYPE);
                 if (bun !== undefined) {
                     newCart = newCart.filter(elem => elem.id !== bun.id);
-                    setCart(newCart);
                 }
+                innerIndex = 0;
             }
-            const index = newCart.findIndex(elem => elem.id === id);
-            if (index === -1) {
-                setCart([...newCart, {id: id, type: type, count: 1}]);
-            } else {
-                newCart[index].count += 1;
-                setCart(newCart);
-            }
+            newCart.push({id: id, type: type, index: innerIndex});
+            setCart(newCart);
         }
     }
 }
@@ -32,18 +32,20 @@ export function addIngredientToCart(
 export function discardIngredientFromCart(
     cart: CartItem[] | undefined,
     setCart: Function,
-    id: string) {
-    if (cart !== undefined && id !== "0") {
-        const index = cart.findIndex(elem => elem.id === id);
+    innerIndex: number) {
+    if (cart !== undefined && innerIndex) {
+        let index = -1;
+        let newCart = cart;
+        index = cart.findIndex(elem => elem.index === innerIndex);
         if (index !== -1) {
-            const newCart = [...cart];
-            newCart[index].count -= 1;
-            if (newCart[index].count === 0) {
-                setCart(cart.filter(elem => elem.id !== id));
-            } else {
-                setCart(newCart);
-            }
+            newCart = cart.filter(elem => elem.index !== innerIndex);
         }
+        newCart.map(elem => {
+            if (elem.index && elem.index > innerIndex) {
+                return {id: elem.id, type: elem.type, index: elem.index - 1} as CartItem;
+            } else return elem;
+        })
+        setCart(newCart);
     }
 }
 
@@ -52,11 +54,20 @@ export function restoreIngredientListFromCart(
     if (cart) {
         return (isBunIncluded ? cart : cart.filter(elem => elem.type !== BUN_TYPE))
             .flatMap(elem => {
-                const ingredient = fulfilIngredient(elem.id, data);
-                return Array.from({length: elem.count}, (): Ingredient => (ingredient));
+                return fulfilIngredient(elem.id, data);
             });
     }
     return [];
+}
+
+export function getIngredientCountFromCartById(cart: CartItem[] | undefined, id: string): number {
+    let count = 0;
+    cart?.forEach(elem => {
+        if (elem.id === id) {
+            count++;
+        }
+    })
+    return count;
 }
 
 export function getBunFromCart(cart: CartItem[] | undefined, data: Ingredient[]): Ingredient | undefined {
