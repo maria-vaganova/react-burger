@@ -1,4 +1,10 @@
-import {GET_ORDER_NUMBER, GET_ORDER_NUMBER_FAILED, GET_ORDER_NUMBER_SUCCESS, ORDER_POST_URL} from "../../utils/data";
+import {
+    EMPTY_ORDER_INFO,
+    GET_ORDER_NUMBER,
+    GET_ORDER_NUMBER_FAILED,
+    GET_ORDER_NUMBER_SUCCESS,
+    ORDER_POST_URL
+} from "../../utils/data";
 import {OrderInfo} from "../../utils/types";
 import {Dispatch} from "redux";
 
@@ -38,7 +44,7 @@ export function getOrderNumber(ingredients: string[]) {
                 const orderInfo = await response.json() as OrderInfo;
                 dispatch({
                     type: GET_ORDER_NUMBER_SUCCESS,
-                    orderInfo
+                    orderInfo: orderInfo
                 });
             } else {
                 dispatch({
@@ -50,5 +56,14 @@ export function getOrderNumber(ingredients: string[]) {
                 type: GET_ORDER_NUMBER_FAILED
             });
         }
+    }
+}
+
+export function clearOrderNumber() {
+    return async function clearOrderNumberThunk(dispatch: Dispatch<OrderActions>) {
+        dispatch({
+            type: GET_ORDER_NUMBER_SUCCESS,
+            orderInfo: EMPTY_ORDER_INFO
+        })
     }
 }

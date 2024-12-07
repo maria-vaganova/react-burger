@@ -21,7 +21,7 @@ import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, DraggableTypes} from "../../utils/data";
 import {useDrop} from "react-dnd";
 import IndexedElement from "../indexed-element/IndexedElement";
-import {getOrderNumber} from "../../services/actions/orderActions";
+import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
 import {useAppSelector, useCartDispatch, useOrderDispatch} from '../../services/store';
 import {addIngredientToCart, moveItems} from "../../services/actions/cartActions";
 
@@ -53,6 +53,10 @@ function BurgerConstructor() {
         const ingredients = getDataIds(restoreIngredientListFromCart(cart, true, data));
         const getOrderNumberThunk = getOrderNumber(ingredients);
         dispatch(getOrderNumberThunk);
+    };
+    const clearOrder = () => {
+        const clearOrderNumberThunk = clearOrderNumber();
+        dispatch(clearOrderNumberThunk);
     };
 
     const [, dropTarget] = useDrop({
@@ -107,6 +111,7 @@ function BurgerConstructor() {
 
     const closeModal = () => {
         setOrderDetailsOpen(false);
+        clearOrder();
     };
 
     const placeOrder = () => {
