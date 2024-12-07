@@ -1,9 +1,11 @@
-import {createStore, applyMiddleware, compose, StoreEnhancer} from 'redux';
+import {createStore, applyMiddleware, compose, StoreEnhancer, Dispatch} from 'redux';
 import {thunk, ThunkDispatch} from 'redux-thunk';
 import {rootReducer} from "./reducers/rootReducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {OrderActions} from "./actions/orderActions";
+import {IngredientDetailActionTypes} from "./actions/detailActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
+// второй занял 1,5 часа
 
 const initialState = {};
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -20,3 +22,5 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export type OrderDispatch = ThunkDispatch<RootState, unknown, OrderActions>;
 export const useOrderDispatch: () => OrderDispatch = useDispatch;
+
+export const useDetailDispatch: () => Dispatch<IngredientDetailActionTypes> = useDispatch;

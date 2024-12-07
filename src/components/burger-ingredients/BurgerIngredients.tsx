@@ -3,11 +3,13 @@ import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCard from "../ingredient-card/IngredientCard";
 import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
-import {Ingredient} from "../../utils/types";
+import {Ingredient, IngredientDetailState} from "../../utils/types";
 import {fulfilIngredient, getDataIdsWithType} from "../../utils/util";
 import IngredientDetails from "../ingredient-details/IngredientDetails";
 import ModalOverlay from "../modal/ModalOverlay";
 import Modal from "../modal/Modal";
+import {fulfilIngredientDetails} from "../../services/actions/detailActions";
+import {useAppSelector, useDetailDispatch} from "../../services/store";
 
 export interface BurgerIngredientsProps {
     data: Ingredient[]
@@ -16,11 +18,19 @@ export interface BurgerIngredientsProps {
 function BurgerIngredients({data}: BurgerIngredientsProps) {
     const [current, setCurrent] = useState<string>(BUN_TYPE);
     const [isIngredientDetailsOpen, setIngredientDetailsOpen] = useState(false);
-    const [selectedIngredient, setSelectedIngredient] = useState<Ingredient>();
 
-    const openModal = (ingredientId: string) => {
+    const dispatch = useDetailDispatch();
+    const {selectedIngredient} = useAppSelector((state: { ingredientDetails: IngredientDetailState }) => ({
+        selectedIngredient: state.ingredientDetails.ingredientDetails
+    }));
+    const showIngredientDetails = (ingredientId: string) => {
+        const getIngredientDetails = fulfilIngredientDetails(fulfilIngredient(ingredientId, data));
+        dispatch(getIngredientDetails);
+        openModal();
+    }
+
+    const openModal = () => {
         setIngredientDetailsOpen(true);
-        setSelectedIngredient(fulfilIngredient(ingredientId, data));
     };
 
     const closeModal = () => {
@@ -87,7 +97,7 @@ function BurgerIngredients({data}: BurgerIngredientsProps) {
                     id={elem.id}
                     key={elem.id}
                     data={data}
-                    onClick={() => openModal(elem.id)}
+                    onClick={() => showIngredientDetails(elem.id)}
                 />
             ))
     }
@@ -97,7 +107,7 @@ function BurgerIngredients({data}: BurgerIngredientsProps) {
             {isIngredientDetailsOpen && <ModalOverlay onClose={closeModal}/>}
             {isIngredientDetailsOpen && (
                 <Modal onClose={closeModal}>
-                    <IngredientDetails ingredient={selectedIngredient}/>
+                    <IngredientDetails ingredientDetailInfo={selectedIngredient}/>
                 </Modal>
             )}
             <h1 className="text_type_main-large mt-10 mb-5">Соберите бургер</h1>

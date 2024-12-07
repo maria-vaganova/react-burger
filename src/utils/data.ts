@@ -1,4 +1,4 @@
-import {CartContextType, OrderInfo} from "./types";
+import {CartContextType, IngredientDetailInfo, OrderInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
@@ -6,10 +6,29 @@ export const MAIN_TYPE = "main";
 export const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 export const ORDER_POST_URL = 'https://norma.nomoreparties.space/api/orders';
 
+export const DraggableTypes = {
+    SORTED_ITEM: "card",
+    ADDED_ITEM: "ingredient"
+}
+
+export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
+export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
+export const GET_ORDER_NUMBER_SUCCESS = "GET_ORDER_NUMBER_SUCCESS";
+export const SHOW_INGREDIENT_DETAILS = "SHOW_INGREDIENT_DETAILS";
+
 export const EMPTY_ORDER_INFO: OrderInfo = {
     name: "Ingredient ids must be provided",
     order: {number: 0},
     success: false
+};
+
+export const EMPTY_INGREDIENT_DETAILS: IngredientDetailInfo = {
+    image_large: "none",
+    name: "Ingredient must be provided",
+    calories: 0,
+    proteins: 0,
+    fat: 0,
+    carbohydrates: 0
 };
 
 // export const EMPTY_ORDER_NUMBER_CONTEXT: OrderNumberContextType = {
@@ -23,15 +42,6 @@ export const EMPTY_CART_CONTEXT: CartContextType = {
     setCart: () => {
     }
 };
-
-export const DraggableTypes = {
-    SORTED_ITEM: "card",
-    ADDED_ITEM: "ingredient"
-}
-
-export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
-export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
-export const GET_ORDER_NUMBER_SUCCESS = "GET_ORDER_NUMBER_SUCCESS";
 
 export const BACKUP_DATA_LIST = [
     {

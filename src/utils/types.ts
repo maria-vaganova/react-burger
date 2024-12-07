@@ -46,6 +46,19 @@ export interface OrderState {
     orderInfo: OrderInfo;
 }
 
+export interface IngredientDetailInfo {
+    image_large: string;
+    name: string;
+    calories: number;
+    proteins: number;
+    fat: number;
+    carbohydrates: number;
+}
+
+export interface IngredientDetailState {
+    ingredientDetails: IngredientDetailInfo;
+}
+
 export interface CartContextType {
     cart: CartItem[];
     setCart: Dispatch<SetStateAction<CartItem[]>>;
