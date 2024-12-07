@@ -19,13 +19,14 @@ export type CartActionTypes = AddIngredientAction | DiscardIngredientAction | Mo
 export function addIngredientToCart(
     cart: CartItem[],
     id: string,
-    type: string): AddIngredientAction {
+    type: string,
+    key: string): AddIngredientAction {
     if (id !== "0") {
         let displayOrder: number = 0;
         if (cart === undefined || cart.length === 0) {
             return {
                 type: ADD_INGREDIENT,
-                cartItems: [{id: id, type: type, displayOrder: displayOrder}]
+                cartItems: [{id: id, type: type, displayOrder: displayOrder, key: key}]
             }
         } else {
             let newCart = [...cart];
@@ -40,7 +41,7 @@ export function addIngredientToCart(
                 }
                 displayOrder = 0;
             }
-            newCart.push({id: id, type: type, displayOrder: displayOrder});
+            newCart.push({id: id, type: type, displayOrder: displayOrder, key: key});
             return {
                 type: ADD_INGREDIENT,
                 cartItems: newCart

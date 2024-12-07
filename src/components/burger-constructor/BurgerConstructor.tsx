@@ -24,6 +24,7 @@ import IndexedElement from "../indexed-element/IndexedElement";
 import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
 import {useAppSelector, useCartDispatch, useOrderDispatch} from '../../services/store';
 import {addIngredientToCart, moveItems} from "../../services/actions/cartActions";
+import { v4 as uuidv4 } from 'uuid';
 
 function BurgerConstructor() {
     const {data} = useAppSelector((state: { data: DataState }) => ({
@@ -36,7 +37,7 @@ function BurgerConstructor() {
 
     const dispatchCart = useCartDispatch();
     const addIngredient = (ingredientId: string) => {
-        dispatchCart(addIngredientToCart(cart, ingredientId, getIngredientTypeById(ingredientId, data)));
+        dispatchCart(addIngredientToCart(cart, ingredientId, getIngredientTypeById(ingredientId, data), uuidv4()));
         console.log("addIngredientToCart", cart, ingredientId);
     }
     const moveItem = (fromIndex: number, toIndex: number) => {
@@ -130,10 +131,10 @@ function BurgerConstructor() {
         moveItem(fromIndex, toIndex);
     }, [cart])
 
-    const renderCard = (elem: CartItem, index: number) => {
+    const renderCard = (elem: CartItem) => {
         if (elem.type !== BUN_TYPE) {
             return (
-                <IndexedElement key={index}
+                <IndexedElement key={elem.key}
                                 ingredient={fulfilIngredient(elem.id, data)}
                                 displayOrder={elem.displayOrder}
                                 moveElement={moveElement}
@@ -158,7 +159,7 @@ function BurgerConstructor() {
                             thumbnail={bun.image}
                             extraClass={constructor.bunItem}
                         />)}
-                        {cart.map((elem, index) => renderCard(elem, index))}
+                        {cart.map((elem) => renderCard(elem))}
                         {bun && (<ConstructorElement
                             type="bottom"
                             isLocked={true}

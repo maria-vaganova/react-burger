@@ -36,6 +36,7 @@ export interface CartItem {
     id: string;
     type: string;
     displayOrder: number;
+    key: string;
 }
 
 export interface OrderState {
