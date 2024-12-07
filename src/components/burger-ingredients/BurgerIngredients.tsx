@@ -8,7 +8,7 @@ import {fulfilIngredient, getDataIdsWithType} from "../../utils/util";
 import IngredientDetails from "../ingredient-details/IngredientDetails";
 import ModalOverlay from "../modal/ModalOverlay";
 import Modal from "../modal/Modal";
-import {fulfilIngredientDetails} from "../../services/actions/detailActions";
+import {clearIngredientDetails, fulfilIngredientDetails} from "../../services/actions/detailActions";
 import {useAppSelector, useDetailDispatch} from "../../services/store";
 
 function BurgerIngredients() {
@@ -27,6 +27,9 @@ function BurgerIngredients() {
         dispatch(getIngredientDetails);
         openModal();
     }
+    const clearDetails = () => {
+        dispatch(clearIngredientDetails());
+    };
 
     const openModal = () => {
         setIngredientDetailsOpen(true);
@@ -34,6 +37,7 @@ function BurgerIngredients() {
 
     const closeModal = () => {
         setIngredientDetailsOpen(false);
+        clearDetails();
     };
 
     const handleScroll = () => {
