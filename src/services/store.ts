@@ -7,6 +7,8 @@ import {IngredientDetailActionTypes} from "./actions/detailActions";
 import {DataActions} from "./actions/dataActions";
 import {CartActionTypes} from "./actions/cartActions";
 import {createSelector} from "@reduxjs/toolkit";
+import totalPriceReducer from "./reducers/totalPriceReducer";
+import {TotalPriceActionTypes} from "./actions/totalPriceActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -53,3 +55,7 @@ export const useDataDispatch = useDispatch.withTypes<ThunkDispatch<RootState, un
 const selectCart = (state: RootState) => state.cart.cartItems;
 export const cartSelector = createSelector(selectCart, (cart) => ({cart}));
 export const useCartDispatch = useDispatch.withTypes<Dispatch<CartActionTypes>>();
+
+const selectTotalPrice = (state: RootState) => state.totalPrice.count;
+export const totalPriceSelector = createSelector(selectTotalPrice, (totalPrice) => ({totalPrice}));
+export const useTotalPriceDispatch = useDispatch.withTypes<Dispatch<TotalPriceActionTypes>>();

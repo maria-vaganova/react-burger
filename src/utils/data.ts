@@ -22,6 +22,9 @@ export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const DISCARD_INGREDIENT = "DISCARD_INGREDIENT";
 export const MOVE_ITEMS = "MOVE_ITEMS";
+export const INCREMENT = "INCREMENT";
+export const DECREMENT = "DECREMENT";
+export const RESET = "RESET";
 
 export const EMPTY_ORDER_INFO: OrderInfo = {
     name: "Ingredient ids must be provided",
