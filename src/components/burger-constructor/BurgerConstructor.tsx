@@ -37,11 +37,11 @@ function BurgerConstructor() {
 
     const dispatchCart = useCartDispatch();
     const addIngredient = (ingredientId: string) => {
-        dispatchCart(addIngredientToCart(cart, ingredientId, getIngredientTypeById(ingredientId, data), uuid_v4()));
+        dispatchCart(addIngredientToCart(ingredientId, getIngredientTypeById(ingredientId, data), uuid_v4()));
         console.log("addIngredientToCart", cart, ingredientId);
     }
     const moveItem = (fromIndex: number, toIndex: number) => {
-        dispatchCart(moveItems(cart, fromIndex, toIndex));
+        dispatchCart(moveItems(fromIndex, toIndex));
     }
 
     const dispatch = useOrderDispatch();
