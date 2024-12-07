@@ -1,5 +1,5 @@
 import {Ingredient} from "../../utils/types";
-import constructor from "../burger-constructor/BurgerConstructor.module.css";
+import element from "./IndexedElement.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag, useDrop} from "react-dnd";
 import {DraggableTypes} from "../../utils/data";
@@ -37,7 +37,7 @@ function IndexedElement({ingredient, displayOrder, moveElement}: IndexedElementP
     });
 
     return (
-        <div ref={(node) => drag(drop(node))} className={constructor.cartItemContent}>
+        <div ref={(node) => drag(drop(node))} className={element.cartItemContent}>
             <DragIcon type="primary" className={"mr-2"}/>
             <ConstructorElement
                 text={ingredient.name}

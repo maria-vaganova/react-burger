@@ -1,5 +1,6 @@
 import {BUN_TYPE} from "../../utils/data";
 import IndexedElement from "../indexed-element/IndexedElement";
+import container from "./IndexedContainer.module.css";
 import {fulfilIngredient} from "../../utils/util";
 import {cartSelector, dataInfoSelector, useAppSelector, useCartDispatch} from "../../services/store";
 import {useCallback} from "react";
@@ -19,7 +20,7 @@ function IndexedContainer() {
     }, [cart])
 
     return (
-        <div>
+        <div className={container.cart}>
             {cart.map((elem) => {
                 if (elem.type !== BUN_TYPE) {
                     return (
