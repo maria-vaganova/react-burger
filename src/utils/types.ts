@@ -37,7 +37,7 @@ export interface Order {
 export interface CartItem {
     id: string;
     type: string;
-    index: number;
+    displayOrder: number;
 }
 
 export interface OrderNumberContextType {

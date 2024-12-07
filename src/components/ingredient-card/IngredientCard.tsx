@@ -5,6 +5,7 @@ import {fulfilIngredient, getIngredientCountFromCartById} from "../../utils/util
 import {Ingredient} from "../../utils/types";
 import {CartContext} from "../../services/appContext";
 import {useDrag} from "react-dnd";
+import {DraggableTypes} from "../../utils/data";
 
 export interface IngredientCardProps {
     id: string,
@@ -19,7 +20,7 @@ function IngredientCard({id, data, onClick}: IngredientCardProps) {
     const cartTotal = useContext(CartContext);
 
     const [, dragRef] = useDrag({
-        type: "ingredient",
+        type: DraggableTypes.ADDED_ITEM,
         item: {id}
     });
 

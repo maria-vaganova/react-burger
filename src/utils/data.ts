@@ -24,6 +24,11 @@ export const EMPTY_CART_CONTEXT: CartContextType = {
     }
 };
 
+export const DraggableTypes = {
+    SORTED_ITEM: "card",
+    ADDED_ITEM: "ingredient"
+}
+
 export const BACKUP_DATA_LIST = [
     {
         "_id": "60666c42cc7b410027a1a9b1",

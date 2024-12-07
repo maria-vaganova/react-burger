@@ -7,23 +7,23 @@ export function addIngredientToCart(
     id: string,
     type: string) {
     if (id !== "0") {
-        let innerIndex: number = 0;
+        let displayOrder: number = 0;
         if (cart === undefined) {
-            setCart([{id: id, type: type, index: innerIndex}]);
+            setCart([{id: id, type: type, displayOrder: displayOrder}]);
         } else {
             let newCart = [...cart];
-            const index = newCart.pop()?.index;
-            innerIndex = index !== undefined ? index + 1 : 0;
-            if (innerIndex === 0 && type !== BUN_TYPE) innerIndex = 1;
+            const dOrder = newCart.pop()?.displayOrder;
+            displayOrder = dOrder !== undefined ? dOrder + 1 : 0;
+            if (displayOrder === 0 && type !== BUN_TYPE) displayOrder = 1;
             newCart = [...cart];
             if (type === BUN_TYPE) {
                 const bun = cart.find(elem => elem.type === BUN_TYPE);
                 if (bun !== undefined) {
                     newCart = newCart.filter(elem => elem.id !== bun.id);
                 }
-                innerIndex = 0;
+                displayOrder = 0;
             }
-            newCart.push({id: id, type: type, index: innerIndex});
+            newCart.push({id: id, type: type, displayOrder: displayOrder});
             setCart(newCart);
         }
     }
@@ -32,17 +32,17 @@ export function addIngredientToCart(
 export function discardIngredientFromCart(
     cart: CartItem[] | undefined,
     setCart: Function,
-    innerIndex: number) {
-    if (cart !== undefined && innerIndex) {
+    displayOrder: number) {
+    if (cart !== undefined && displayOrder) {
         let index = -1;
         let newCart = cart;
-        index = cart.findIndex(elem => elem.index === innerIndex);
+        index = cart.findIndex(elem => elem.displayOrder === displayOrder);
         if (index !== -1) {
-            newCart = cart.filter(elem => elem.index !== innerIndex);
+            newCart = cart.filter(elem => elem.displayOrder !== displayOrder);
         }
         newCart.map(elem => {
-            if (elem.index && elem.index > innerIndex) {
-                return {id: elem.id, type: elem.type, index: elem.index - 1} as CartItem;
+            if (elem.displayOrder && elem.displayOrder > displayOrder) {
+                return {id: elem.id, type: elem.type, displayOrder: elem.displayOrder - 1} as CartItem;
             } else return elem;
         })
         setCart(newCart);

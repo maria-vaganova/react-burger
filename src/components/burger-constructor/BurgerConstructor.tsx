@@ -12,7 +12,7 @@ import {
 } from "../../utils/util";
 import {Ingredient, TotalPriceState, TotalPriceAction, OrderInfo, CartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
-import {BUN_TYPE, EMPTY_ORDER_INFO} from "../../utils/data";
+import {BUN_TYPE, DraggableTypes, EMPTY_ORDER_INFO} from "../../utils/data";
 import {CartContext, OrderNumberContext} from "../../services/appContext";
 import {useDrop} from "react-dnd";
 import IndexedElement from "../indexed-element/IndexedElement";
@@ -28,7 +28,7 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
     const cartTotal = useContext(CartContext);
 
     const [, dropTarget] = useDrop({
-        accept: "ingredient",
+        accept: DraggableTypes.ADDED_ITEM,
         drop(ingredient: CartItem) {
             handleDrop(ingredient.id);
         },
@@ -108,9 +108,11 @@ function BurgerConstructor({data}: BurgerConstructorProps) {
         (elem: CartItem, index: number) => {
             if (elem.type !== BUN_TYPE) {
                 return (
-                    <IndexedElement key={index} id={elem.id} ingredient={fulfilIngredient(elem.id, data)}
-                                    index={elem.index}
-                                    moveElement={moveElement}/>
+                    <IndexedElement key={index}
+                                    ingredient={fulfilIngredient(elem.id, data)}
+                                    displayOrder={elem.displayOrder}
+                                    moveElement={moveElement}
+                    />
                 )
             }
         }, [data, moveElement],
