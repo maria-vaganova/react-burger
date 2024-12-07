@@ -1,4 +1,4 @@
-import {useMemo, useState, useReducer, useEffect, useContext, useCallback} from 'react';
+import {useMemo, useState, useReducer, useEffect, useCallback} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -13,31 +13,31 @@ import {
     TotalPriceState,
     TotalPriceAction,
     CartItem,
-    OrderState,
-    DataState,
-    CartState
 } from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, DraggableTypes} from "../../utils/data";
 import {useDrop} from "react-dnd";
 import IndexedElement from "../indexed-element/IndexedElement";
 import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
-import {useAppSelector, useCartDispatch, useOrderDispatch} from '../../services/store';
+import {
+    cartSelector,
+    dataInfoSelector,
+    orderStateToProps,
+    useAppSelector,
+    useCartDispatch,
+    useOrderDispatch
+} from '../../services/store';
 import {addIngredientToCart, moveItems} from "../../services/actions/cartActions";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuid_v4} from 'uuid';
 
 function BurgerConstructor() {
-    const {data} = useAppSelector((state: { data: DataState }) => ({
-        data: state.data.dataInfo
-    }))
+    const {data} = useAppSelector(dataInfoSelector);
     const initialState: TotalPriceState = {count: 0};
-    const {cart} = useAppSelector((state: { cart: CartState }) => ({
-        cart: state.cart.cartItems
-    }))
+    const {cart} = useAppSelector(cartSelector);
 
     const dispatchCart = useCartDispatch();
     const addIngredient = (ingredientId: string) => {
-        dispatchCart(addIngredientToCart(cart, ingredientId, getIngredientTypeById(ingredientId, data), uuidv4()));
+        dispatchCart(addIngredientToCart(cart, ingredientId, getIngredientTypeById(ingredientId, data), uuid_v4()));
         console.log("addIngredientToCart", cart, ingredientId);
     }
     const moveItem = (fromIndex: number, toIndex: number) => {
@@ -45,11 +45,7 @@ function BurgerConstructor() {
     }
 
     const dispatch = useOrderDispatch();
-    const {orderRequest, orderFailed, orderInfo} = useAppSelector((state: { order: OrderState }) => ({
-        orderRequest: state.order.orderRequest,
-        orderFailed: state.order.orderFailed,
-        orderInfo: state.order.orderInfo
-    }))
+    const {orderRequest, orderFailed, orderInfo} = useAppSelector(orderStateToProps);
     const handleOrder = () => {
         const ingredients = getDataIds(restoreIngredientListFromCart(cart, true, data));
         const getOrderNumberThunk = getOrderNumber(ingredients);

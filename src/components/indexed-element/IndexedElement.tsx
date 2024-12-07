@@ -1,11 +1,9 @@
-import {CartState, Ingredient, IngredientDetailState} from "../../utils/types";
+import {Ingredient} from "../../utils/types";
 import constructor from "../burger-constructor/BurgerConstructor.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag, useDrop} from "react-dnd";
 import {DraggableTypes} from "../../utils/data";
-import {useAppSelector, useCartDispatch, useDetailDispatch} from "../../services/store";
-import {fulfilIngredientDetails} from "../../services/actions/detailActions";
-import {fulfilIngredient} from "../../utils/util";
+import {cartSelector, useAppSelector, useCartDispatch} from "../../services/store";
 import {discardIngredientFromCart} from "../../services/actions/cartActions";
 
 export interface IndexedElementProps {
@@ -15,9 +13,7 @@ export interface IndexedElementProps {
 }
 
 function IndexedElement({ingredient, displayOrder, moveElement}: IndexedElementProps) {
-    const {cart} = useAppSelector((state: { cart: CartState }) => ({
-        cart: state.cart.cartItems
-    }))
+    const {cart} = useAppSelector(cartSelector);
 
     const dispatch = useCartDispatch();
     const discardIngredient = (displayOrder: number) => {

@@ -1,11 +1,11 @@
-import {useContext, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {fulfilIngredient, getIngredientCountFromCartById} from "../../utils/util";
-import {CartState, DataState, Ingredient} from "../../utils/types";
+import {Ingredient} from "../../utils/types";
 import {useDrag} from "react-dnd";
 import {DraggableTypes} from "../../utils/data";
-import {useAppSelector} from "../../services/store";
+import {cartSelector, dataInfoSelector, useAppSelector} from "../../services/store";
 
 export interface IngredientCardProps {
     id: string,
@@ -13,15 +13,11 @@ export interface IngredientCardProps {
 }
 
 function IngredientCard({id, onClick}: IngredientCardProps) {
-    const {data} = useAppSelector((state: { data: DataState }) => ({
-        data: state.data.dataInfo
-    }));
+    const {data} = useAppSelector(dataInfoSelector);
 
     const [counter, setCounter] = useState(0);
     const ingredient: Ingredient = fulfilIngredient(id, data);
-    const {cart} = useAppSelector((state: { cart: CartState }) => ({
-        cart: state.cart.cartItems
-    }))
+    const {cart} = useAppSelector(cartSelector);
 
     const [, dragRef] = useDrag({
         type: DraggableTypes.ADDED_ITEM,
