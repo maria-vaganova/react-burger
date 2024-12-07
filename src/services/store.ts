@@ -1,7 +1,7 @@
 import {createStore, applyMiddleware, compose, StoreEnhancer, Dispatch} from 'redux';
 import {thunk, ThunkDispatch} from 'redux-thunk';
 import {rootReducer} from "./reducers/rootReducer";
-import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {OrderActions} from "./actions/orderActions";
 import {IngredientDetailActionTypes} from "./actions/detailActions";
 import {DataActions} from "./actions/dataActions";
@@ -18,7 +18,7 @@ export default store;
 type AppStore = typeof store;
 type RootState = ReturnType<AppStore['getState']>;
 
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppSelector = useSelector.withTypes<RootState>();
 
 const selectOrderRequest = (state: RootState) => state.order.orderRequest;
 const selectOrderFailed = (state: RootState) => state.order.orderFailed;
@@ -31,11 +31,11 @@ export const orderStateToProps = createSelector(
         orderInfo
     })
 );
-export const useOrderDispatch: () => ThunkDispatch<RootState, unknown, OrderActions> = useDispatch;
+export const useOrderDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, OrderActions>>();
 
 const selectIngredientDetail = (state: RootState) => state.ingredientDetails.ingredientDetails;
 export const detailsSelector = createSelector(selectIngredientDetail, (selectedIngredient) => ({selectedIngredient}));
-export const useDetailDispatch: () => Dispatch<IngredientDetailActionTypes> = useDispatch;
+export const useDetailDispatch = useDispatch.withTypes<Dispatch<IngredientDetailActionTypes>>();
 
 const selectDataRequest = (state: RootState) => state.data.dataRequest;
 const selectDataFailed = (state: RootState) => state.data.dataFailed;
@@ -48,8 +48,8 @@ export const dataStateToProps = createSelector(
 );
 const selectDataInfo = (state: RootState) => state.data.dataInfo;
 export const dataInfoSelector = createSelector(selectDataInfo, (data) => ({data}));
-export const useDataDispatch: () => ThunkDispatch<RootState, unknown, DataActions> = useDispatch;
+export const useDataDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, DataActions>>();
 
 const selectCart = (state: RootState) => state.cart.cartItems;
 export const cartSelector = createSelector(selectCart, (cart) => ({cart}));
-export const useCartDispatch: () => Dispatch<CartActionTypes> = useDispatch;
+export const useCartDispatch = useDispatch.withTypes<Dispatch<CartActionTypes>>();
