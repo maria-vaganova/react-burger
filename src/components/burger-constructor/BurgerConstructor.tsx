@@ -130,19 +130,17 @@ function BurgerConstructor() {
         moveItem(fromIndex, toIndex);
     }, [cart])
 
-    const renderCard = useCallback(
-        (elem: CartItem, index: number) => {
-            if (elem.type !== BUN_TYPE) {
-                return (
-                    <IndexedElement key={index}
-                                    ingredient={fulfilIngredient(elem.id, data)}
-                                    displayOrder={elem.displayOrder}
-                                    moveElement={moveElement}
-                    />
-                )
-            }
-        }, [data, moveElement],
-    );
+    const renderCard = (elem: CartItem, index: number) => {
+        if (elem.type !== BUN_TYPE) {
+            return (
+                <IndexedElement key={index}
+                                ingredient={fulfilIngredient(elem.id, data)}
+                                displayOrder={elem.displayOrder}
+                                moveElement={moveElement}
+                />
+            )
+        }
+    }
 
     return (
         <div style={{width: '600px'}}>
