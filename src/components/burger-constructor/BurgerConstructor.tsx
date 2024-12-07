@@ -1,4 +1,4 @@
-import {useMemo, useState, useEffect, useCallback} from 'react';
+import {useMemo, useState, useEffect} from 'react';
 import constructor from './BurgerConstructor.module.css';
 import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -12,7 +12,6 @@ import {Ingredient, CartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, DraggableTypes} from "../../utils/data";
 import {useDrop} from "react-dnd";
-import IndexedElement from "../indexed-element/IndexedElement";
 import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
 import {
     cartSelector,
@@ -22,9 +21,10 @@ import {
     useCartDispatch,
     useOrderDispatch, useTotalPriceDispatch
 } from '../../services/store';
-import {addIngredientToCart, moveItems} from "../../services/actions/cartActions";
+import {addIngredientToCart} from "../../services/actions/cartActions";
 import {v4 as uuid_v4} from 'uuid';
 import {increment, resetPrice} from "../../services/actions/totalPriceActions";
+import IndexedContainer from "../indexed-container/IndexedContainer";
 
 function BurgerConstructor() {
     const {data} = useAppSelector(dataInfoSelector);
@@ -42,9 +42,6 @@ function BurgerConstructor() {
     const dispatchCart = useCartDispatch();
     const addIngredient = (ingredientId: string) => {
         dispatchCart(addIngredientToCart(ingredientId, getIngredientTypeById(ingredientId, data), uuid_v4()));
-    }
-    const moveItem = (fromIndex: number, toIndex: number) => {
-        dispatchCart(moveItems(fromIndex, toIndex));
     }
 
     const dispatchOrder = useOrderDispatch();
@@ -111,22 +108,6 @@ function BurgerConstructor() {
         }
     }
 
-    const moveElement = useCallback((fromIndex: number, toIndex: number) => {
-        moveItem(fromIndex, toIndex);
-    }, [cart])
-
-    const renderCard = (elem: CartItem) => {
-        if (elem.type !== BUN_TYPE) {
-            return (
-                <IndexedElement key={elem.key}
-                                ingredient={fulfilIngredient(elem.id, data)}
-                                displayOrder={elem.displayOrder}
-                                moveElement={moveElement}
-                />
-            )
-        }
-    }
-
     return (
         <div style={{width: '600px'}}>
             {isOrderDetailsOpen && (
@@ -143,7 +124,7 @@ function BurgerConstructor() {
                             thumbnail={bun.image}
                             extraClass={constructor.bunItem}
                         />)}
-                        {cart.map((elem) => renderCard(elem))}
+                        <IndexedContainer />
                         {bun && (<ConstructorElement
                             type="bottom"
                             isLocked={true}
