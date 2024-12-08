@@ -1,32 +1,37 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import app from './App.module.css';
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
 import BurgerConstructor from "../burger-constructor/BurgerConstructor";
-import {Ingredient} from "../../utils/types";
-import {fetchData} from '../../utils/util';
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {dataStateToProps, useAppSelector, useDataDispatch} from "../../services/store";
+import {getData} from "../../services/actions/dataActions";
+
 
 function App() {
-    const [cart, setCart] = useState<[{ id: string, type: string, count: number }]>();
-    const [data, setData] = useState<Ingredient[]>([]);
+    const dispatch = useDataDispatch();
+    const {dataRequest, dataFailed} = useAppSelector(dataStateToProps);
 
     useEffect(() => {
-        fetchData()
-            .then((data) => {
-                setData(data);
-            })
-            .catch(error => {
-                alert(error);
-            });
+        dispatch(getData());
+
+        if (dataFailed) {
+            return alert(('Ошибка сети'));
+        } else if (dataRequest) {
+            return alert(('Загрузка...'));
+        }
     }, []);
 
     return (
         <div>
             <AppHeader/>
-            <div className={app.constructorContainer}>
-                <BurgerIngredients data={data} cart={cart} setCart={setCart}/>
-                <BurgerConstructor data={data} cart={cart} setCart={setCart}/>
-            </div>
+            <DndProvider backend={HTML5Backend}>
+                <div className={app.constructorContainer}>
+                    <BurgerIngredients/>
+                    <BurgerConstructor/>
+                </div>
+            </DndProvider>
         </div>
     );
 }

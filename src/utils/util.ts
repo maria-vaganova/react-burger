@@ -1,76 +1,31 @@
-import {Ingredient} from "./types";
-import {BUN_TYPE, API_URL} from "./data";
+import {CartItem, Ingredient} from "./types";
+import {BUN_TYPE} from "./data";
 
-export function addIngredientToCart(
-    cart: [{
-        id: string,
-        type: string,
-        count: number
-    }] | undefined,
-    setCart: Function,
-    id: string,
-    type: string) {
-    if (id !== "0") {
-        if (cart === undefined) {
-            setCart([{id: id, type: type, count: 1}]);
-        } else {
-            let newCart = [...cart];
-            if (type === BUN_TYPE) {
-                const bun = cart.find(elem => elem.type === BUN_TYPE);
-                if (bun !== undefined) {
-                    newCart = newCart.filter(elem => elem.id !== bun.id);
-                    setCart(newCart);
-                }
-            }
-            const index = newCart.findIndex(elem => elem.id === id);
-            if (index === -1) {
-                setCart([...newCart, {id: id, type: type, count: 1}]);
-            } else {
-                newCart[index].count += 1;
-                setCart(newCart);
-            }
-        }
+export function restoreIngredientListFromCart(
+    cart: CartItem[] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
+    if (cart) {
+        return (isBunIncluded ? cart : cart.filter(elem => elem.type !== BUN_TYPE))
+            .flatMap(elem => {
+                return fulfilIngredient(elem.id, data);
+            });
     }
+    return [];
 }
 
-export function discardIngredientFromCart(
-    cart: [{
-        id: string,
-        type: string,
-        count: number
-    }] | undefined,
-    setCart: Function,
-    id: string) {
-    if (cart !== undefined && id !== "0") {
-        const index = cart.findIndex(elem => elem.id === id);
-        if (index !== -1) {
-            const newCart = [...cart];
-            newCart[index].count -= 1;
-            if (newCart[index].count === 0) {
-                setCart(cart.filter(elem => elem.id !== id));
-            } else {
-                setCart(newCart);
-            }
+export function getIngredientCountFromCartById(cart: CartItem[] | undefined, id: string): number {
+    let count = 0;
+    cart?.forEach(elem => {
+        if (elem.id === id) {
+            count++;
         }
-    }
+    })
+    return count;
 }
 
-export function getBunFromCart(cart: [{
-    id: string,
-    type: string,
-    count: number
-}] | undefined, data: Ingredient[]): Ingredient | undefined {
+export function getBunFromCart(cart: CartItem[] | undefined, data: Ingredient[]): Ingredient | undefined {
     const bun = cart?.find(elem => elem.type === BUN_TYPE);
     if (bun === undefined) return undefined;
     return fulfilIngredient(bun.id, data);
-}
-
-export function getCartSum(cart: [{
-    id: string,
-    type: string,
-    count: number
-}] | undefined, data: Ingredient[]): number {
-    return cart ? cart.reduce((sum, elem) => sum + fulfilIngredient(elem.id, data).price * elem.count, 0) : 0;
 }
 
 export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
@@ -91,17 +46,18 @@ export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
     };
 }
 
-export function getDataIds(data: Ingredient[]): { id: string, type: string }[] {
+export function getDataIdsWithType(data: Ingredient[]): { id: string, type: string }[] {
     return data.map((elem) => ({
         id: elem._id,
         type: elem.type
     }));
 }
 
-export async function fetchData(): Promise<Ingredient[]> {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-        throw new Error('Ошибка сети');
-    }
-    return (await response.json()).data as Ingredient[];
+export function getDataIds(data: Ingredient[]): string[] {
+    return data.map((elem) => elem._id);
+}
+
+export function getIngredientTypeById(id: string, data: Ingredient[]): string {
+    const ingredient = data.find(elem => elem._id === id);
+    return ingredient ? ingredient.type : "";
 }

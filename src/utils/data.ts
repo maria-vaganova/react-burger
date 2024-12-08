@@ -1,9 +1,47 @@
+import {IngredientDetailInfo, OrderInfo} from "./types";
+
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
 export const MAIN_TYPE = "main";
 export const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
+export const ORDER_POST_URL = 'https://norma.nomoreparties.space/api/orders';
 
-export const backupDataList = [
+export const DraggableTypes = {
+    SORTED_ITEM: "card",
+    ADDED_ITEM: "ingredient"
+}
+
+export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
+export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
+export const GET_ORDER_NUMBER_SUCCESS = "GET_ORDER_NUMBER_SUCCESS";
+export const SHOW_INGREDIENT_DETAILS = "SHOW_INGREDIENT_DETAILS";
+export const CLEAR_INGREDIENT_DETAILS = "CLEAR_INGREDIENT_DETAILS";
+export const GET_DATA = "GET_DATA";
+export const GET_DATA_FAILED = "GET_DATA_FAILED";
+export const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
+export const ADD_INGREDIENT = "ADD_INGREDIENT";
+export const DISCARD_INGREDIENT = "DISCARD_INGREDIENT";
+export const MOVE_ITEMS = "MOVE_ITEMS";
+export const INCREMENT = "INCREMENT";
+export const DECREMENT = "DECREMENT";
+export const RESET = "RESET";
+
+export const EMPTY_ORDER_INFO: OrderInfo = {
+    name: "Ingredient ids must be provided",
+    order: {number: 0},
+    success: false
+};
+
+export const EMPTY_INGREDIENT_DETAILS: IngredientDetailInfo = {
+    image_large: "none",
+    name: "Ingredient must be provided",
+    calories: 0,
+    proteins: 0,
+    fat: 0,
+    carbohydrates: 0
+};
+
+export const BACKUP_DATA_LIST = [
     {
         "_id": "60666c42cc7b410027a1a9b1",
         "name": "Краторная булка N-200i",
@@ -46,4 +84,4 @@ export const backupDataList = [
         "image_large": "https://code.s3.yandex.net/react/code/sauce-02-large.png",
         "__v": 0
     }
-]
+];

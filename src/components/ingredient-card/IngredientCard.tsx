@@ -1,29 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {fulfilIngredient} from "../../utils/util";
+import {fulfilIngredient, getIngredientCountFromCartById} from "../../utils/util";
 import {Ingredient} from "../../utils/types";
+import {useDrag} from "react-dnd";
+import {DraggableTypes} from "../../utils/data";
+import {cartSelector, dataInfoSelector, useAppSelector} from "../../services/store";
 
 export interface IngredientCardProps {
     id: string,
-    cart: [{ id: string, type: string, count: number }] | undefined,
-    setCart: Function,
-    data: Ingredient[],
     onClick: () => void
 }
 
-function IngredientCard({id, cart, setCart, data, onClick}: IngredientCardProps) {
+function IngredientCard({id, onClick}: IngredientCardProps) {
+    const {data} = useAppSelector(dataInfoSelector);
 
     const [counter, setCounter] = useState(0);
     const ingredient: Ingredient = fulfilIngredient(id, data);
+    const {cart} = useAppSelector(cartSelector);
+
+    const [, dragRef] = useDrag({
+        type: DraggableTypes.ADDED_ITEM,
+        item: {id}
+    });
 
     useEffect(() => {
-        const index = cart?.findIndex(elem => elem.id === id);
-        if (cart === undefined || index === undefined || index === -1) {
-            setCounter(0);
-        } else {
-            setCounter(cart[index].count);
-        }
+        setCounter(getIngredientCountFromCartById(cart, id));
     }, [id, cart]);
 
     return (
@@ -32,7 +34,7 @@ function IngredientCard({id, cart, setCart, data, onClick}: IngredientCardProps)
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass={card.counter}/>
                 )}
-                <img className={"ml-4 mr-4"} src={ingredient.image} alt=""/>
+                <img ref={dragRef} className={"ml-4 mr-4"} src={ingredient.image} alt=""/>
                 <div className={card.priceContent}>
                     <p className={"text text_type_digits-default"}>{ingredient.price}</p>
                     <CurrencyIcon type="primary" className={"ml-1"}/>
