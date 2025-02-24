@@ -1,4 +1,4 @@
-import register from './Register.module.css';
+import register from '../Authorization.module.css';
 import {EmailInput, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
 
@@ -38,7 +38,7 @@ function Register() {
             <PasswordInput
                 onChange={onPasswordChange}
                 value={password}
-                name={'password'}
+                name={'Пароль'}
                 extraClass={"mb-6 mt-3"}
             />
             <Button htmlType="button" type="primary" size="medium" extraClass={""}>

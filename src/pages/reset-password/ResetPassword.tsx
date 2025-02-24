@@ -1,4 +1,4 @@
-import resetStyles from './ResetPassword.module.css';
+import resetStyles from '../Authorization.module.css';
 import {EmailInput, Button, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
 

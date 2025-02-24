@@ -1,4 +1,4 @@
-import login from './Login.module.css';
+import login from '../Authorization.module.css';
 import {EmailInput, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
 

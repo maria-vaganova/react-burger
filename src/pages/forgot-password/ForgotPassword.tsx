@@ -1,4 +1,4 @@
-import forgotStyles from './ForgotPassword.module.css';
+import forgotStyles from '../Authorization.module.css';
 import {EmailInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
 
