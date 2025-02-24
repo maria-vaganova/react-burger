@@ -14,6 +14,7 @@ import Login from "../../pages/login/Login";
 import Register from "../../pages/register/Register";
 import ForgotPassword from "../../pages/forgot-password/ForgotPassword";
 import ResetPassword from "../../pages/reset-password/ResetPassword";
+import Profile from "../../pages/profile/Profile";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/forgot-password" element={<ForgotPassword/>}/>
                         <Route path="/reset-password" element={<ResetPassword/>}/>
+                        <Route path="/profile" element={<Profile/>}/>
 
                         <Route path="*" element={<NotFound404/>}/>
                     </Routes>

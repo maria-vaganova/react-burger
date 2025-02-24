@@ -1,0 +1,29 @@
+.content {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 60px;
+    justify-content: center;
+    position: relative;
+    margin-top: 120px;
+}
+
+.centerItems {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.leftItems {
+    width: 400px;
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    left: 200px;
+}
+
+.leftItem {
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
