@@ -11,6 +11,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import IngredientDetailsWrapper from "../../pages/ingredient-details-wrapper/IngredientDetailsWrapper";
 import NotFound404 from "../../pages/not-found/NotFound404";
 import Login from "../../pages/login/Login";
+import Register from "../../pages/register/Register";
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
                         }/>
                         <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
                         <Route path="/login" element={<Login/>}/>
+                        <Route path="/register" element={<Register/>}/>
 
                         <Route path="*" element={<NotFound404/>}/>
                     </Routes>
