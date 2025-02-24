@@ -10,6 +10,7 @@ import {getData} from "../../services/actions/dataActions";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import IngredientDetailsWrapper from "../../pages/ingredient-details-wrapper/IngredientDetailsWrapper";
 import NotFound404 from "../../pages/not-found/NotFound404";
+import Login from "../../pages/login/Login";
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
                             </div>
                         }/>
                         <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
+                        <Route path="/login" element={<Login/>}/>
 
                         <Route path="*" element={<NotFound404/>}/>
                     </Routes>
