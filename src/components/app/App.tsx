@@ -12,6 +12,8 @@ import IngredientDetailsWrapper from "../../pages/ingredient-details-wrapper/Ing
 import NotFound404 from "../../pages/not-found/NotFound404";
 import Login from "../../pages/login/Login";
 import Register from "../../pages/register/Register";
+import ForgotPassword from "../../pages/forgot-password/ForgotPassword";
+import ResetPassword from "../../pages/reset-password/ResetPassword";
 
 
 function App() {
@@ -43,6 +45,8 @@ function App() {
                         <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Register/>}/>
+                        <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                        <Route path="/reset-password" element={<ResetPassword/>}/>
 
                         <Route path="*" element={<NotFound404/>}/>
                     </Routes>
