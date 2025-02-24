@@ -7,6 +7,9 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {dataStateToProps, useAppSelector, useDataDispatch} from "../../services/store";
 import {getData} from "../../services/actions/dataActions";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import IngredientDetailsWrapper from "../../pages/ingredient-details-wrapper/IngredientDetailsWrapper";
+import NotFound404 from "../../pages/not-found/NotFound404";
 
 
 function App() {
@@ -24,15 +27,24 @@ function App() {
     }, []);
 
     return (
-        <div>
-            <AppHeader/>
-            <DndProvider backend={HTML5Backend}>
-                <div className={app.constructorContainer}>
-                    <BurgerIngredients/>
-                    <BurgerConstructor/>
-                </div>
-            </DndProvider>
-        </div>
+        <BrowserRouter>
+            <div>
+                <AppHeader/>
+                <DndProvider backend={HTML5Backend}>
+                    <Routes>
+                        <Route path="/" element={
+                            <div className={app.constructorContainer}>
+                                <BurgerIngredients/>
+                                <BurgerConstructor/>
+                            </div>
+                        }/>
+                        <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
+
+                        <Route path="*" element={<NotFound404/>}/>
+                    </Routes>
+                </DndProvider>
+            </div>
+        </BrowserRouter>
     );
 }
 
