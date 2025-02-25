@@ -1,7 +1,7 @@
 import resetStyles from '../Authorization.module.css';
 import {EmailInput, Button, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 
 function ResetPassword() {
     const [password, setPassword] = useState<string>('')
@@ -12,6 +12,12 @@ function ResetPassword() {
     const onCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
         setCode(e.target.value)
     }
+
+    const visitedForgotPassword = sessionStorage.getItem('forgotPasswordVisited') === 'true';
+    if (!visitedForgotPassword) {
+        return <Navigate to="/forgot-password" replace/>;
+    }
+    // Добавить set false после восстановления
 
     return (
         <div className={resetStyles.content}>

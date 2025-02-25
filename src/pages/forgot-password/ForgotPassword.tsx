@@ -9,6 +9,9 @@ function ForgotPassword() {
         setEmail(e.target.value)
     }
 
+    // Добавить проверку на отправку емейла
+    sessionStorage.setItem('forgotPasswordVisited', 'true');
+
     return (
         <div className={forgotStyles.content}>
             <p className="text text_type_main-medium">
