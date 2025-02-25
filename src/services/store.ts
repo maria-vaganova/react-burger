@@ -9,6 +9,7 @@ import {CartActionTypes} from "./actions/cartActions";
 import {createSelector} from "@reduxjs/toolkit";
 import totalPriceReducer from "./reducers/totalPriceReducer";
 import {TotalPriceActionTypes} from "./actions/totalPriceActions";
+import {RegisterActions} from "./actions/registerActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -21,6 +22,19 @@ type AppStore = typeof store;
 type RootState = ReturnType<AppStore['getState']>;
 
 export const useAppSelector = useSelector.withTypes<RootState>();
+
+const selectRegisterRequest = (state: RootState) => state.register.registerRequest;
+const selectRegisterFailed = (state: RootState) => state.register.registerFailed;
+const selectRegisterInfo = (state: RootState) => state.register.registerInfo;
+export const registerStateToProps = createSelector(
+    [selectRegisterRequest, selectRegisterFailed, selectRegisterInfo],
+    (registerRequest, registerFailed, registerInfo) => ({
+        registerRequest,
+        registerFailed,
+        registerInfo
+    })
+);
+export const useRegisterDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, RegisterActions>>();
 
 const selectOrderRequest = (state: RootState) => state.order.orderRequest;
 const selectOrderFailed = (state: RootState) => state.order.orderFailed;

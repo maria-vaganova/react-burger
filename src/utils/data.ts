@@ -1,16 +1,24 @@
-import {IngredientDetailInfo, OrderInfo} from "./types";
+import {DeniedInfo, IngredientDetailInfo, OrderInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
 export const MAIN_TYPE = "main";
+
 export const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 export const ORDER_POST_URL = 'https://norma.nomoreparties.space/api/orders';
+export const LOGIN_URL = 'https://norma.nomoreparties.space/api/auth/login';
+export const LOGOUT_URL = 'https://norma.nomoreparties.space/api/auth/logout';
+export const REGISTER_URL = 'https://norma.nomoreparties.space/api/auth/register';
+export const TOKEN_URL = 'https://norma.nomoreparties.space/api/auth/token';
 
 export const DraggableTypes = {
     SORTED_ITEM: "card",
     ADDED_ITEM: "ingredient"
 }
 
+export const POST_REGISTER = "POST_REGISTER";
+export const POST_REGISTER_FAILED = "POST_REGISTER_FAILED";
+export const POST_REGISTER_SUCCESS = "POST_REGISTER_SUCCESS";
 export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
 export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
 export const GET_ORDER_NUMBER_SUCCESS = "GET_ORDER_NUMBER_SUCCESS";
@@ -25,6 +33,11 @@ export const MOVE_ITEMS = "MOVE_ITEMS";
 export const INCREMENT = "INCREMENT";
 export const DECREMENT = "DECREMENT";
 export const RESET = "RESET";
+
+export const EMPTY_REGISTER_INFO: DeniedInfo = {
+    message: "Empty user information",
+    success: false
+};
 
 export const EMPTY_ORDER_INFO: OrderInfo = {
     name: "Ingredient ids must be provided",

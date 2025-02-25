@@ -45,6 +45,35 @@ export interface OrderState {
     orderInfo: OrderInfo;
 }
 
+export interface RegisterState {
+    registerRequest: boolean;
+    registerFailed: boolean;
+    registerInfo: RegisterInfo | DeniedInfo;
+}
+
+export interface DeniedInfo {
+    message: string;
+    success: boolean;
+}
+
+export interface RegisterInfo {
+    success: string;
+    accessToken: string;
+    refreshToken: string;
+    user: UserInfo;
+}
+
+export interface UserInfo {
+    email: string;
+    name: string;
+}
+
+export interface UserAutorization {
+    email: string;
+    password: string;
+    name: string;
+}
+
 export interface DataState {
     dataRequest: boolean;
     dataFailed: boolean;
