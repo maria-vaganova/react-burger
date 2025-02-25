@@ -1,6 +1,7 @@
 import profile from './Profile.module.css';
-import {EmailInput, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
+import {EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
+import {NavLink} from "react-router-dom";
 
 function Profile() {
     const [name, setName] = useState<string>('')
@@ -16,22 +17,25 @@ function Profile() {
         setPassword(e.target.value)
     }
 
+    const customStyle = "text text_type_main-medium " + profile.leftItem;
 
     return (
         <div className={profile.content}>
             <div className={profile.leftItems}>
-                <a className={"text text_type_main-large " + profile.leftItem}>
+                <NavLink to={"/profile"}
+                         className={({isActive}) => customStyle + (isActive ? " text_color_primary" : " text_color_inactive")}>
                     Профиль
-                </a>
-                <a className={"text text_type_main-large text_color_inactive " + profile.leftItem}>
+                </NavLink>
+                <NavLink to={"/profile/orders"}
+                         className={({isActive}) => customStyle + (isActive ? " text_color_primary" : " text_color_inactive")}>
                     История заказов
-                </a>
-                <a className={"text text_type_main-large text_color_inactive " + profile.leftItem}>
+                </NavLink>
+                <a className={"text text_type_main-medium text_color_inactive " + profile.leftItem}>
                     Выход
                 </a>
-                <a className={"text text_type_main-default text_color_inactive mt-20"}>
+                <p className={"text text_type_main-default text_color_inactive mt-20"}>
                     В этом разделе вы можете изменить свои персональные данные
-                </a>
+                </p>
             </div>
             <div className={profile.centerItems}>
                 <EmailInput

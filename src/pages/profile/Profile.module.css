@@ -8,6 +8,7 @@
 }
 
 .centerItems {
+    width: 480px;
     position: static;
     display: flex;
     flex-direction: column;
@@ -15,15 +16,16 @@
 }
 
 .leftItems {
-    width: 400px;
+    width: 320px;
     display: flex;
     position: absolute;
     flex-direction: column;
-    left: 200px;
+    right: calc(50% + 240px + 60px);
 }
 
 .leftItem {
     height: 64px;
     display: flex;
     align-items: center;
+    text-decoration: none;
 }
