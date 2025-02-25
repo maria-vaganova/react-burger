@@ -1,14 +1,14 @@
 import register from '../Authorization.module.css';
 import {EmailInput, PasswordInput, Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useEffect, useState} from "react";
-import {Form, NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {
     registerStateToProps,
     useAppSelector,
     useRegisterDispatch
 } from "../../services/store";
 import {getRegister} from "../../services/actions/registerActions";
-import {UserAutorization, UserInfo} from "../../utils/types";
+import {UserAuthorization} from "../../utils/types";
 import {EMPTY_REGISTER_INFO} from "../../utils/data";
 
 function Register() {
@@ -28,7 +28,7 @@ function Register() {
     const dispatchRegister = useRegisterDispatch();
     const {registerRequest, registerFailed, registerInfo} = useAppSelector(registerStateToProps);
     const handleRegister = () => {
-        const user: UserAutorization = {email: email, password: password, name: name};
+        const user: UserAuthorization = {email: email, password: password, name: name};
         const getRegisterThunk = getRegister(user);
         dispatchRegister(getRegisterThunk);
     };

@@ -68,7 +68,7 @@ export interface UserInfo {
     name: string;
 }
 
-export interface UserAutorization {
+export interface UserAuthorization {
     email: string;
     password: string;
     name: string;

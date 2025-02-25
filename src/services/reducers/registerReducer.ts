@@ -1,3 +1,4 @@
+import {Reducer} from "redux";
 import {DeniedInfo, RegisterState} from "../../utils/types";
 import {
     EMPTY_REGISTER_INFO,
@@ -5,7 +6,6 @@ import {
     POST_REGISTER_SUCCESS,
     POST_REGISTER
 } from "../../utils/data";
-import {Reducer} from "redux";
 
 const initialState: RegisterState = {
     registerRequest: false,

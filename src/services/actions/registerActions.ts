@@ -1,11 +1,11 @@
+import {Dispatch} from "redux";
 import {
     POST_REGISTER_FAILED,
     POST_REGISTER_SUCCESS,
     POST_REGISTER,
     REGISTER_URL
 } from "../../utils/data";
-import {DeniedInfo, RegisterInfo, UserAutorization} from "../../utils/types";
-import {Dispatch} from "redux";
+import {DeniedInfo, RegisterInfo, UserAuthorization} from "../../utils/types";
 
 export interface PostRegisterAction {
     type: typeof POST_REGISTER;
@@ -25,7 +25,7 @@ export type RegisterActions =
     | PostRegisterSuccessAction
     | PostRegisterFailedAction;
 
-export function getRegister(newUser: UserAutorization) {
+export function getRegister(newUser: UserAuthorization) {
     return async function getRegisterThunk(dispatch: Dispatch<RegisterActions>) {
         dispatch({
             type: POST_REGISTER
