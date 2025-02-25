@@ -1,6 +1,7 @@
 import register from '../Authorization.module.css';
 import {EmailInput, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
+import {NavLink} from "react-router-dom";
 
 function Register() {
     const [name, setName] = useState<string>('')
@@ -48,9 +49,10 @@ function Register() {
                 <a className={"text text_type_main-default text_color_inactive mr-2"}>
                     Уже зарегистрированы?
                 </a>
-                <a className={"text text_type_main-default text_color_accent"}>
+                <NavLink to={"/login"}
+                         className={"text text_type_main-default text_color_accent " + register.navLink}>
                     Войти
-                </a>
+                </NavLink>
             </div>
         </div>
     );

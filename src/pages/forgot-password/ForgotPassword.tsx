@@ -1,6 +1,7 @@
 import forgotStyles from '../Authorization.module.css';
 import {EmailInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
+import {NavLink} from "react-router-dom";
 
 function ForgotPassword() {
     const [email, setEmail] = useState<string>('')
@@ -18,7 +19,7 @@ function ForgotPassword() {
                 value={email}
                 placeholder={"Укажите e-mail"}
                 isIcon={false}
-                extraClass={"mb-3 mt-3"}
+                extraClass={"mb-6 mt-6"}
             />
             <Button htmlType="button" type="primary" size="medium" extraClass={""}>
                 Восстановить
@@ -27,9 +28,10 @@ function ForgotPassword() {
                 <a className={"text text_type_main-default text_color_inactive mr-2"}>
                     Вспомнили пароль?
                 </a>
-                <a className={"text text_type_main-default text_color_accent"}>
+                <NavLink to={"/login"}
+                         className={"text text_type_main-default text_color_accent " + forgotStyles.navLink}>
                     Войти
-                </a>
+                </NavLink>
             </div>
         </div>
     );

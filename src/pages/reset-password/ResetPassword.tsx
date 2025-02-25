@@ -1,6 +1,7 @@
 import resetStyles from '../Authorization.module.css';
 import {EmailInput, Button, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
+import {NavLink} from "react-router-dom";
 
 function ResetPassword() {
     const [password, setPassword] = useState<string>('')
@@ -21,14 +22,14 @@ function ResetPassword() {
                 onChange={onPasswordChange}
                 value={password}
                 name={'Введите новый пароль'}
-                extraClass={"mb-6 mt-3"}
+                extraClass={"mb-3 mt-6"}
             />
             <EmailInput
                 onChange={onCodeChange}
                 value={code}
                 placeholder={"Введите код из письма"}
                 isIcon={false}
-                extraClass={"mb-3 mt-3"}
+                extraClass={"mb-6 mt-3"}
             />
             <Button htmlType="button" type="primary" size="medium" extraClass={""}>
                 Сохранить
@@ -37,9 +38,10 @@ function ResetPassword() {
                 <a className={"text text_type_main-default text_color_inactive mr-2"}>
                     Вспомнили пароль?
                 </a>
-                <a className={"text text_type_main-default text_color_accent"}>
+                <NavLink to={"/login"}
+                         className={"text text_type_main-default text_color_accent " + resetStyles.navLink}>
                     Войти
-                </a>
+                </NavLink>
             </div>
         </div>
     );

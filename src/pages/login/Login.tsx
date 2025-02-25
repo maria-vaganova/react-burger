@@ -1,6 +1,7 @@
 import login from '../Authorization.module.css';
 import {EmailInput, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useState} from "react";
+import {NavLink} from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState<string>('')
@@ -37,17 +38,19 @@ function Login() {
                 <a className={"text text_type_main-default text_color_inactive mr-2"}>
                     Вы - новый пользователь?
                 </a>
-                <a className={"text text_type_main-default text_color_accent"}>
+                <NavLink to={"/register"}
+                         className={"text text_type_main-default text_color_accent " + login.navLink}>
                     Зарегистрироваться
-                </a>
+                </NavLink>
             </div>
             <div className={"mt-4"}>
                 <a className={"text text_type_main-default text_color_inactive mr-2"}>
                     Забыли пароль?
                 </a>
-                <a className={"text text_type_main-default text_color_accent"}>
+                <NavLink to={"/forgot-password"}
+                         className={"text text_type_main-default text_color_accent " + login.navLink}>
                     Восстановить пароль
-                </a>
+                </NavLink>
             </div>
         </div>
     );
