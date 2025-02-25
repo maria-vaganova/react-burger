@@ -1,7 +1,7 @@
 import register from '../Authorization.module.css';
 import {EmailInput, PasswordInput, Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {ChangeEvent, useState} from "react";
-import {NavLink, useNavigate} from "react-router-dom";
+import {ChangeEvent, useEffect, useState} from "react";
+import {Form, NavLink, useNavigate} from "react-router-dom";
 import {
     registerStateToProps,
     useAppSelector,
@@ -35,52 +35,54 @@ function Register() {
 
     const navigate = useNavigate();
 
-    const registerUser = () => {
-        handleRegister();
+    useEffect(() => {
         if (registerFailed) {
             let message: string = "Ошибка сети";
-            if (registerInfo && 'message' in registerInfo) message += ": " + registerInfo.message;
-            return alert((message));
-        } else if (registerRequest) {
-            return alert(('Загрузка...'));
-        } else if (registerInfo === EMPTY_REGISTER_INFO) {
-            return alert(('Ошибка: ' + registerInfo.message));
-        } else {
-            console.log("registerInfo - ", registerInfo);
-            navigate('/login');
+            if (registerInfo && 'message' in registerInfo) {
+                message += ": " + registerInfo.message;
+            }
+            alert(message);
+        } else if (!registerRequest && registerInfo !== EMPTY_REGISTER_INFO) {
+            navigate('/');
         }
-    }
+    }, [registerFailed, registerRequest, registerInfo, navigate]);
 
     return (
         <div className={register.content}>
             <p className="text text_type_main-medium">
                 Регистрация
             </p>
-            <Input
-                type={'text'}
-                onChange={onNameChange}
-                value={name}
-                placeholder={"Имя"}
-                extraClass={"mb-3 mt-6"}
-                onPointerEnterCapture={undefined}
-                onPointerLeaveCapture={undefined}
-            />
-            <EmailInput
-                onChange={onEmailChange}
-                value={email}
-                placeholder={"E-mail"}
-                isIcon={false}
-                extraClass={"mb-3 mt-3"}
-            />
-            <PasswordInput
-                onChange={onPasswordChange}
-                value={password}
-                name={'Пароль'}
-                extraClass={"mb-6 mt-3"}
-            />
-            <Button htmlType="button" type="primary" size="medium" extraClass={""} onClick={registerUser}>
-                Зарегистрироваться
-            </Button>
+            <form className={register.form}
+                  onSubmit={(e) => {
+                      e.preventDefault();
+                      handleRegister();
+                  }}>
+                <Input
+                    type={'text'}
+                    onChange={onNameChange}
+                    value={name}
+                    placeholder={"Имя"}
+                    extraClass={"mb-3 mt-6"}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                />
+                <EmailInput
+                    onChange={onEmailChange}
+                    value={email}
+                    placeholder={"E-mail"}
+                    isIcon={false}
+                    extraClass={"mb-3 mt-3"}
+                />
+                <PasswordInput
+                    onChange={onPasswordChange}
+                    value={password}
+                    placeholder={"Пароль"}
+                    extraClass={"mb-6 mt-3"}
+                />
+                <Button htmlType="submit" type="primary" size="medium" extraClass={""}>
+                    Зарегистрироваться
+                </Button>
+            </form>
             <div className={"mt-20"}>
                 <a className={"text text_type_main-default text_color_inactive mr-2"}>
                     Уже зарегистрированы?

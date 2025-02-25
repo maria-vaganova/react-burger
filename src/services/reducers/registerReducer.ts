@@ -1,4 +1,4 @@
-import {RegisterState} from "../../utils/types";
+import {DeniedInfo, RegisterState} from "../../utils/types";
 import {
     EMPTY_REGISTER_INFO,
     POST_REGISTER_FAILED,
@@ -26,13 +26,14 @@ const registerReducer: Reducer<RegisterState, { type: string; registerInfo?: any
             return {
                 ...state,
                 registerInfo: action.registerInfo,
-                registerRequest: false
+                registerRequest: false,
+                registerFailed: false
             };
         }
         case POST_REGISTER_FAILED: {
             return {
                 ...state,
-                registerInfo: action.registerInfo,
+                registerInfo: action.registerInfo as DeniedInfo,
                 registerFailed: true,
                 registerRequest: false
             };

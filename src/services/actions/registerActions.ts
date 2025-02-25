@@ -49,7 +49,7 @@ export function getRegister(newUser: UserAutorization) {
 
             const registerInfo = await response.json() as RegisterInfo;
             dispatch({
-                type: POST_REGISTER_FAILED,
+                type: POST_REGISTER_SUCCESS,
                 registerInfo: registerInfo
             });
         } catch (err) {
