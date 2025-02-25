@@ -1,12 +1,12 @@
 import {createStore, applyMiddleware, compose, StoreEnhancer, Dispatch} from 'redux';
 import {thunk, ThunkDispatch} from 'redux-thunk';
-import {rootReducer} from "./reducers/rootReducer";
 import {useDispatch, useSelector} from "react-redux";
+import {createSelector} from "@reduxjs/toolkit";
+import {rootReducer} from "./reducers/rootReducer";
 import {OrderActions} from "./actions/orderActions";
 import {IngredientDetailActionTypes} from "./actions/detailActions";
 import {DataActions} from "./actions/dataActions";
 import {CartActionTypes} from "./actions/cartActions";
-import {createSelector} from "@reduxjs/toolkit";
 import totalPriceReducer from "./reducers/totalPriceReducer";
 import {TotalPriceActionTypes} from "./actions/totalPriceActions";
 import {RegisterActions} from "./actions/registerActions";

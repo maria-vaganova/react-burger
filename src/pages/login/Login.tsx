@@ -1,7 +1,7 @@
 import login from '../Authorization.module.css';
 import {EmailInput, PasswordInput, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useEffect, useState} from "react";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {
     loginStateToProps,
     useAppSelector,
@@ -30,6 +30,7 @@ function Login() {
     };
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (loginFailed) {
@@ -39,7 +40,7 @@ function Login() {
             }
             alert(message);
         } else if (!loginRequest && loginInfo !== EMPTY_AUTHORIZATION_INFO) {
-            navigate('/');
+            navigate(location.state?.from?.pathname || '/');
         }
     }, [loginFailed, loginRequest, loginInfo, navigate]);
 
