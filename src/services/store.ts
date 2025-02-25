@@ -10,6 +10,7 @@ import {createSelector} from "@reduxjs/toolkit";
 import totalPriceReducer from "./reducers/totalPriceReducer";
 import {TotalPriceActionTypes} from "./actions/totalPriceActions";
 import {RegisterActions} from "./actions/registerActions";
+import {LoginActions} from "./actions/loginActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -22,6 +23,19 @@ type AppStore = typeof store;
 type RootState = ReturnType<AppStore['getState']>;
 
 export const useAppSelector = useSelector.withTypes<RootState>();
+
+const selectLoginRequest = (state: RootState) => state.login.loginRequest;
+const selectLoginFailed = (state: RootState) => state.login.loginFailed;
+const selectLoginInfo = (state: RootState) => state.login.loginInfo;
+export const loginStateToProps = createSelector(
+    [selectLoginRequest, selectLoginFailed, selectLoginInfo],
+    (loginRequest, loginFailed, loginInfo) => ({
+        loginRequest,
+        loginFailed,
+        loginInfo
+    })
+);
+export const useLoginDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, LoginActions>>();
 
 const selectRegisterRequest = (state: RootState) => state.register.registerRequest;
 const selectRegisterFailed = (state: RootState) => state.register.registerFailed;

@@ -9,7 +9,7 @@ import {
 } from "../../services/store";
 import {getRegister} from "../../services/actions/registerActions";
 import {UserAuthorization} from "../../utils/types";
-import {EMPTY_REGISTER_INFO} from "../../utils/data";
+import {EMPTY_AUTHORIZATION_INFO} from "../../utils/data";
 
 function Register() {
     const [name, setName] = useState<string>('')
@@ -42,7 +42,7 @@ function Register() {
                 message += ": " + registerInfo.message;
             }
             alert(message);
-        } else if (!registerRequest && registerInfo !== EMPTY_REGISTER_INFO) {
+        } else if (!registerRequest && registerInfo !== EMPTY_AUTHORIZATION_INFO) {
             navigate('/');
         }
     }, [registerFailed, registerRequest, registerInfo, navigate]);
@@ -79,7 +79,7 @@ function Register() {
                     placeholder={"Пароль"}
                     extraClass={"mb-6 mt-3"}
                 />
-                <Button htmlType="submit" type="primary" size="medium" extraClass={""}>
+                <Button htmlType="submit" type="primary" size="medium">
                     Зарегистрироваться
                 </Button>
             </form>

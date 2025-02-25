@@ -5,6 +5,7 @@ import dataReducer from "./dataReducer";
 import cartReducer from "./cartReducer";
 import totalPriceReducer from "./totalPriceReducer";
 import registerReducer from "./registerReducer";
+import loginReducer from "./loginReducer";
 
 export const rootReducer = combineReducers({
     order: orderReducer,
@@ -12,5 +13,6 @@ export const rootReducer = combineReducers({
     data: dataReducer,
     cart: cartReducer,
     totalPrice: totalPriceReducer,
-    register: registerReducer
+    register: registerReducer,
+    login: loginReducer
 })

@@ -1,7 +1,7 @@
 import {Reducer} from "redux";
-import {DeniedInfo, RegisterState} from "../../utils/types";
+import {AuthorizationInfo, DeniedInfo, RegisterState} from "../../utils/types";
 import {
-    EMPTY_REGISTER_INFO,
+    EMPTY_AUTHORIZATION_INFO,
     POST_REGISTER_FAILED,
     POST_REGISTER_SUCCESS,
     POST_REGISTER
@@ -10,7 +10,7 @@ import {
 const initialState: RegisterState = {
     registerRequest: false,
     registerFailed: false,
-    registerInfo: EMPTY_REGISTER_INFO
+    registerInfo: EMPTY_AUTHORIZATION_INFO
 }
 
 const registerReducer: Reducer<RegisterState, { type: string; registerInfo?: any }> = (state = initialState, action) => {
@@ -25,7 +25,7 @@ const registerReducer: Reducer<RegisterState, { type: string; registerInfo?: any
         case POST_REGISTER_SUCCESS: {
             return {
                 ...state,
-                registerInfo: action.registerInfo,
+                registerInfo: action.registerInfo as AuthorizationInfo,
                 registerRequest: false,
                 registerFailed: false
             };

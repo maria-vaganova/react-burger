@@ -10,12 +10,16 @@ export const LOGIN_URL = 'https://norma.nomoreparties.space/api/auth/login';
 export const LOGOUT_URL = 'https://norma.nomoreparties.space/api/auth/logout';
 export const REGISTER_URL = 'https://norma.nomoreparties.space/api/auth/register';
 export const TOKEN_URL = 'https://norma.nomoreparties.space/api/auth/token';
+export const USER_URL = 'https://norma.nomoreparties.space/api/auth/user';
 
 export const DraggableTypes = {
     SORTED_ITEM: "card",
     ADDED_ITEM: "ingredient"
 }
 
+export const POST_LOGIN = "POST_LOGIN";
+export const POST_LOGIN_FAILED = "POST_LOGIN_FAILED";
+export const POST_LOGIN_SUCCESS = "POST_LOGIN_SUCCESS";
 export const POST_REGISTER = "POST_REGISTER";
 export const POST_REGISTER_FAILED = "POST_REGISTER_FAILED";
 export const POST_REGISTER_SUCCESS = "POST_REGISTER_SUCCESS";
@@ -34,7 +38,7 @@ export const INCREMENT = "INCREMENT";
 export const DECREMENT = "DECREMENT";
 export const RESET = "RESET";
 
-export const EMPTY_REGISTER_INFO: DeniedInfo = {
+export const EMPTY_AUTHORIZATION_INFO: DeniedInfo = {
     message: "Empty user information",
     success: false
 };
