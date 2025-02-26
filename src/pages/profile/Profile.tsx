@@ -1,91 +1,83 @@
 import profile from './Profile.module.css';
-import {EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useEffect, useState} from "react";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
-import {loginStateToProps, useAppSelector, useLogoutDispatch} from "../../services/store";
-import {getLogout} from "../../services/actions/loginActions";
-import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
+import LeftProfileLinks from "../../components/left-profile-links/LeftProfileLinks";
 
 function Profile() {
-    const [name, setName] = useState<string>('')
+    const previousName = "";
+    const previousEmail = "";
+    const previousPassword = "";
+
+    const [hasChanges, setChanges] = useState<boolean>(false);
+
+    const [name, setName] = useState<string>(previousName)
     const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value)
     }
-    const [email, setEmail] = useState<string>('')
+    const [email, setEmail] = useState<string>(previousEmail)
     const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
     }
-    const [password, setPassword] = useState<string>('')
+    const [password, setPassword] = useState<string>(previousPassword)
     const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
     }
 
-    const customStyle = "text text_type_main-medium " + profile.leftItem;
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const dispatchLogout = useLogoutDispatch();
-    const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
-    const handleLogout = () => {
-        const getLogoutThunk = getLogout();
-        dispatchLogout(getLogoutThunk);
-    };
-
     useEffect(() => {
-        if (loginFailed) {
-            let message: string = "Ошибка сети";
-            if (loginMessage !== EMPTY_SERVER_INFO) {
-                message += ": " + loginMessage.message;
-            }
-            alert(message);
-        } else if (!loginRequest && loginInfo === EMPTY_AUTHORIZATION_INFO && loginMessage.success) {
-            navigate('/login', {state: {from: location}});
-        }
-    }, [loginFailed, loginRequest, loginInfo, loginMessage, navigate]);
+        if (name === previousName && email === previousEmail && password === previousPassword)
+            setChanges(false);
+        else setChanges(true);
+    }, [name, email, password]);
+
+    const handleSubmit = () => {
+        // реализация будет позже
+    }
+
+    const handleReset = () => {
+        setName(previousName);
+        setEmail(previousEmail);
+        setPassword(previousPassword);
+        setChanges(false);
+    }
 
     return (
         <div className={profile.content}>
-            <div className={profile.leftItems}>
-                <NavLink to={"/profile"}
-                         className={({isActive}) => customStyle + (isActive ? " text_color_primary" : " text_color_inactive")}>
-                    Профиль
-                </NavLink>
-                <NavLink to={"/profile/orders"}
-                         className={({isActive}) => customStyle + (isActive ? " text_color_primary" : " text_color_inactive")}>
-                    История заказов
-                </NavLink>
-                <a className={"text text_type_main-medium text_color_inactive " + profile.leftItem} onClick={(e) => {
-                    e.preventDefault();
-                    handleLogout();
-                }}>
-                    Выход
-                </a>
-                <p className={"text text_type_main-default text_color_inactive mt-20"}>
-                    В этом разделе вы можете изменить свои персональные данные
-                </p>
-            </div>
-            <div className={profile.centerItems}>
-                <EmailInput
+            <LeftProfileLinks/>
+            <form className={profile.centerItems} onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+            }}>
+                <Input
+                    type={'text'}
                     onChange={onNameChange}
                     value={name}
-                    placeholder="Имя"
-                    isIcon={true}
-                    extraClass="mb-2"
+                    placeholder={"Имя"}
+                    extraClass={"mb-2"}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
                 />
                 <EmailInput
                     onChange={onEmailChange}
                     value={email}
-                    placeholder="Логин"
+                    placeholder={"Логин"}
                     isIcon={true}
                     extraClass="mb-2"
                 />
                 <PasswordInput
                     onChange={onPasswordChange}
                     value={password}
-                    name={'Пароль'}
+                    placeholder={"Пароль"}
                     icon="EditIcon"
                 />
-            </div>
+                <div className={hasChanges ? profile.justButtons : profile.hiddenButtons}>
+                    <Button htmlType="reset" type="secondary" size="medium" disabled={!hasChanges} onClick={handleReset}>
+                        Отмена
+                    </Button>
+                    <Button htmlType="submit" type="primary" size="medium" disabled={!hasChanges}>
+                        Сохранить
+                    </Button>
+                </div>
+            </form>
         </div>
     );
 }

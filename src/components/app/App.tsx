@@ -20,6 +20,7 @@ import ForgotPassword from "../../pages/forgot-password/ForgotPassword";
 import ResetPassword from "../../pages/reset-password/ResetPassword";
 import Profile from "../../pages/profile/Profile";
 import ProtectedRouteElement from "../protected-route/ProtectedRouteElement";
+import Orders from "../../pages/orders/Orders";
 
 
 function App() {
@@ -74,8 +75,16 @@ function App() {
                                 <Profile/>
                             </ProtectedRouteElement>}
                         />
-                        {/*<Route path={'/profile/orders/'}/>*/}
-                        {/*<Route path={'/profile/orders/:number'}/>*/}s
+                        <Route path={'/profile/orders'} element={
+                            <ProtectedRouteElement redirectPath={"/login"} isAuthorizedRedirect={false}>
+                                <Orders/>
+                            </ProtectedRouteElement>}
+                        />
+                        <Route path={'/profile/orders/:number'} element={
+                            <ProtectedRouteElement redirectPath={"/login"} isAuthorizedRedirect={false}>
+                                <NotFound404/>
+                            </ProtectedRouteElement>}
+                        />
 
                         <Route path="*" element={<NotFound404/>}/>
                     </Routes>
