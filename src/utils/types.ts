@@ -48,16 +48,17 @@ export interface OrderState {
 export interface RegisterState {
     registerRequest: boolean;
     registerFailed: boolean;
-    registerInfo: AuthorizationInfo | DeniedInfo;
+    registerInfo: AuthorizationInfo;
+    registerMessage: ServerInfo;
 }
 
-export interface DeniedInfo {
+export interface ServerInfo {
     message: string;
     success: boolean;
 }
 
 export interface AuthorizationInfo {
-    success: string;
+    success: boolean;
     accessToken: string;
     refreshToken: string;
     user: UserInfo;
@@ -82,7 +83,8 @@ export interface UserAuthorization {
 export interface LoginState {
     loginRequest: boolean;
     loginFailed: boolean;
-    loginInfo: AuthorizationInfo | DeniedInfo;
+    loginInfo: AuthorizationInfo;
+    loginMessage: ServerInfo;
 }
 
 export interface DataState {

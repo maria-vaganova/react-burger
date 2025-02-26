@@ -8,7 +8,7 @@ import {
     useLoginDispatch
 } from "../../services/store";
 import {UserToLogIn} from "../../utils/types";
-import {EMPTY_AUTHORIZATION_INFO} from "../../utils/data";
+import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
 import {getLogin} from "../../services/actions/loginActions";
 
 function Login() {
@@ -22,7 +22,7 @@ function Login() {
     }
 
     const dispatchLogin = useLoginDispatch();
-    const {loginRequest, loginFailed, loginInfo} = useAppSelector(loginStateToProps);
+    const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
     const handleLogin = () => {
         const user: UserToLogIn = {email: email, password: password};
         const getLoginThunk = getLogin(user);
@@ -35,14 +35,14 @@ function Login() {
     useEffect(() => {
         if (loginFailed) {
             let message: string = "Ошибка сети";
-            if (loginInfo && 'message' in loginInfo) {
-                message += ": " + loginInfo.message;
+            if (loginMessage !== EMPTY_SERVER_INFO) {
+                message += ": " + loginMessage.message;
             }
             alert(message);
         } else if (!loginRequest && loginInfo !== EMPTY_AUTHORIZATION_INFO) {
             navigate(location.state?.from?.pathname || '/');
         }
-    }, [loginFailed, loginRequest, loginInfo, navigate]);
+    }, [loginFailed, loginRequest, loginInfo, loginMessage, navigate]);
 
     return (
         <div className={login.content}>

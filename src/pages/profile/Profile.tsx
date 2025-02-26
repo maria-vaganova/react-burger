@@ -1,7 +1,11 @@
 import profile from './Profile.module.css';
 import {EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {ChangeEvent, useState} from "react";
-import {NavLink} from "react-router-dom";
+import {ChangeEvent, useEffect, useState} from "react";
+import {NavLink, useNavigate} from "react-router-dom";
+import {loginStateToProps, useAppSelector, useLogoutDispatch} from "../../services/store";
+import {UserToLogIn} from "../../utils/types";
+import {getLogout} from "../../services/actions/loginActions";
+import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
 
 function Profile() {
     const [name, setName] = useState<string>('')
@@ -18,6 +22,27 @@ function Profile() {
     }
 
     const customStyle = "text text_type_main-medium " + profile.leftItem;
+    const navigate = useNavigate();
+
+    const dispatchLogout = useLogoutDispatch();
+    const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
+    const handleLogout = () => {
+        const user: UserToLogIn = {email: email, password: password};
+        const getLogoutThunk = getLogout(user);
+        dispatchLogout(getLogoutThunk);
+    };
+
+    useEffect(() => {
+        if (loginFailed) {
+            let message: string = "Ошибка сети";
+            if (loginMessage !== EMPTY_SERVER_INFO) {
+                message += ": " + loginMessage.message;
+            }
+            alert(message);
+        } else if (!loginRequest && loginInfo !== EMPTY_AUTHORIZATION_INFO) {
+            navigate('/login');
+        }
+    }, [loginFailed, loginRequest, loginInfo, loginMessage, navigate]);
 
     return (
         <div className={profile.content}>
@@ -30,7 +55,10 @@ function Profile() {
                          className={({isActive}) => customStyle + (isActive ? " text_color_primary" : " text_color_inactive")}>
                     История заказов
                 </NavLink>
-                <a className={"text text_type_main-medium text_color_inactive " + profile.leftItem}>
+                <a className={"text text_type_main-medium text_color_inactive " + profile.leftItem} onClick={(e) => {
+                    e.preventDefault();
+                    handleLogout();
+                }}>
                     Выход
                 </a>
                 <p className={"text text_type_main-default text_color_inactive mt-20"}>

@@ -4,9 +4,13 @@ import {
     POST_REGISTER_SUCCESS,
     POST_REGISTER,
     REGISTER_URL,
-    EMPTY_AUTHORIZATION_INFO
+    EMPTY_AUTHORIZATION_INFO,
+    EMPTY_REFRESH_TOKEN,
+    REFRESH_TOKEN_STORAGE_TAG,
+    EMPTY_SERVER_INFO,
+    AUTHORIZED_SERVER_INFO
 } from "../../utils/data";
-import {DeniedInfo, AuthorizationInfo, UserAuthorization} from "../../utils/types";
+import {AuthorizationInfo, ServerInfo, UserAuthorization} from "../../utils/types";
 
 export interface PostRegisterAction {
     type: typeof POST_REGISTER;
@@ -15,11 +19,13 @@ export interface PostRegisterAction {
 export interface PostRegisterSuccessAction {
     type: typeof POST_REGISTER_SUCCESS;
     registerInfo: AuthorizationInfo;
+    registerMessage: ServerInfo;
 }
 
 export interface PostRegisterFailedAction {
     type: typeof POST_REGISTER_FAILED;
-    registerInfo: DeniedInfo;
+    registerInfo: AuthorizationInfo;
+    registerMessage: ServerInfo;
 }
 
 export type RegisterActions =
@@ -33,6 +39,7 @@ export function getRegister(newUser: UserAuthorization) {
             type: POST_REGISTER
         })
         try {
+            localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
             const response = await fetch(REGISTER_URL, {
                 method: 'POST',
                 headers: {
@@ -41,10 +48,11 @@ export function getRegister(newUser: UserAuthorization) {
                 body: JSON.stringify(newUser)
             });
             if (!response.ok) {
-                const deniedInfo = await response.json() as DeniedInfo;
+                const deniedInfo = await response.json() as ServerInfo;
                 dispatch({
                     type: POST_REGISTER_FAILED,
-                    registerInfo: deniedInfo,
+                    registerInfo: EMPTY_AUTHORIZATION_INFO,
+                    registerMessage: deniedInfo
                 });
                 return;
             }
@@ -52,12 +60,15 @@ export function getRegister(newUser: UserAuthorization) {
             const registerInfo = await response.json() as AuthorizationInfo;
             dispatch({
                 type: POST_REGISTER_SUCCESS,
-                registerInfo: registerInfo
+                registerInfo: registerInfo,
+                registerMessage: AUTHORIZED_SERVER_INFO
             });
+            localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, registerInfo.refreshToken);
         } catch (err) {
             dispatch({
                 type: POST_REGISTER_FAILED,
-                registerInfo: EMPTY_AUTHORIZATION_INFO
+                registerInfo: EMPTY_AUTHORIZATION_INFO,
+                registerMessage: EMPTY_SERVER_INFO
             });
         }
     }

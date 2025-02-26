@@ -1,4 +1,4 @@
-import {DeniedInfo, IngredientDetailInfo, OrderInfo} from "./types";
+import {AuthorizationInfo, IngredientDetailInfo, OrderInfo, ServerInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
@@ -20,6 +20,7 @@ export const DraggableTypes = {
 export const POST_LOGIN = "POST_LOGIN";
 export const POST_LOGIN_FAILED = "POST_LOGIN_FAILED";
 export const POST_LOGIN_SUCCESS = "POST_LOGIN_SUCCESS";
+export const POST_LOGOUT = "POST_LOGOUT";
 export const POST_REGISTER = "POST_REGISTER";
 export const POST_REGISTER_FAILED = "POST_REGISTER_FAILED";
 export const POST_REGISTER_SUCCESS = "POST_REGISTER_SUCCESS";
@@ -38,10 +39,28 @@ export const INCREMENT = "INCREMENT";
 export const DECREMENT = "DECREMENT";
 export const RESET = "RESET";
 
-export const EMPTY_AUTHORIZATION_INFO: DeniedInfo = {
-    message: "Empty user information",
-    success: false
+export const REFRESH_TOKEN_STORAGE_TAG = "refreshToken";
+export const EMPTY_REFRESH_TOKEN = "EMPTY_REFRESH_TOKEN";
+
+export const EMPTY_AUTHORIZATION_INFO: AuthorizationInfo = {
+    success: false,
+    accessToken: "",
+    refreshToken: "",
+    user: {
+        email: "",
+        name: ""
+    }
 };
+
+export const EMPTY_SERVER_INFO: ServerInfo = {
+    success: false,
+    message: "Empty message"
+}
+
+export const AUTHORIZED_SERVER_INFO: ServerInfo = {
+    success: true,
+    message: "Authorization completed"
+}
 
 export const EMPTY_ORDER_INFO: OrderInfo = {
     name: "Ingredient ids must be provided",

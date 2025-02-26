@@ -10,7 +10,7 @@ import {CartActionTypes} from "./actions/cartActions";
 import totalPriceReducer from "./reducers/totalPriceReducer";
 import {TotalPriceActionTypes} from "./actions/totalPriceActions";
 import {RegisterActions} from "./actions/registerActions";
-import {LoginActions} from "./actions/loginActions";
+import {LoginActions, LogoutActions} from "./actions/loginActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -27,25 +27,30 @@ export const useAppSelector = useSelector.withTypes<RootState>();
 const selectLoginRequest = (state: RootState) => state.login.loginRequest;
 const selectLoginFailed = (state: RootState) => state.login.loginFailed;
 const selectLoginInfo = (state: RootState) => state.login.loginInfo;
+const selectLoginMessage = (state: RootState) => state.login.loginMessage;
 export const loginStateToProps = createSelector(
-    [selectLoginRequest, selectLoginFailed, selectLoginInfo],
-    (loginRequest, loginFailed, loginInfo) => ({
+    [selectLoginRequest, selectLoginFailed, selectLoginInfo, selectLoginMessage],
+    (loginRequest, loginFailed, loginInfo, loginMessage) => ({
         loginRequest,
         loginFailed,
-        loginInfo
+        loginInfo,
+        loginMessage
     })
 );
 export const useLoginDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, LoginActions>>();
+export const useLogoutDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, LogoutActions>>();
 
 const selectRegisterRequest = (state: RootState) => state.register.registerRequest;
 const selectRegisterFailed = (state: RootState) => state.register.registerFailed;
 const selectRegisterInfo = (state: RootState) => state.register.registerInfo;
+const selectRegisterMessage = (state: RootState) => state.register.registerMessage;
 export const registerStateToProps = createSelector(
-    [selectRegisterRequest, selectRegisterFailed, selectRegisterInfo],
-    (registerRequest, registerFailed, registerInfo) => ({
+    [selectRegisterRequest, selectRegisterFailed, selectRegisterInfo, selectRegisterMessage],
+    (registerRequest, registerFailed, registerInfo, registerMessage) => ({
         registerRequest,
         registerFailed,
-        registerInfo
+        registerInfo,
+        registerMessage
     })
 );
 export const useRegisterDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, RegisterActions>>();

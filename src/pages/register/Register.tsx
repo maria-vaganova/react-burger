@@ -9,7 +9,7 @@ import {
 } from "../../services/store";
 import {getRegister} from "../../services/actions/registerActions";
 import {UserAuthorization} from "../../utils/types";
-import {EMPTY_AUTHORIZATION_INFO} from "../../utils/data";
+import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
 
 function Register() {
     const [name, setName] = useState<string>('')
@@ -26,7 +26,7 @@ function Register() {
     }
 
     const dispatchRegister = useRegisterDispatch();
-    const {registerRequest, registerFailed, registerInfo} = useAppSelector(registerStateToProps);
+    const {registerRequest, registerFailed, registerInfo, registerMessage} = useAppSelector(registerStateToProps);
     const handleRegister = () => {
         const user: UserAuthorization = {email: email, password: password, name: name};
         const getRegisterThunk = getRegister(user);
@@ -38,14 +38,14 @@ function Register() {
     useEffect(() => {
         if (registerFailed) {
             let message: string = "Ошибка сети";
-            if (registerInfo && 'message' in registerInfo) {
-                message += ": " + registerInfo.message;
+            if (registerMessage !== EMPTY_SERVER_INFO) {
+                message += ": " + registerMessage.message;
             }
             alert(message);
         } else if (!registerRequest && registerInfo !== EMPTY_AUTHORIZATION_INFO) {
             navigate('/');
         }
-    }, [registerFailed, registerRequest, registerInfo, navigate]);
+    }, [registerFailed, registerRequest, registerInfo, registerMessage, navigate]);
 
     return (
         <div className={register.content}>
