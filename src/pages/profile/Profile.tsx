@@ -2,13 +2,22 @@ import profile from './Profile.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useEffect, useState} from "react";
 import LeftProfileLinks from "../../components/left-profile-links/LeftProfileLinks";
+import {
+    useAppSelector,
+    useGetUserDispatch,
+    userStateToProps,
+    useSetUserDispatch
+} from "../../services/store";
+import {UserAuthorization} from "../../utils/types";
+import {getUserInfo, setUserInfo} from "../../services/actions/userActions";
+import {EMPTY_SERVER_INFO} from "../../utils/data";
 
 function Profile() {
-    const previousName = "";
-    const previousEmail = "";
-    const previousPassword = "";
+    const token: string = "";
 
-    const [hasChanges, setChanges] = useState<boolean>(false);
+    const [previousName, setPreviousName] = useState<string>("");
+    const [previousEmail, setPreviousEmail] = useState<string>("");
+    const [previousPassword, setPreviousPassword] = useState<string>("");
 
     const [name, setName] = useState<string>(previousName)
     const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,15 +32,48 @@ function Profile() {
         setPassword(e.target.value)
     }
 
+    const {userRequest, userFailed, userInfo, userMessage} = useAppSelector(userStateToProps);
+
+    const dispatchGetUser = useGetUserDispatch();
+    const handleGetUser = () => {
+        // initialize token
+        const getUserInfoThunk = getUserInfo(token);
+        dispatchGetUser(getUserInfoThunk);
+    };
+
+    const dispatchSetUser = useSetUserDispatch();
+    const handleSubmit = () => {
+        // initialize token
+        const user: UserAuthorization = {email: email, password: password, name: name};
+        const setUserInfoThunk = setUserInfo(user, token);
+        dispatchSetUser(setUserInfoThunk);
+    };
+
+    useEffect(() => {
+        handleGetUser();
+    }, []);
+
+    useEffect(() => {
+        if (userFailed) {
+            let message: string = "Ошибка сети";
+            if (userMessage !== EMPTY_SERVER_INFO) {
+                message += ": " + userMessage.message;
+            }
+            alert(message);
+        } else if (!userRequest && userInfo.success) {
+            setPreviousName(userInfo.user.name);
+            setPreviousEmail(userInfo.user.email);
+            setPreviousPassword(password);
+        }
+    }, [userRequest, userFailed, userInfo, userMessage]);
+
+    const [hasChanges, setChanges] = useState<boolean>(false);
+
     useEffect(() => {
         if (name === previousName && email === previousEmail && password === previousPassword)
             setChanges(false);
         else setChanges(true);
     }, [name, email, password]);
-
-    const handleSubmit = () => {
-        // реализация будет позже
-    }
 
     const handleReset = () => {
         setName(previousName);
@@ -48,11 +90,12 @@ function Profile() {
                 handleSubmit();
             }}>
                 <Input
-                    type={'text'}
+                    type={"text"}
                     onChange={onNameChange}
                     value={name}
                     placeholder={"Имя"}
                     extraClass={"mb-2"}
+                    icon={"EditIcon"}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                 />
@@ -61,19 +104,20 @@ function Profile() {
                     value={email}
                     placeholder={"Логин"}
                     isIcon={true}
-                    extraClass="mb-2"
+                    extraClass={"mb-2"}
                 />
                 <PasswordInput
                     onChange={onPasswordChange}
                     value={password}
                     placeholder={"Пароль"}
-                    icon="EditIcon"
+                    icon={"EditIcon"}
                 />
                 <div className={hasChanges ? profile.justButtons : profile.hiddenButtons}>
-                    <Button htmlType="reset" type="secondary" size="medium" disabled={!hasChanges} onClick={handleReset}>
+                    <Button htmlType={"reset"} type={"secondary"} size={"medium"} disabled={!hasChanges}
+                            onClick={handleReset}>
                         Отмена
                     </Button>
-                    <Button htmlType="submit" type="primary" size="medium" disabled={!hasChanges}>
+                    <Button htmlType={"submit"} type={"primary"} size={"medium"} disabled={!hasChanges}>
                         Сохранить
                     </Button>
                 </div>

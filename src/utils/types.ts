@@ -13,6 +13,12 @@ export interface Ingredient {
     __v: number;
 }
 
+export interface DataState {
+    dataRequest: boolean;
+    dataFailed: boolean;
+    dataInfo: Ingredient[];
+}
+
 export interface TotalPriceState {
     count: number;
 }
@@ -22,14 +28,8 @@ export interface TotalPriceAction {
     ingredient?: Ingredient;
 }
 
-export interface OrderInfo {
-    name: string;
-    order: Order;
-    success: boolean;
-}
-
-export interface Order {
-    number: number;
+export interface CartState {
+    cartItems: CartItem[];
 }
 
 export interface CartItem {
@@ -45,11 +45,28 @@ export interface OrderState {
     orderInfo: OrderInfo;
 }
 
+export interface OrderInfo {
+    name: string;
+    order: Order;
+    success: boolean;
+}
+
+export interface Order {
+    number: number;
+}
+
 export interface RegisterState {
     registerRequest: boolean;
     registerFailed: boolean;
     registerInfo: AuthorizationInfo;
     registerMessage: ServerInfo;
+}
+
+export interface LoginState {
+    loginRequest: boolean;
+    loginFailed: boolean;
+    loginInfo: AuthorizationInfo;
+    loginMessage: ServerInfo;
 }
 
 export interface ServerInfo {
@@ -80,17 +97,16 @@ export interface UserAuthorization {
     name: string;
 }
 
-export interface LoginState {
-    loginRequest: boolean;
-    loginFailed: boolean;
-    loginInfo: AuthorizationInfo;
-    loginMessage: ServerInfo;
+export interface UserState {
+    userRequest: boolean;
+    userFailed: boolean;
+    userInfo: CurrentUserInfo;
+    userMessage: ServerInfo;
 }
 
-export interface DataState {
-    dataRequest: boolean;
-    dataFailed: boolean;
-    dataInfo: Ingredient[];
+export interface CurrentUserInfo {
+    success: boolean;
+    user: UserInfo;
 }
 
 export interface IngredientDetailInfo {
@@ -104,8 +120,4 @@ export interface IngredientDetailInfo {
 
 export interface IngredientDetailState {
     ingredientDetails: IngredientDetailInfo;
-}
-
-export interface CartState {
-    cartItems: CartItem[];
 }

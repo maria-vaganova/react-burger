@@ -11,6 +11,7 @@ import totalPriceReducer from "./reducers/totalPriceReducer";
 import {TotalPriceActionTypes} from "./actions/totalPriceActions";
 import {RegisterActions} from "./actions/registerActions";
 import {LoginActions, LogoutActions} from "./actions/loginActions";
+import {GetUserActions, SetUserActions} from "./actions/userActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -23,6 +24,22 @@ type AppStore = typeof store;
 type RootState = ReturnType<AppStore['getState']>;
 
 export const useAppSelector = useSelector.withTypes<RootState>();
+
+const selectUserRequest = (state: RootState) => state.user.userRequest;
+const selectUserFailed = (state: RootState) => state.user.userFailed;
+const selectUserInfo = (state: RootState) => state.user.userInfo;
+const selectUserMessage = (state: RootState) => state.user.userMessage;
+export const userStateToProps = createSelector(
+    [selectUserRequest, selectUserFailed, selectUserInfo, selectUserMessage],
+    (userRequest, userFailed, userInfo, userMessage) => ({
+        userRequest,
+        userFailed,
+        userInfo,
+        userMessage
+    })
+);
+export const useGetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, GetUserActions>>();
+export const useSetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, SetUserActions>>();
 
 const selectLoginRequest = (state: RootState) => state.login.loginRequest;
 const selectLoginFailed = (state: RootState) => state.login.loginFailed;

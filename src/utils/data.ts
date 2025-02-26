@@ -1,4 +1,4 @@
-import {AuthorizationInfo, IngredientDetailInfo, OrderInfo, ServerInfo} from "./types";
+import {AuthorizationInfo, CurrentUserInfo, IngredientDetailInfo, OrderInfo, ServerInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
@@ -17,6 +17,12 @@ export const DraggableTypes = {
     ADDED_ITEM: "ingredient"
 }
 
+export const SET_USER = "SET_USER";
+export const SET_USER_FAILED = "SET_USER_FAILED";
+export const SET_USER_SUCCESS = "SET_USER_SUCCESS";
+export const GET_USER = "GET_USER";
+export const GET_USER_FAILED = "GET_USER_FAILED";
+export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const POST_LOGIN = "POST_LOGIN";
 export const POST_LOGIN_FAILED = "POST_LOGIN_FAILED";
 export const POST_LOGIN_SUCCESS = "POST_LOGIN_SUCCESS";
@@ -41,6 +47,14 @@ export const RESET = "RESET";
 
 export const REFRESH_TOKEN_STORAGE_TAG = "refreshToken";
 export const EMPTY_REFRESH_TOKEN = "EMPTY_REFRESH_TOKEN";
+
+export const EMPTY_CURRENT_USER_INFO: CurrentUserInfo = {
+    success: false,
+    user: {
+        email: "",
+        name: ""
+    }
+};
 
 export const EMPTY_AUTHORIZATION_INFO: AuthorizationInfo = {
     success: false,
