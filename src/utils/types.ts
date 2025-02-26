@@ -122,6 +122,17 @@ export interface TokenInfo {
     refreshToken: string;
 }
 
+export interface PasswordState {
+    passwordRequest: boolean;
+    passwordFailed: boolean;
+    passwordMessage: ServerInfo;
+}
+
+export interface ResetPasswordInfo {
+    password: string;
+    token: string;
+}
+
 export interface IngredientDetailInfo {
     image_large: string;
     name: string;

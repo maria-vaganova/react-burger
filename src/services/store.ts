@@ -12,6 +12,7 @@ import {RegisterActions} from "./actions/registerActions";
 import {LoginActions, LogoutActions} from "./actions/loginActions";
 import {GetUserActions, SetUserActions} from "./actions/userActions";
 import {GetAccessTokenActions} from "./actions/tokenActions";
+import {PostPasswordActions} from "./actions/passwordActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -24,6 +25,19 @@ type AppStore = typeof store;
 type RootState = ReturnType<AppStore['getState']>;
 
 export const useAppSelector = useSelector.withTypes<RootState>();
+
+const selectPasswordRequest = (state: RootState) => state.password.passwordRequest;
+const selectPasswordFailed = (state: RootState) => state.password.passwordFailed;
+const selectPasswordMessage = (state: RootState) => state.password.passwordMessage;
+export const passwordStateToProps = createSelector(
+    [selectPasswordRequest, selectPasswordFailed, selectPasswordMessage],
+    (passwordRequest, passwordFailed, passwordMessage) => ({
+        passwordRequest,
+        passwordFailed,
+        passwordMessage
+    })
+);
+export const usePostPasswordDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, PostPasswordActions>>();
 
 const selectTokenRequest = (state: RootState) => state.token.tokenRequest;
 const selectTokenFailed = (state: RootState) => state.token.tokenFailed;

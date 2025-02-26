@@ -8,6 +8,7 @@ import registerReducer from "./registerReducer";
 import loginReducer from "./loginReducer";
 import userReducer from "./userReducer";
 import tokenReducer from "./tokenReducer";
+import passwordReducer from "./passwordReducer";
 
 export const rootReducer = combineReducers({
     order: orderReducer,
@@ -18,5 +19,6 @@ export const rootReducer = combineReducers({
     register: registerReducer,
     login: loginReducer,
     user: userReducer,
-    token: tokenReducer
+    token: tokenReducer,
+    password: passwordReducer
 })
