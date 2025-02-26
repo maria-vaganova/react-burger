@@ -109,6 +109,19 @@ export interface CurrentUserInfo {
     user: UserInfo;
 }
 
+export interface TokenState {
+    tokenRequest: boolean;
+    tokenFailed: boolean;
+    tokenInfo: TokenInfo;
+    tokenMessage: ServerInfo;
+}
+
+export interface TokenInfo {
+    success: boolean;
+    accessToken: string;
+    refreshToken: string;
+}
+
 export interface IngredientDetailInfo {
     image_large: string;
     name: string;

@@ -1,4 +1,4 @@
-import {AuthorizationInfo, CurrentUserInfo, IngredientDetailInfo, OrderInfo, ServerInfo} from "./types";
+import {AuthorizationInfo, CurrentUserInfo, IngredientDetailInfo, OrderInfo, ServerInfo, TokenInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
@@ -17,6 +17,9 @@ export const DraggableTypes = {
     ADDED_ITEM: "ingredient"
 }
 
+export const GET_TOKEN = "GET_TOKEN";
+export const GET_TOKEN_FAILED = "GET_TOKEN_FAILED";
+export const GET_TOKEN_SUCCESS = "GET_TOKEN_SUCCESS";
 export const SET_USER = "SET_USER";
 export const SET_USER_FAILED = "SET_USER_FAILED";
 export const SET_USER_SUCCESS = "SET_USER_SUCCESS";
@@ -64,6 +67,12 @@ export const EMPTY_AUTHORIZATION_INFO: AuthorizationInfo = {
         email: "",
         name: ""
     }
+};
+
+export const EMPTY_TOKEN_INFO: TokenInfo = {
+    success: false,
+    accessToken: "",
+    refreshToken: ""
 };
 
 export const EMPTY_SERVER_INFO: ServerInfo = {

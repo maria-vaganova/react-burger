@@ -7,11 +7,11 @@ import {OrderActions} from "./actions/orderActions";
 import {IngredientDetailActionTypes} from "./actions/detailActions";
 import {DataActions} from "./actions/dataActions";
 import {CartActionTypes} from "./actions/cartActions";
-import totalPriceReducer from "./reducers/totalPriceReducer";
 import {TotalPriceActionTypes} from "./actions/totalPriceActions";
 import {RegisterActions} from "./actions/registerActions";
 import {LoginActions, LogoutActions} from "./actions/loginActions";
 import {GetUserActions, SetUserActions} from "./actions/userActions";
+import {GetAccessTokenActions} from "./actions/tokenActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -24,6 +24,21 @@ type AppStore = typeof store;
 type RootState = ReturnType<AppStore['getState']>;
 
 export const useAppSelector = useSelector.withTypes<RootState>();
+
+const selectTokenRequest = (state: RootState) => state.token.tokenRequest;
+const selectTokenFailed = (state: RootState) => state.token.tokenFailed;
+const selectTokenInfo = (state: RootState) => state.token.tokenInfo;
+const selectTokenMessage = (state: RootState) => state.token.tokenMessage;
+export const tokenStateToProps = createSelector(
+    [selectTokenRequest, selectTokenFailed, selectTokenInfo, selectTokenMessage],
+    (tokenRequest, tokenFailed, tokenInfo, tokenMessage) => ({
+        tokenRequest,
+        tokenFailed,
+        tokenInfo,
+        tokenMessage
+    })
+);
+export const useGetAccessTokenDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, GetAccessTokenActions>>();
 
 const selectUserRequest = (state: RootState) => state.user.userRequest;
 const selectUserFailed = (state: RootState) => state.user.userFailed;
