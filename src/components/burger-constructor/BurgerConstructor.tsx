@@ -10,7 +10,7 @@ import {
 } from "../../utils/util";
 import {Ingredient, CartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
-import {BUN_TYPE, DraggableTypes} from "../../utils/data";
+import {BUN_TYPE, DraggableTypes, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "../../utils/data";
 import {useDrop} from "react-dnd";
 import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
 import {
@@ -25,6 +25,7 @@ import {addIngredientToCart} from "../../services/actions/cartActions";
 import {v4 as uuid_v4} from 'uuid';
 import {increment, resetPrice} from "../../services/actions/totalPriceActions";
 import IndexedContainer from "../indexed-container/IndexedContainer";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function BurgerConstructor() {
     const {data} = useAppSelector(dataInfoSelector);
@@ -96,7 +97,14 @@ function BurgerConstructor() {
         clearOrder();
     };
 
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const placeOrder = () => {
+        const isAuthenticated: boolean = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) !== EMPTY_REFRESH_TOKEN;
+        if (!isAuthenticated) {
+            navigate("/login", {state: {background: location}})
+        }
         handleOrder();
         if (orderFailed) {
             return alert(('Ошибка сети'));
@@ -124,7 +132,7 @@ function BurgerConstructor() {
                             thumbnail={bun.image}
                             extraClass={constructor.bunItem}
                         />)}
-                        <IndexedContainer />
+                        <IndexedContainer/>
                         {bun && (<ConstructorElement
                             type="bottom"
                             isLocked={true}
