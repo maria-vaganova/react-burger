@@ -1,9 +1,8 @@
 import profile from './Profile.module.css';
 import {EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useEffect, useState} from "react";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {loginStateToProps, useAppSelector, useLogoutDispatch} from "../../services/store";
-import {UserToLogIn} from "../../utils/types";
 import {getLogout} from "../../services/actions/loginActions";
 import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
 
@@ -23,12 +22,12 @@ function Profile() {
 
     const customStyle = "text text_type_main-medium " + profile.leftItem;
     const navigate = useNavigate();
+    const location = useLocation();
 
     const dispatchLogout = useLogoutDispatch();
     const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
     const handleLogout = () => {
-        const user: UserToLogIn = {email: email, password: password};
-        const getLogoutThunk = getLogout(user);
+        const getLogoutThunk = getLogout();
         dispatchLogout(getLogoutThunk);
     };
 
@@ -39,8 +38,8 @@ function Profile() {
                 message += ": " + loginMessage.message;
             }
             alert(message);
-        } else if (!loginRequest && loginInfo !== EMPTY_AUTHORIZATION_INFO) {
-            navigate('/login');
+        } else if (!loginRequest && loginInfo === EMPTY_AUTHORIZATION_INFO && loginMessage.success) {
+            navigate('/login', {state: {from: location}});
         }
     }, [loginFailed, loginRequest, loginInfo, loginMessage, navigate]);
 

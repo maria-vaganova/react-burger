@@ -85,17 +85,16 @@ export function getLogin(user: UserToLogIn) {
     }
 }
 
-export function getLogout(user: UserToLogIn) {
+export function getLogout() {
     return async function getLogoutThunk(dispatch: Dispatch<LogoutActions>) {
         try {
             const token: string = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) || EMPTY_REFRESH_TOKEN;
-            localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
             const response = await fetch(LOGOUT_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(token)
+                body: JSON.stringify({token})
             });
             const info = await response.json() as ServerInfo;
             if (!response.ok) {
@@ -111,6 +110,7 @@ export function getLogout(user: UserToLogIn) {
                 loginInfo: EMPTY_AUTHORIZATION_INFO,
                 loginMessage: info
             });
+            localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
         } catch (err) {
             dispatch({
                 type: POST_LOGIN_FAILED,

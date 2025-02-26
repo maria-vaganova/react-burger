@@ -40,7 +40,9 @@ function Login() {
             }
             alert(message);
         } else if (!loginRequest && loginInfo !== EMPTY_AUTHORIZATION_INFO) {
-            navigate(location.state?.from?.pathname || '/');
+            const targetPath = location.state?.from?.pathname || '/';
+            if (location.pathname !== targetPath)
+                navigate(targetPath);
         }
     }, [loginFailed, loginRequest, loginInfo, loginMessage, navigate]);
 

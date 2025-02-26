@@ -50,30 +50,32 @@ function App() {
                         }/>
                         <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
                         <Route path="/login" element={
-                            <ProtectedRouteElement isAuthorizedRedirect={true}>
+                            <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
                                 <Login/>
                             </ProtectedRouteElement>}
                         />
                         <Route path="/register" element={
-                            <ProtectedRouteElement isAuthorizedRedirect={true}>
+                            <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
                                 <Register/>
                             </ProtectedRouteElement>}
                         />
                         <Route path="/forgot-password" element={
-                            <ProtectedRouteElement isAuthorizedRedirect={true}>
+                            <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
                                 <ForgotPassword/>
                             </ProtectedRouteElement>}
                         />
                         <Route path="/reset-password" element={
-                            <ProtectedRouteElement isAuthorizedRedirect={true}>
+                            <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
                                 <ResetPassword/>
                             </ProtectedRouteElement>}
                         />
                         <Route path="/profile" element={
-                            <ProtectedRouteElement redirectPath={"/login"}>
+                            <ProtectedRouteElement redirectPath={"/login"} isAuthorizedRedirect={false}>
                                 <Profile/>
                             </ProtectedRouteElement>}
                         />
+                        {/*<Route path={'/profile/orders/'}/>*/}
+                        {/*<Route path={'/profile/orders/:number'}/>*/}s
 
                         <Route path="*" element={<NotFound404/>}/>
                     </Routes>
