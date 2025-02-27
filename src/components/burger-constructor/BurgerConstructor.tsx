@@ -104,6 +104,7 @@ function BurgerConstructor() {
         const isAuthenticated: boolean = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) !== EMPTY_REFRESH_TOKEN;
         if (!isAuthenticated) {
             navigate("/login", {state: {background: location}})
+            return;
         }
         handleOrder();
         if (orderFailed) {
