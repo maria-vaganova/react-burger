@@ -2,37 +2,18 @@ import {useEffect, useState} from 'react';
 import ingredients from './BurgerIngredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../utils/data";
-import IngredientDetails from "../ingredient-details/IngredientDetails";
-import ModalOverlay from "../modal/ModalOverlay";
-import Modal from "../modal/Modal";
 import CategorySection from "../category-section/CategorySection";
-import {useLocation, useParams, useNavigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 
 function BurgerIngredients() {
     const [current, setCurrent] = useState<string>(BUN_TYPE);
-    const [isIngredientDetailsOpen, setIngredientDetailsOpen] = useState(false);
 
-    const {id} = useParams<{ id: string }>();
     const location = useLocation();
     const navigate = useNavigate();
 
     const openModal = (ingredientId: string) => {
         navigate(`/ingredients/${ingredientId}`, {state: {background: location}});
-        setIngredientDetailsOpen(true);
     };
-
-    const closeModal = () => {
-        navigate(-1);
-        setIngredientDetailsOpen(false);
-    };
-
-    useEffect(() => {
-        if (location.state && location.state.background) {
-            setIngredientDetailsOpen(true);
-        } else if (id) {
-            setIngredientDetailsOpen(false);
-        }
-    }, [id, location]);
 
     const handleScroll = () => {
         const bun = document.getElementById("bun");
@@ -88,52 +69,42 @@ function BurgerIngredients() {
 
     return (
         <div>
-            {isIngredientDetailsOpen && <ModalOverlay onClose={closeModal}/>}
-            {isIngredientDetailsOpen && (
-                <Modal onClose={closeModal}>
-                    <IngredientDetails/>
-                </Modal>
-            )}
-            {id && !isIngredientDetailsOpen && <IngredientDetails/>}
-            {!id && (
-                <>
-                    <h1 className="text_type_main-large mt-10 mb-5">Соберите бургер</h1>
-                    <div style={{display: 'flex'}}>
-                        <Tab value={BUN_TYPE}
-                             active={current === BUN_TYPE}
-                             onClick={() => setActiveTab(BUN_TYPE)}
-                        >
-                            Булки
-                        </Tab>
-                        <Tab value={SAUCE_TYPE}
-                             active={current === SAUCE_TYPE}
-                             onClick={() => setActiveTab(SAUCE_TYPE)}
-                        >
-                            Соусы
-                        </Tab>
-                        <Tab value={MAIN_TYPE}
-                             active={current === MAIN_TYPE}
-                             onClick={() => setActiveTab(MAIN_TYPE)}
-                        >
-                            Начинки
-                        </Tab>
-                    </div>
-                    <div className={"mt-10 " + ingredients.scrollableContainer} id="scrollable-container">
-                        <CategorySection id="bun"
-                                         name="Булки"
-                                         type={BUN_TYPE}
-                                         openModal={(ingredientId: string) => openModal(ingredientId)}/>
-                        <CategorySection id="sauce"
-                                         name="Соусы"
-                                         type={SAUCE_TYPE}
-                                         openModal={(ingredientId: string) => openModal(ingredientId)}/>
-                        <CategorySection id="main"
-                                         name="Начинки"
-                                         type={MAIN_TYPE}
-                                         openModal={(ingredientId: string) => openModal(ingredientId)}/>
-                    </div>
-                </>
-            )}
+            <Outlet/>
+            <h1 className="text_type_main-large mt-10 mb-5">Соберите бургер</h1>
+            <div style={{display: 'flex'}}>
+                <Tab value={BUN_TYPE}
+                     active={current === BUN_TYPE}
+                     onClick={() => setActiveTab(BUN_TYPE)}
+                >
+                    Булки
+                </Tab>
+                <Tab value={SAUCE_TYPE}
+                     active={current === SAUCE_TYPE}
+                     onClick={() => setActiveTab(SAUCE_TYPE)}
+                >
+                    Соусы
+                </Tab>
+                <Tab value={MAIN_TYPE}
+                     active={current === MAIN_TYPE}
+                     onClick={() => setActiveTab(MAIN_TYPE)}
+                >
+                    Начинки
+                </Tab>
+            </div>
+            <div className={"mt-10 " + ingredients.scrollableContainer} id="scrollable-container">
+                <CategorySection id="bun"
+                                 name="Булки"
+                                 type={BUN_TYPE}
+                                 openModal={(ingredientId: string) => openModal(ingredientId)}/>
+                <CategorySection id="sauce"
+                                 name="Соусы"
+                                 type={SAUCE_TYPE}
+                                 openModal={(ingredientId: string) => openModal(ingredientId)}/>
+                <CategorySection id="main"
+                                 name="Начинки"
+                                 type={MAIN_TYPE}
+                                 openModal={(ingredientId: string) => openModal(ingredientId)}/>
+            </div>
         </div>
     );
 }

@@ -4,7 +4,7 @@ import IngredientDetails from "../../components/ingredient-details/IngredientDet
 
 function IngredientDetailsWrapper() {
     const location = useLocation();
-    const background = location.state && location.state.background;
+    const background = location.state?.background;
 
     return (
         <div>

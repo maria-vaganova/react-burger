@@ -48,8 +48,9 @@ function App() {
                                 <BurgerIngredients/>
                                 <BurgerConstructor/>
                             </div>
-                        }/>
-                        <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
+                        }>
+                            <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
+                        </Route>
                         <Route path="/login" element={
                             <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
                                 <Login/>
