@@ -1,7 +1,7 @@
 import {DATA_URL, GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
 import {Ingredient} from "../../utils/types";
 import {Dispatch} from "redux";
-import {request, requestWithoutOptions} from "../../utils/util";
+import {request} from "../../utils/util";
 
 export interface GetDataAction {
     type: typeof GET_DATA;
@@ -27,7 +27,7 @@ export function getData() {
             type: GET_DATA
         })
         try {
-            const dataInfo = await requestWithoutOptions(DATA_URL);
+            const dataInfo = await request(DATA_URL);
             dispatch({
                 type: GET_DATA_SUCCESS,
                 dataInfo: dataInfo.data as Ingredient[]

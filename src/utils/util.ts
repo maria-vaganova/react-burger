@@ -76,10 +76,6 @@ export function request(url: string, options: RequestInit = {}): Promise<any> {
     return fetch(url, options).then(checkResponse);
 }
 
-export function requestWithoutOptions(url: string): Promise<any> {
-    return fetch(url).then(checkResponse);
-}
-
 export function isUserAuthenticated(): boolean {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG);
     if (!refreshToken) {
