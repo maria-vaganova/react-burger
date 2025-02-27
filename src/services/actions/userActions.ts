@@ -12,6 +12,7 @@ import {
     SET_USER_FAILED
 } from "../../utils/data";
 import {CurrentUserInfo, ServerInfo, UserAuthorization} from "../../utils/types";
+import {request} from "../../utils/util";
 
 export interface GetUserAction {
     type: typeof GET_USER;
@@ -61,7 +62,7 @@ export function setUserInfo(user: UserAuthorization, accessToken: string) {
             type: SET_USER
         })
         try {
-            const response = await fetch(USER_URL, {
+            const userInfo = await request(USER_URL, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,27 +70,16 @@ export function setUserInfo(user: UserAuthorization, accessToken: string) {
                 },
                 body: JSON.stringify(user)
             });
-            if (!response.ok) {
-                const info = await response.json() as ServerInfo;
-                dispatch({
-                    type: SET_USER_FAILED,
-                    userInfo: EMPTY_CURRENT_USER_INFO,
-                    userMessage: info
-                });
-                return;
-            }
-
-            const userInfo = await response.json() as CurrentUserInfo;
             dispatch({
                 type: SET_USER_SUCCESS,
-                userInfo: userInfo,
+                userInfo: userInfo as CurrentUserInfo,
                 userMessage: AUTHORIZED_SERVER_INFO
             });
-        } catch (err) {
+        } catch (error: any) {
             dispatch({
                 type: SET_USER_FAILED,
                 userInfo: EMPTY_CURRENT_USER_INFO,
-                userMessage: EMPTY_SERVER_INFO
+                userMessage: error || EMPTY_SERVER_INFO
             });
         }
     }
@@ -101,34 +91,23 @@ export function getUserInfo(accessToken: string) {
             type: GET_USER
         })
         try {
-            const response = await fetch(USER_URL, {
+            const userInfo = await request(USER_URL, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `${accessToken}`
                 }
             });
-            if (!response.ok) {
-                const info = await response.json() as ServerInfo;
-                dispatch({
-                    type: GET_USER_FAILED,
-                    userInfo: EMPTY_CURRENT_USER_INFO,
-                    userMessage: info
-                });
-                return;
-            }
-
-            const userInfo = await response.json() as CurrentUserInfo;
             dispatch({
                 type: GET_USER_SUCCESS,
-                userInfo: userInfo,
+                userInfo: userInfo as CurrentUserInfo,
                 userMessage: AUTHORIZED_SERVER_INFO
             });
-        } catch (err) {
+        } catch (error: any) {
             dispatch({
                 type: GET_USER_FAILED,
                 userInfo: EMPTY_CURRENT_USER_INFO,
-                userMessage: EMPTY_SERVER_INFO
+                userMessage: error || EMPTY_SERVER_INFO
             });
         }
     }

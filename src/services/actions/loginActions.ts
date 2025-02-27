@@ -12,6 +12,7 @@ import {
     REFRESH_TOKEN_STORAGE_TAG
 } from "../../utils/data";
 import {AuthorizationInfo, ServerInfo, UserToLogIn} from "../../utils/types";
+import {request} from "../../utils/util";
 
 export interface PostLoginAction {
     type: typeof POST_LOGIN;
@@ -51,35 +52,24 @@ export function getLogin(user: UserToLogIn) {
         })
         try {
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
-            const response = await fetch(LOGIN_URL, {
+            const loginInfo = await request(LOGIN_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(user)
             });
-            if (!response.ok) {
-                const info = await response.json() as ServerInfo;
-                dispatch({
-                    type: POST_LOGIN_FAILED,
-                    loginInfo: EMPTY_AUTHORIZATION_INFO,
-                    loginMessage: info
-                });
-                return;
-            }
-
-            const loginInfo = await response.json() as AuthorizationInfo;
             dispatch({
                 type: POST_LOGIN_SUCCESS,
-                loginInfo: loginInfo,
+                loginInfo: loginInfo as AuthorizationInfo,
                 loginMessage: AUTHORIZED_SERVER_INFO
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, loginInfo.refreshToken);
-        } catch (err) {
+        } catch (error: any) {
             dispatch({
                 type: POST_LOGIN_FAILED,
                 loginInfo: EMPTY_AUTHORIZATION_INFO,
-                loginMessage: EMPTY_SERVER_INFO
+                loginMessage: error || EMPTY_SERVER_INFO
             });
         }
     }
@@ -89,33 +79,24 @@ export function getLogout() {
     return async function getLogoutThunk(dispatch: Dispatch<LogoutActions>) {
         try {
             const token: string = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) || EMPTY_REFRESH_TOKEN;
-            const response = await fetch(LOGOUT_URL, {
+            const logoutInfo = await request(LOGOUT_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({token})
             });
-            const info = await response.json() as ServerInfo;
-            if (!response.ok) {
-                dispatch({
-                    type: POST_LOGIN_FAILED,
-                    loginInfo: EMPTY_AUTHORIZATION_INFO,
-                    loginMessage: info
-                });
-                return;
-            }
             dispatch({
                 type: POST_LOGOUT,
                 loginInfo: EMPTY_AUTHORIZATION_INFO,
-                loginMessage: info
+                loginMessage: logoutInfo as ServerInfo
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
-        } catch (err) {
+        } catch (error: any) {
             dispatch({
                 type: POST_LOGIN_FAILED,
                 loginInfo: EMPTY_AUTHORIZATION_INFO,
-                loginMessage: EMPTY_SERVER_INFO
+                loginMessage: error || EMPTY_SERVER_INFO
             });
         }
     }

@@ -8,6 +8,7 @@ import {
     RESET_PASSWORD_URL
 } from "../../utils/data";
 import {ResetPasswordInfo, ServerInfo} from "../../utils/types";
+import {request} from "../../utils/util";
 
 export interface PostPasswordAction {
     type: typeof POST_PASSWORD;
@@ -34,29 +35,21 @@ export function askToResetPassword(email: string) {
             type: POST_PASSWORD
         })
         try {
-            const response = await fetch(FORGOT_PASSWORD_URL, {
+            const resetInfo = await request(FORGOT_PASSWORD_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({email})
             });
-            const message = await response.json() as ServerInfo;
-            if (!response.ok) {
-                dispatch({
-                    type: POST_PASSWORD_FAILED,
-                    passwordMessage: message
-                });
-                return;
-            }
             dispatch({
                 type: POST_PASSWORD_SUCCESS,
-                passwordMessage: message
+                passwordMessage: resetInfo as ServerInfo
             });
-        } catch (err) {
+        } catch (error: any) {
             dispatch({
                 type: POST_PASSWORD_FAILED,
-                passwordMessage: EMPTY_SERVER_INFO
+                passwordMessage: error || EMPTY_SERVER_INFO
             });
         }
     }
@@ -68,29 +61,21 @@ export function getNewPassword(data: ResetPasswordInfo) {
             type: POST_PASSWORD
         })
         try {
-            const response = await fetch(RESET_PASSWORD_URL, {
+            const passwordInfo = await request(RESET_PASSWORD_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            const message = await response.json() as ServerInfo;
-            if (!response.ok) {
-                dispatch({
-                    type: POST_PASSWORD_FAILED,
-                    passwordMessage: message
-                });
-                return;
-            }
             dispatch({
                 type: POST_PASSWORD_SUCCESS,
-                passwordMessage: message
+                passwordMessage: passwordInfo as ServerInfo
             });
-        } catch (err) {
+        } catch (error: any) {
             dispatch({
                 type: POST_PASSWORD_FAILED,
-                passwordMessage: EMPTY_SERVER_INFO
+                passwordMessage: error || EMPTY_SERVER_INFO
             });
         }
     }

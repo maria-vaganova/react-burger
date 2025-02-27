@@ -11,6 +11,7 @@ import {
     AUTHORIZED_SERVER_INFO
 } from "../../utils/data";
 import {AuthorizationInfo, ServerInfo, UserAuthorization} from "../../utils/types";
+import {request} from "../../utils/util";
 
 export interface PostRegisterAction {
     type: typeof POST_REGISTER;
@@ -40,35 +41,24 @@ export function getRegister(newUser: UserAuthorization) {
         })
         try {
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
-            const response = await fetch(REGISTER_URL, {
+            const registerInfo = await request(REGISTER_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newUser)
             });
-            if (!response.ok) {
-                const deniedInfo = await response.json() as ServerInfo;
-                dispatch({
-                    type: POST_REGISTER_FAILED,
-                    registerInfo: EMPTY_AUTHORIZATION_INFO,
-                    registerMessage: deniedInfo
-                });
-                return;
-            }
-
-            const registerInfo = await response.json() as AuthorizationInfo;
             dispatch({
                 type: POST_REGISTER_SUCCESS,
-                registerInfo: registerInfo,
+                registerInfo: registerInfo as AuthorizationInfo,
                 registerMessage: AUTHORIZED_SERVER_INFO
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, registerInfo.refreshToken);
-        } catch (err) {
+        } catch (error: any) {
             dispatch({
                 type: POST_REGISTER_FAILED,
                 registerInfo: EMPTY_AUTHORIZATION_INFO,
-                registerMessage: EMPTY_SERVER_INFO
+                registerMessage: error || EMPTY_SERVER_INFO
             });
         }
     }

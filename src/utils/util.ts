@@ -61,3 +61,17 @@ export function getIngredientTypeById(id: string, data: Ingredient[]): string {
     const ingredient = data.find(elem => elem._id === id);
     return ingredient ? ingredient.type : "";
 }
+
+function checkResponse(response: Response): Promise<any> {
+    if (response.ok) {
+        return response.json();
+    } else {
+        return response.json().then((data) => {
+            throw data;
+        });
+    }
+}
+
+export function request(url: string, options: RequestInit = {}): Promise<any> {
+    return fetch(url, options).then(checkResponse);
+}
