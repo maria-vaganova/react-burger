@@ -4,15 +4,16 @@ export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
 export const MAIN_TYPE = "main";
 
-export const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
-export const ORDER_POST_URL = 'https://norma.nomoreparties.space/api/orders';
-export const LOGIN_URL = 'https://norma.nomoreparties.space/api/auth/login';
-export const LOGOUT_URL = 'https://norma.nomoreparties.space/api/auth/logout';
-export const REGISTER_URL = 'https://norma.nomoreparties.space/api/auth/register';
-export const TOKEN_URL = 'https://norma.nomoreparties.space/api/auth/token';
-export const USER_URL = 'https://norma.nomoreparties.space/api/auth/user';
-export const FORGOT_PASSWORD_URL = 'https://norma.nomoreparties.space/api/password-reset';
-export const RESET_PASSWORD_URL = 'https://norma.nomoreparties.space/api/password-reset/reset';
+export const BASE_URL = 'https://norma.nomoreparties.space/api/';
+export const DATA_URL = BASE_URL + 'ingredients';
+export const ORDER_POST_URL = BASE_URL + 'orders';
+export const LOGIN_URL = BASE_URL + 'auth/login';
+export const LOGOUT_URL = BASE_URL + 'auth/logout';
+export const REGISTER_URL = BASE_URL + 'auth/register';
+export const TOKEN_URL = BASE_URL + 'auth/token';
+export const USER_URL = BASE_URL + 'auth/user';
+export const FORGOT_PASSWORD_URL = BASE_URL + 'password-reset';
+export const RESET_PASSWORD_URL = BASE_URL + 'password-reset/reset';
 
 export const DraggableTypes = {
     SORTED_ITEM: "card",

@@ -1,4 +1,4 @@
-import {API_URL, GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
+import {DATA_URL, GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
 import {Ingredient} from "../../utils/types";
 import {Dispatch} from "redux";
 
@@ -26,7 +26,7 @@ export function getData() {
             type: GET_DATA
         })
         try {
-            const response = await fetch(API_URL);
+            const response = await fetch(DATA_URL);
             if (response.ok) {
                 const dataInfo = (await response.json()).data as Ingredient[];
                 dispatch({
