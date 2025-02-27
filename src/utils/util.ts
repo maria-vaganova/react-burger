@@ -1,5 +1,5 @@
 import {CartItem, Ingredient} from "./types";
-import {BUN_TYPE} from "./data";
+import {BUN_TYPE, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "./data";
 
 export function restoreIngredientListFromCart(
     cart: CartItem[] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
@@ -74,4 +74,12 @@ function checkResponse(response: Response): Promise<any> {
 
 export function request(url: string, options: RequestInit = {}): Promise<any> {
     return fetch(url, options).then(checkResponse);
+}
+export function requestWithoutOptions(url: string): Promise<any> {
+    return fetch(url).then(checkResponse);
+}
+
+export function isUserAuthenticated(): boolean {
+    const result: boolean = (localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) || EMPTY_REFRESH_TOKEN) !== EMPTY_REFRESH_TOKEN;
+    return result;
 }
