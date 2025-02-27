@@ -75,11 +75,16 @@ function checkResponse(response: Response): Promise<any> {
 export function request(url: string, options: RequestInit = {}): Promise<any> {
     return fetch(url, options).then(checkResponse);
 }
+
 export function requestWithoutOptions(url: string): Promise<any> {
     return fetch(url).then(checkResponse);
 }
 
 export function isUserAuthenticated(): boolean {
-    const result: boolean = (localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) || EMPTY_REFRESH_TOKEN) !== EMPTY_REFRESH_TOKEN;
-    return result;
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG);
+    if (!refreshToken) {
+        localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
+        return false;
+    }
+    return refreshToken !== EMPTY_REFRESH_TOKEN;
 }

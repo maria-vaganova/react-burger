@@ -8,7 +8,7 @@ import {
     usePostPasswordDispatch
 } from "../../services/store";
 import {askToResetPassword} from "../../services/actions/passwordActions";
-import {EMPTY_SERVER_INFO} from "../../utils/data";
+import {EMPTY_SERVER_INFO, FORGOT_PASSWORD_VISITED_TAG} from "../../utils/data";
 
 function ForgotPassword() {
     const [email, setEmail] = useState<string>('')
@@ -26,7 +26,7 @@ function ForgotPassword() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        sessionStorage.setItem('forgotPasswordVisited', 'false');
+        sessionStorage.setItem(FORGOT_PASSWORD_VISITED_TAG, 'false');
     }, []);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ function ForgotPassword() {
             }
             alert(message);
         } else if (!passwordRequest && passwordMessage.success) {
-            sessionStorage.setItem('forgotPasswordVisited', 'true');
+            sessionStorage.setItem(FORGOT_PASSWORD_VISITED_TAG, 'true');
             navigate("/reset-password");
         }
     }, [passwordFailed, passwordRequest, passwordMessage, navigate]);

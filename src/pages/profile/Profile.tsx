@@ -45,7 +45,7 @@ function Profile() {
 
     useEffect(() => {
         if (tokenFailed) {
-            let message: string = "tokenFailed Ошибка сети";
+            let message: string = "Ошибка сети";
             if (tokenMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + tokenMessage.message;
             }
@@ -75,10 +75,12 @@ function Profile() {
     useEffect(() => {
         if (!currentToken || currentToken === "") {
             handleGetAccessToken();
-        } else {
-            handleGetUser();
         }
     }, []);
+
+    useEffect(() => {
+        if (currentToken) handleGetUser();
+    }, [currentToken]);
 
     useEffect(() => {
         if (userFailed && (userMessage?.message === "jwt expired" || userMessage?.message === "You should be authorised")) {
@@ -91,7 +93,7 @@ function Profile() {
 
     useEffect(() => {
         if (userFailed && userMessage?.message !== "jwt expired") {
-            let message: string = "userFailed Ошибка сети";
+            let message: string = "Ошибка сети";
             if (userMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + userMessage.message;
             }

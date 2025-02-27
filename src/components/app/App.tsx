@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import app from './App.module.css';
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
@@ -6,7 +6,7 @@ import BurgerConstructor from "../burger-constructor/BurgerConstructor";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {
-    dataStateToProps, loginStateToProps,
+    dataStateToProps,
     useAppSelector,
     useDataDispatch
 } from "../../services/store";

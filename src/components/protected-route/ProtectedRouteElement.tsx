@@ -1,6 +1,6 @@
 import React from 'react';
 import {Navigate, useLocation} from 'react-router-dom';
-import {EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "../../utils/data";
+import {isUserAuthenticated} from "../../utils/util";
 
 interface ProtectedRouteProps {
     redirectPath: string;
@@ -11,7 +11,7 @@ interface ProtectedRouteProps {
 function ProtectedRouteElement({children, redirectPath, isAuthorizedRedirect}: ProtectedRouteProps) {
     const location = useLocation();
 
-    const isAuthenticated: boolean = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) !== EMPTY_REFRESH_TOKEN;
+    const isAuthenticated: boolean = isUserAuthenticated();
 
     if (location.pathname === redirectPath) {
         return (<>{children}</>);

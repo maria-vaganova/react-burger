@@ -54,6 +54,7 @@ export const INCREMENT = "INCREMENT";
 export const DECREMENT = "DECREMENT";
 export const RESET = "RESET";
 
+export const FORGOT_PASSWORD_VISITED_TAG = "forgotPasswordVisited";
 export const REFRESH_TOKEN_STORAGE_TAG = "refreshToken";
 export const EMPTY_REFRESH_TOKEN = "EMPTY_REFRESH_TOKEN";
 

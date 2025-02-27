@@ -4,7 +4,7 @@ import {ChangeEvent, useEffect, useState} from "react";
 import {NavLink, useNavigate} from "react-router-dom";
 import {passwordStateToProps, useAppSelector, usePostPasswordDispatch} from "../../services/store";
 import {getNewPassword} from "../../services/actions/passwordActions";
-import {EMPTY_SERVER_INFO} from "../../utils/data";
+import {EMPTY_SERVER_INFO, FORGOT_PASSWORD_VISITED_TAG} from "../../utils/data";
 import {ResetPasswordInfo} from "../../utils/types";
 
 function ResetPassword() {
@@ -18,7 +18,7 @@ function ResetPassword() {
     }
 
     const navigate = useNavigate();
-    const visitedForgotPassword = sessionStorage.getItem('forgotPasswordVisited') === 'true';
+    const visitedForgotPassword = sessionStorage.getItem(FORGOT_PASSWORD_VISITED_TAG) === 'true';
     useEffect(() => {
         if (!visitedForgotPassword)
             navigate("/forgot-password");
@@ -41,7 +41,7 @@ function ResetPassword() {
                 }
                 alert(message);
             } else if (!passwordRequest && passwordMessage.success) {
-                sessionStorage.setItem('forgotPasswordVisited', 'false');
+                sessionStorage.setItem(FORGOT_PASSWORD_VISITED_TAG, 'false');
                 navigate("/login");
             }
     }, [passwordFailed, passwordRequest, passwordMessage, navigate]);

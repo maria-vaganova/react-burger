@@ -6,11 +6,12 @@ import {
     getBunFromCart,
     getDataIds,
     getIngredientTypeById,
+    isUserAuthenticated,
     restoreIngredientListFromCart
 } from "../../utils/util";
 import {Ingredient, CartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
-import {BUN_TYPE, DraggableTypes, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "../../utils/data";
+import {BUN_TYPE, DraggableTypes} from "../../utils/data";
 import {useDrop} from "react-dnd";
 import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
 import {
@@ -101,21 +102,25 @@ function BurgerConstructor() {
     const location = useLocation();
 
     const placeOrder = () => {
-        const isAuthenticated: boolean = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) !== EMPTY_REFRESH_TOKEN;
+        const isAuthenticated: boolean = isUserAuthenticated();
         if (!isAuthenticated) {
             navigate("/login", {state: {background: location}})
             return;
         }
+        if (cart.length === 0) {
+            return alert("Ошибка запроса: добавьте ингредиенты");
+        }
         handleOrder();
+    }
+
+    useEffect(() => {
         if (orderFailed) {
             return alert(('Ошибка сети'));
-        } else if (orderRequest) {
-            return alert(('Загрузка...'));
-        } else {
-            console.log("orderInfo - ", orderInfo);
+        } else if (orderInfo.success) {
+            console.log("orderInfo", orderInfo);
             openModal();
         }
-    }
+    }, [orderRequest, orderFailed, orderInfo]);
 
     return (
         <div style={{width: '600px'}}>
