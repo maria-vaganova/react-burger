@@ -7,6 +7,7 @@ import {
 } from "../../utils/data";
 import {OrderInfo} from "../../utils/types";
 import {Dispatch} from "redux";
+import {request} from "../../utils/util";
 
 export interface GetOrderNumberAction {
     type: typeof GET_ORDER_NUMBER;
@@ -32,25 +33,17 @@ export function getOrderNumber(ingredients: string[]) {
             type: GET_ORDER_NUMBER
         })
         try {
-            const response = await fetch(ORDER_POST_URL, {
+            const orderInfo = await request(ORDER_POST_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ingredients})
             });
-
-            if (response.ok) {
-                const orderInfo = await response.json() as OrderInfo;
-                dispatch({
-                    type: GET_ORDER_NUMBER_SUCCESS,
-                    orderInfo: orderInfo
-                });
-            } else {
-                dispatch({
-                    type: GET_ORDER_NUMBER_FAILED
-                });
-            }
+            dispatch({
+                type: GET_ORDER_NUMBER_SUCCESS,
+                orderInfo: orderInfo as OrderInfo
+            });
         } catch (err) {
             dispatch({
                 type: GET_ORDER_NUMBER_FAILED
