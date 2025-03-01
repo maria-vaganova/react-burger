@@ -1,5 +1,5 @@
 import {CartItem, Ingredient} from "./types";
-import {BUN_TYPE} from "./data";
+import {BUN_TYPE, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "./data";
 
 export function restoreIngredientListFromCart(
     cart: CartItem[] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
@@ -60,4 +60,27 @@ export function getDataIds(data: Ingredient[]): string[] {
 export function getIngredientTypeById(id: string, data: Ingredient[]): string {
     const ingredient = data.find(elem => elem._id === id);
     return ingredient ? ingredient.type : "";
+}
+
+function checkResponse(response: Response): Promise<any> {
+    if (response.ok) {
+        return response.json();
+    } else {
+        return response.json().then((data) => {
+            throw data;
+        });
+    }
+}
+
+export function request(url: string, options: RequestInit = {}): Promise<any> {
+    return fetch(url, options).then(checkResponse);
+}
+
+export function isUserAuthenticated(): boolean {
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG);
+    if (!refreshToken) {
+        localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
+        return false;
+    }
+    return refreshToken !== EMPTY_REFRESH_TOKEN;
 }

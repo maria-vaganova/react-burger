@@ -1,6 +1,7 @@
-import {API_URL, GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
+import {DATA_URL, GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
 import {Ingredient} from "../../utils/types";
 import {Dispatch} from "redux";
+import {request} from "../../utils/util";
 
 export interface GetDataAction {
     type: typeof GET_DATA;
@@ -26,18 +27,11 @@ export function getData() {
             type: GET_DATA
         })
         try {
-            const response = await fetch(API_URL);
-            if (response.ok) {
-                const dataInfo = (await response.json()).data as Ingredient[];
-                dispatch({
-                    type: GET_DATA_SUCCESS,
-                    dataInfo
-                });
-            } else {
-                dispatch({
-                    type: GET_DATA_FAILED
-                });
-            }
+            const dataInfo = await request(DATA_URL);
+            dispatch({
+                type: GET_DATA_SUCCESS,
+                dataInfo: dataInfo.data as Ingredient[]
+            });
         } catch (err) {
             dispatch({
                 type: GET_DATA_FAILED

@@ -9,7 +9,7 @@ export interface CategorySectionProps {
     id: string,
     name: string,
     type: string,
-    openModal: () => void
+    openModal: (ingredientId: string) => void
 }
 
 function CategorySection({id, name, type, openModal}: CategorySectionProps) {
@@ -19,7 +19,7 @@ function CategorySection({id, name, type, openModal}: CategorySectionProps) {
     const showIngredientDetails = (ingredientId: string) => {
         const getIngredientDetails = fulfilIngredientDetails(fulfilIngredient(ingredientId, data));
         dispatch(getIngredientDetails);
-        openModal();
+        openModal(ingredientId);
     }
 
     return (

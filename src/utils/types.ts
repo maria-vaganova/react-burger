@@ -13,6 +13,12 @@ export interface Ingredient {
     __v: number;
 }
 
+export interface DataState {
+    dataRequest: boolean;
+    dataFailed: boolean;
+    dataInfo: Ingredient[];
+}
+
 export interface TotalPriceState {
     count: number;
 }
@@ -22,14 +28,8 @@ export interface TotalPriceAction {
     ingredient?: Ingredient;
 }
 
-export interface OrderInfo {
-    name: string;
-    order: Order;
-    success: boolean;
-}
-
-export interface Order {
-    number: number;
+export interface CartState {
+    cartItems: CartItem[];
 }
 
 export interface CartItem {
@@ -45,10 +45,92 @@ export interface OrderState {
     orderInfo: OrderInfo;
 }
 
-export interface DataState {
-    dataRequest: boolean;
-    dataFailed: boolean;
-    dataInfo: Ingredient[];
+export interface OrderInfo {
+    name: string;
+    order: Order;
+    success: boolean;
+}
+
+export interface Order {
+    number: number;
+}
+
+export interface RegisterState {
+    registerRequest: boolean;
+    registerFailed: boolean;
+    registerInfo: AuthorizationInfo;
+    registerMessage: ServerInfo;
+}
+
+export interface LoginState {
+    loginRequest: boolean;
+    loginFailed: boolean;
+    loginInfo: AuthorizationInfo;
+    loginMessage: ServerInfo;
+}
+
+export interface ServerInfo {
+    message: string;
+    success: boolean;
+}
+
+export interface AuthorizationInfo {
+    success: boolean;
+    accessToken: string;
+    refreshToken: string;
+    user: UserInfo;
+}
+
+export interface UserInfo {
+    email: string;
+    name: string;
+}
+
+export interface UserToLogIn {
+    email: string;
+    password: string;
+}
+
+export interface UserAuthorization {
+    email: string;
+    password: string;
+    name: string;
+}
+
+export interface UserState {
+    userRequest: boolean;
+    userFailed: boolean;
+    userInfo: CurrentUserInfo;
+    userMessage: ServerInfo;
+}
+
+export interface CurrentUserInfo {
+    success: boolean;
+    user: UserInfo;
+}
+
+export interface TokenState {
+    tokenRequest: boolean;
+    tokenFailed: boolean;
+    tokenInfo: TokenInfo;
+    tokenMessage: ServerInfo;
+}
+
+export interface TokenInfo {
+    success: boolean;
+    accessToken: string;
+    refreshToken: string;
+}
+
+export interface PasswordState {
+    passwordRequest: boolean;
+    passwordFailed: boolean;
+    passwordMessage: ServerInfo;
+}
+
+export interface ResetPasswordInfo {
+    password: string;
+    token: string;
 }
 
 export interface IngredientDetailInfo {
@@ -62,8 +144,4 @@ export interface IngredientDetailInfo {
 
 export interface IngredientDetailState {
     ingredientDetails: IngredientDetailInfo;
-}
-
-export interface CartState {
-    cartItems: CartItem[];
 }

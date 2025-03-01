@@ -1,14 +1,18 @@
 import {createStore, applyMiddleware, compose, StoreEnhancer, Dispatch} from 'redux';
 import {thunk, ThunkDispatch} from 'redux-thunk';
-import {rootReducer} from "./reducers/rootReducer";
 import {useDispatch, useSelector} from "react-redux";
+import {createSelector} from "@reduxjs/toolkit";
+import {rootReducer} from "./reducers/rootReducer";
 import {OrderActions} from "./actions/orderActions";
 import {IngredientDetailActionTypes} from "./actions/detailActions";
 import {DataActions} from "./actions/dataActions";
 import {CartActionTypes} from "./actions/cartActions";
-import {createSelector} from "@reduxjs/toolkit";
-import totalPriceReducer from "./reducers/totalPriceReducer";
 import {TotalPriceActionTypes} from "./actions/totalPriceActions";
+import {RegisterActions} from "./actions/registerActions";
+import {LoginActions, LogoutActions} from "./actions/loginActions";
+import {GetUserActions, SetUserActions} from "./actions/userActions";
+import {GetAccessTokenActions} from "./actions/tokenActions";
+import {PostPasswordActions} from "./actions/passwordActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -21,6 +25,81 @@ type AppStore = typeof store;
 type RootState = ReturnType<AppStore['getState']>;
 
 export const useAppSelector = useSelector.withTypes<RootState>();
+
+const selectPasswordRequest = (state: RootState) => state.password.passwordRequest;
+const selectPasswordFailed = (state: RootState) => state.password.passwordFailed;
+const selectPasswordMessage = (state: RootState) => state.password.passwordMessage;
+export const passwordStateToProps = createSelector(
+    [selectPasswordRequest, selectPasswordFailed, selectPasswordMessage],
+    (passwordRequest, passwordFailed, passwordMessage) => ({
+        passwordRequest,
+        passwordFailed,
+        passwordMessage
+    })
+);
+export const usePostPasswordDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, PostPasswordActions>>();
+
+const selectTokenRequest = (state: RootState) => state.token.tokenRequest;
+const selectTokenFailed = (state: RootState) => state.token.tokenFailed;
+const selectTokenInfo = (state: RootState) => state.token.tokenInfo;
+const selectTokenMessage = (state: RootState) => state.token.tokenMessage;
+export const tokenStateToProps = createSelector(
+    [selectTokenRequest, selectTokenFailed, selectTokenInfo, selectTokenMessage],
+    (tokenRequest, tokenFailed, tokenInfo, tokenMessage) => ({
+        tokenRequest,
+        tokenFailed,
+        tokenInfo,
+        tokenMessage
+    })
+);
+export const useGetAccessTokenDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, GetAccessTokenActions>>();
+
+const selectUserRequest = (state: RootState) => state.user.userRequest;
+const selectUserFailed = (state: RootState) => state.user.userFailed;
+const selectUserInfo = (state: RootState) => state.user.userInfo;
+const selectUserMessage = (state: RootState) => state.user.userMessage;
+export const userStateToProps = createSelector(
+    [selectUserRequest, selectUserFailed, selectUserInfo, selectUserMessage],
+    (userRequest, userFailed, userInfo, userMessage) => ({
+        userRequest,
+        userFailed,
+        userInfo,
+        userMessage
+    })
+);
+export const useGetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, GetUserActions>>();
+export const useSetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, SetUserActions>>();
+
+const selectLoginRequest = (state: RootState) => state.login.loginRequest;
+const selectLoginFailed = (state: RootState) => state.login.loginFailed;
+const selectLoginInfo = (state: RootState) => state.login.loginInfo;
+const selectLoginMessage = (state: RootState) => state.login.loginMessage;
+export const loginStateToProps = createSelector(
+    [selectLoginRequest, selectLoginFailed, selectLoginInfo, selectLoginMessage],
+    (loginRequest, loginFailed, loginInfo, loginMessage) => ({
+        loginRequest,
+        loginFailed,
+        loginInfo,
+        loginMessage
+    })
+);
+export const useLoginDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, LoginActions>>();
+export const useLogoutDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, LogoutActions>>();
+
+const selectRegisterRequest = (state: RootState) => state.register.registerRequest;
+const selectRegisterFailed = (state: RootState) => state.register.registerFailed;
+const selectRegisterInfo = (state: RootState) => state.register.registerInfo;
+const selectRegisterMessage = (state: RootState) => state.register.registerMessage;
+export const registerStateToProps = createSelector(
+    [selectRegisterRequest, selectRegisterFailed, selectRegisterInfo, selectRegisterMessage],
+    (registerRequest, registerFailed, registerInfo, registerMessage) => ({
+        registerRequest,
+        registerFailed,
+        registerInfo,
+        registerMessage
+    })
+);
+export const useRegisterDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, RegisterActions>>();
 
 const selectOrderRequest = (state: RootState) => state.order.orderRequest;
 const selectOrderFailed = (state: RootState) => state.order.orderFailed;

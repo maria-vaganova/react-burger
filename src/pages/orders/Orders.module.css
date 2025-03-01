@@ -1,0 +1,16 @@
+.content {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 60px;
+    justify-content: center;
+    position: relative;
+    margin-top: 120px;
+}
+
+.centerItems {
+    width: 480px;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}

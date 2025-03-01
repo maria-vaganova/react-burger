@@ -1,15 +1,30 @@
 import React from 'react';
 import ingredientDetails from "./IngredientDetails.module.css";
-import {IngredientDetailInfo} from "../../utils/types";
+import {useAppSelector} from "../../services/store";
+import {useParams} from "react-router";
+import {Ingredient} from "../../utils/types";
+import NotFound404 from "../../pages/not-found/NotFound404";
 
-interface IngredientDetailsProps {
-    ingredientDetailInfo: IngredientDetailInfo
-}
+function IngredientDetails({isModal}: { isModal?: boolean }) {
 
-function IngredientDetails({ingredientDetailInfo}: IngredientDetailsProps) {
+    const {id} = useParams<{ id: string }>();
+    const ingredients = useAppSelector((state) => state.data.dataInfo);
+
+    const ingredientDetailInfo: Ingredient | undefined = ingredients.find((item: Ingredient) => item._id === id);
+
+    if (!ingredientDetailInfo) {
+        return (
+            <NotFound404/>
+        );
+    }
+
+    const titleStyle = isModal
+        ? "text text_type_main-large " + ingredientDetails.titleModal
+        : "text text_type_main-large " + ingredientDetails.title;
+
     return (
         <div className={ingredientDetails.content}>
-            <p className={"text text_type_main-large " + ingredientDetails.title}>Детали ингредиента</p>
+            <p className={titleStyle}>Детали ингредиента</p>
             <img alt={"Illustration"} src={ingredientDetailInfo.image_large}
                  className={ingredientDetails.illustration}/>
             <p className="text text_type_main-medium mt-4 mb-8">{ingredientDetailInfo.name}</p>

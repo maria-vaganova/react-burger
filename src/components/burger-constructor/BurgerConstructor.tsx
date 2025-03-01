@@ -6,6 +6,7 @@ import {
     getBunFromCart,
     getDataIds,
     getIngredientTypeById,
+    isUserAuthenticated,
     restoreIngredientListFromCart
 } from "../../utils/util";
 import {Ingredient, CartItem} from "../../utils/types";
@@ -25,6 +26,7 @@ import {addIngredientToCart} from "../../services/actions/cartActions";
 import {v4 as uuid_v4} from 'uuid';
 import {increment, resetPrice} from "../../services/actions/totalPriceActions";
 import IndexedContainer from "../indexed-container/IndexedContainer";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function BurgerConstructor() {
     const {data} = useAppSelector(dataInfoSelector);
@@ -96,17 +98,29 @@ function BurgerConstructor() {
         clearOrder();
     };
 
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const placeOrder = () => {
+        const isAuthenticated: boolean = isUserAuthenticated();
+        if (!isAuthenticated) {
+            navigate("/login", {state: {background: location}})
+            return;
+        }
+        if (cart.length === 0) {
+            return alert("Ошибка запроса: добавьте ингредиенты");
+        }
         handleOrder();
+    }
+
+    useEffect(() => {
         if (orderFailed) {
             return alert(('Ошибка сети'));
-        } else if (orderRequest) {
-            return alert(('Загрузка...'));
-        } else {
-            console.log("orderInfo - ", orderInfo);
+        } else if (orderInfo.success) {
+            console.log("orderInfo", orderInfo);
             openModal();
         }
-    }
+    }, [orderRequest, orderFailed, orderInfo]);
 
     return (
         <div style={{width: '600px'}}>
@@ -124,7 +138,7 @@ function BurgerConstructor() {
                             thumbnail={bun.image}
                             extraClass={constructor.bunItem}
                         />)}
-                        <IndexedContainer />
+                        <IndexedContainer/>
                         {bun && (<ConstructorElement
                             type="bottom"
                             isLocked={true}
