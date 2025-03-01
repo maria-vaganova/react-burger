@@ -5,7 +5,7 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {passwordStateToProps, useAppSelector, usePostPasswordDispatch} from "../../services/store";
 import {getNewPassword} from "../../services/actions/passwordActions";
 import {EMPTY_SERVER_INFO, FORGOT_PASSWORD_VISITED_TAG} from "../../utils/data";
-import {ResetPasswordInfo} from "../../utils/types";
+import {IResetPasswordInfo} from "../../utils/types";
 
 function ResetPassword() {
     const [password, setPassword] = useState<string>('')
@@ -27,7 +27,7 @@ function ResetPassword() {
     const {passwordRequest, passwordFailed, passwordMessage} = useAppSelector(passwordStateToProps);
     const dispatchResetPassword = usePostPasswordDispatch();
     const handleResetPassword = () => {
-        const data: ResetPasswordInfo = {token: code, password: password};
+        const data: IResetPasswordInfo = {token: code, password: password};
         const getResetPasswordThunk = getNewPassword(data);
         dispatchResetPassword(getResetPasswordThunk);
     };

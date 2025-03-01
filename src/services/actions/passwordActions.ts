@@ -7,30 +7,30 @@ import {
     FORGOT_PASSWORD_URL,
     RESET_PASSWORD_URL
 } from "../../utils/data";
-import {ResetPasswordInfo, ServerInfo} from "../../utils/types";
+import {IResetPasswordInfo, IServerInfo} from "../../utils/types";
 import {request} from "../../utils/util";
 
-export interface PostPasswordAction {
+export interface IPostPasswordAction {
     type: typeof POST_PASSWORD;
 }
 
-export interface PostPasswordSuccessAction {
+export interface IPostPasswordSuccessAction {
     type: typeof POST_PASSWORD_SUCCESS;
-    passwordMessage: ServerInfo;
+    passwordMessage: IServerInfo;
 }
 
-export interface PostPasswordFailedAction {
+export interface IPostPasswordFailedAction {
     type: typeof POST_PASSWORD_FAILED;
-    passwordMessage: ServerInfo;
+    passwordMessage: IServerInfo;
 }
 
-export type PostPasswordActions =
-    | PostPasswordAction
-    | PostPasswordSuccessAction
-    | PostPasswordFailedAction;
+export type TPostPasswordActions =
+    | IPostPasswordAction
+    | IPostPasswordSuccessAction
+    | IPostPasswordFailedAction;
 
 export function askToResetPassword(email: string) {
-    return async function askToResetPasswordThunk(dispatch: Dispatch<PostPasswordActions>) {
+    return async function askToResetPasswordThunk(dispatch: Dispatch<TPostPasswordActions>) {
         dispatch({
             type: POST_PASSWORD
         })
@@ -44,7 +44,7 @@ export function askToResetPassword(email: string) {
             });
             dispatch({
                 type: POST_PASSWORD_SUCCESS,
-                passwordMessage: resetInfo as ServerInfo
+                passwordMessage: resetInfo as IServerInfo
             });
         } catch (error: any) {
             dispatch({
@@ -55,8 +55,8 @@ export function askToResetPassword(email: string) {
     }
 }
 
-export function getNewPassword(data: ResetPasswordInfo) {
-    return async function getNewPasswordThunk(dispatch: Dispatch<PostPasswordActions>) {
+export function getNewPassword(data: IResetPasswordInfo) {
+    return async function getNewPasswordThunk(dispatch: Dispatch<TPostPasswordActions>) {
         dispatch({
             type: POST_PASSWORD
         })
@@ -70,7 +70,7 @@ export function getNewPassword(data: ResetPasswordInfo) {
             });
             dispatch({
                 type: POST_PASSWORD_SUCCESS,
-                passwordMessage: passwordInfo as ServerInfo
+                passwordMessage: passwordInfo as IServerInfo
             });
         } catch (error: any) {
             dispatch({

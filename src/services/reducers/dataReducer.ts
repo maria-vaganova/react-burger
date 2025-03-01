@@ -1,14 +1,14 @@
-import {DataState} from "../../utils/types";
+import {IDataState} from "../../utils/types";
 import {Reducer} from "redux";
 import {GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
 
-const initialState: DataState = {
+const initialState: IDataState = {
     dataRequest: false,
     dataFailed: false,
     dataInfo: []
 }
 
-const dataReducer: Reducer<DataState, { type: string; dataInfo?: any }> = (state = initialState, action) => {
+const dataReducer: Reducer<IDataState, { type: string; dataInfo?: any }> = (state = initialState, action) => {
     switch (action.type) {
         case GET_DATA: {
             return {

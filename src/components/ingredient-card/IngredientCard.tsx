@@ -2,21 +2,21 @@ import {useEffect, useState} from 'react';
 import card from './IngredientCard.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {fulfilIngredient, getIngredientCountFromCartById} from "../../utils/util";
-import {Ingredient} from "../../utils/types";
+import {IIngredient} from "../../utils/types";
 import {useDrag} from "react-dnd";
 import {DraggableTypes} from "../../utils/data";
 import {cartSelector, dataInfoSelector, useAppSelector} from "../../services/store";
 
-export interface IngredientCardProps {
+export interface IIngredientCardProps {
     id: string,
     onClick: () => void
 }
 
-function IngredientCard({id, onClick}: IngredientCardProps) {
+function IngredientCard({id, onClick}: IIngredientCardProps) {
     const {data} = useAppSelector(dataInfoSelector);
 
     const [counter, setCounter] = useState(0);
-    const ingredient: Ingredient = fulfilIngredient(id, data);
+    const ingredient: IIngredient = fulfilIngredient(id, data);
     const {cart} = useAppSelector(cartSelector);
 
     const [, dragRef] = useDrag({

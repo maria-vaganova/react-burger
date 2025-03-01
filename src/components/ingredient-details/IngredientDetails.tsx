@@ -2,15 +2,19 @@ import React from 'react';
 import ingredientDetails from "./IngredientDetails.module.css";
 import {useAppSelector} from "../../services/store";
 import {useParams} from "react-router";
-import {Ingredient} from "../../utils/types";
+import {IIngredient} from "../../utils/types";
 import NotFound404 from "../../pages/not-found/NotFound404";
 
-function IngredientDetails({isModal}: { isModal?: boolean }) {
+interface IIngredientDetailsProps {
+    isModal: boolean
+}
+
+function IngredientDetails({isModal}: IIngredientDetailsProps) {
 
     const {id} = useParams<{ id: string }>();
     const ingredients = useAppSelector((state) => state.data.dataInfo);
 
-    const ingredientDetailInfo: Ingredient | undefined = ingredients.find((item: Ingredient) => item._id === id);
+    const ingredientDetailInfo: IIngredient | undefined = ingredients.find((item: IIngredient) => item._id === id);
 
     if (!ingredientDetailInfo) {
         return (

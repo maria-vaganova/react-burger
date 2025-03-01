@@ -1,4 +1,4 @@
-export interface Ingredient {
+export interface IIngredient {
     _id: string;
     name: string;
     type: string;
@@ -13,127 +13,122 @@ export interface Ingredient {
     __v: number;
 }
 
-export interface DataState {
+export interface IDataState {
     dataRequest: boolean;
     dataFailed: boolean;
-    dataInfo: Ingredient[];
+    dataInfo: IIngredient[];
 }
 
-export interface TotalPriceState {
+export interface ITotalPriceState {
     count: number;
 }
 
-export interface TotalPriceAction {
-    type: "increment" | "decrement" | "reset";
-    ingredient?: Ingredient;
+export interface ICartState {
+    cartItems: ICartItem[];
 }
 
-export interface CartState {
-    cartItems: CartItem[];
-}
-
-export interface CartItem {
+export interface ICartItem {
     id: string;
     type: string;
     displayOrder: number;
     key: string;
 }
 
-export interface OrderState {
+export interface IOrderState {
     orderRequest: boolean;
     orderFailed: boolean;
-    orderInfo: OrderInfo;
+    orderInfo: IOrderInfo;
 }
 
-export interface OrderInfo {
+export interface IOrderInfo {
     name: string;
-    order: Order;
+    order: IOrder;
     success: boolean;
 }
 
-export interface Order {
+export interface IOrder {
     number: number;
 }
 
-export interface RegisterState {
+export interface IRegisterState {
     registerRequest: boolean;
     registerFailed: boolean;
-    registerInfo: AuthorizationInfo;
-    registerMessage: ServerInfo;
+    registerInfo: IAuthorizationInfo;
+    registerMessage: IServerInfo;
 }
 
-export interface LoginState {
+export interface ILoginState {
     loginRequest: boolean;
     loginFailed: boolean;
-    loginInfo: AuthorizationInfo;
-    loginMessage: ServerInfo;
+    loginInfo: IAuthorizationInfo;
+    loginMessage: IServerInfo;
 }
 
-export interface ServerInfo {
+export interface IServerInfo {
     message: string;
     success: boolean;
 }
 
-export interface AuthorizationInfo {
+export interface IAuthorizationInfo {
     success: boolean;
     accessToken: string;
     refreshToken: string;
-    user: UserInfo;
+    user: IUserInfo;
 }
 
-export interface UserInfo {
+export interface IUserInfo {
     email: string;
     name: string;
 }
 
-export interface UserToLogIn {
+export interface IUserToLogIn {
     email: string;
     password: string;
 }
 
-export interface UserAuthorization {
+export interface IUserAuthorization {
     email: string;
     password: string;
     name: string;
 }
 
-export interface UserState {
+export interface IUserState {
     userRequest: boolean;
     userFailed: boolean;
-    userInfo: CurrentUserInfo;
-    userMessage: ServerInfo;
+    userInfo: ICurrentUserInfo;
+    userMessage: IServerInfo;
 }
 
-export interface CurrentUserInfo {
+export interface ICurrentUserInfo {
     success: boolean;
-    user: UserInfo;
+    user: IUserInfo;
 }
 
-export interface TokenState {
+export interface ITokenState {
     tokenRequest: boolean;
     tokenFailed: boolean;
-    tokenInfo: TokenInfo;
-    tokenMessage: ServerInfo;
+    tokenInfo: ITokenInfo;
+    tokenMessage: IServerInfo;
 }
 
-export interface TokenInfo {
+export interface ITokenInfo {
     success: boolean;
     accessToken: string;
     refreshToken: string;
 }
 
-export interface PasswordState {
+export interface IPasswordState {
     passwordRequest: boolean;
     passwordFailed: boolean;
-    passwordMessage: ServerInfo;
+    passwordMessage: IServerInfo;
 }
 
-export interface ResetPasswordInfo {
+export interface IResetPasswordInfo {
     password: string;
     token: string;
 }
 
-export interface IngredientDetailInfo {
+export interface IIngredientDetailInfo {
     image_large: string;
     name: string;
     calories: number;
@@ -142,6 +137,6 @@ export interface IngredientDetailInfo {
     carbohydrates: number;
 }
 
-export interface IngredientDetailState {
-    ingredientDetails: IngredientDetailInfo;
+export interface IIngredientDetailState {
+    ingredientDetails: IIngredientDetailInfo;
 }

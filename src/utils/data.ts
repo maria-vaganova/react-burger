@@ -1,4 +1,4 @@
-import {AuthorizationInfo, CurrentUserInfo, IngredientDetailInfo, OrderInfo, ServerInfo, TokenInfo} from "./types";
+import {IAuthorizationInfo, ICurrentUserInfo, IIngredientDetailInfo, IOrderInfo, IServerInfo, ITokenInfo} from "./types";
 
 export const BUN_TYPE = "bun";
 export const SAUCE_TYPE = "sauce";
@@ -58,7 +58,7 @@ export const FORGOT_PASSWORD_VISITED_TAG = "forgotPasswordVisited";
 export const REFRESH_TOKEN_STORAGE_TAG = "refreshToken";
 export const EMPTY_REFRESH_TOKEN = "EMPTY_REFRESH_TOKEN";
 
-export const EMPTY_CURRENT_USER_INFO: CurrentUserInfo = {
+export const EMPTY_CURRENT_USER_INFO: ICurrentUserInfo = {
     success: false,
     user: {
         email: "",
@@ -66,7 +66,7 @@ export const EMPTY_CURRENT_USER_INFO: CurrentUserInfo = {
     }
 };
 
-export const EMPTY_AUTHORIZATION_INFO: AuthorizationInfo = {
+export const EMPTY_AUTHORIZATION_INFO: IAuthorizationInfo = {
     success: false,
     accessToken: "",
     refreshToken: "",
@@ -76,29 +76,29 @@ export const EMPTY_AUTHORIZATION_INFO: AuthorizationInfo = {
     }
 };
 
-export const EMPTY_TOKEN_INFO: TokenInfo = {
+export const EMPTY_TOKEN_INFO: ITokenInfo = {
     success: false,
     accessToken: "",
     refreshToken: ""
 };
 
-export const EMPTY_SERVER_INFO: ServerInfo = {
+export const EMPTY_SERVER_INFO: IServerInfo = {
     success: false,
     message: "Empty message"
 }
 
-export const AUTHORIZED_SERVER_INFO: ServerInfo = {
+export const AUTHORIZED_SERVER_INFO: IServerInfo = {
     success: true,
     message: "Authorization completed"
 }
 
-export const EMPTY_ORDER_INFO: OrderInfo = {
+export const EMPTY_ORDER_INFO: IOrderInfo = {
     name: "Ingredient ids must be provided",
     order: {number: 0},
     success: false
 };
 
-export const EMPTY_INGREDIENT_DETAILS: IngredientDetailInfo = {
+export const EMPTY_INGREDIENT_DETAILS: IIngredientDetailInfo = {
     image_large: "none",
     name: "Ingredient must be provided",
     calories: 0,

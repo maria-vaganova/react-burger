@@ -1,4 +1,4 @@
-import {Ingredient} from "../../utils/types";
+import {IIngredient} from "../../utils/types";
 import element from "./IndexedElement.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag, useDrop} from "react-dnd";
@@ -6,13 +6,13 @@ import {DraggableTypes} from "../../utils/data";
 import {useCartDispatch} from "../../services/store";
 import {discardIngredientFromCart} from "../../services/actions/cartActions";
 
-export interface IndexedElementProps {
-    ingredient: Ingredient,
+export interface IIndexedElementProps {
+    ingredient: IIngredient,
     displayOrder: number,
     moveElement: (dragIndex: number, hoverIndex: number) => void
 }
 
-function IndexedElement({ingredient, displayOrder, moveElement}: IndexedElementProps) {
+function IndexedElement({ingredient, displayOrder, moveElement}: IIndexedElementProps) {
     const dispatch = useCartDispatch();
     const discardIngredient = (displayOrder: number) => {
         dispatch(discardIngredientFromCart(displayOrder));

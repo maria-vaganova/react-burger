@@ -3,16 +3,16 @@ import {thunk, ThunkDispatch} from 'redux-thunk';
 import {useDispatch, useSelector} from "react-redux";
 import {createSelector} from "@reduxjs/toolkit";
 import {rootReducer} from "./reducers/rootReducer";
-import {OrderActions} from "./actions/orderActions";
-import {IngredientDetailActionTypes} from "./actions/detailActions";
-import {DataActions} from "./actions/dataActions";
-import {CartActionTypes} from "./actions/cartActions";
-import {TotalPriceActionTypes} from "./actions/totalPriceActions";
-import {RegisterActions} from "./actions/registerActions";
-import {LoginActions, LogoutActions} from "./actions/loginActions";
-import {GetUserActions, SetUserActions} from "./actions/userActions";
-import {GetAccessTokenActions} from "./actions/tokenActions";
-import {PostPasswordActions} from "./actions/passwordActions";
+import {TOrderActions} from "./actions/orderActions";
+import {TIngredientDetailActions} from "./actions/detailActions";
+import {TDataActions} from "./actions/dataActions";
+import {TCartActions} from "./actions/cartActions";
+import {TTotalPriceActions} from "./actions/totalPriceActions";
+import {TRegisterActions} from "./actions/registerActions";
+import {TLoginActions, TLogoutActions} from "./actions/loginActions";
+import {TGetUserActions, TSetUserActions} from "./actions/userActions";
+import {TGetAccessTokenActions} from "./actions/tokenActions";
+import {TPostPasswordActions} from "./actions/passwordActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 const initialState = {};
@@ -37,7 +37,7 @@ export const passwordStateToProps = createSelector(
         passwordMessage
     })
 );
-export const usePostPasswordDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, PostPasswordActions>>();
+export const usePostPasswordDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TPostPasswordActions>>();
 
 const selectTokenRequest = (state: RootState) => state.token.tokenRequest;
 const selectTokenFailed = (state: RootState) => state.token.tokenFailed;
@@ -52,7 +52,7 @@ export const tokenStateToProps = createSelector(
         tokenMessage
     })
 );
-export const useGetAccessTokenDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, GetAccessTokenActions>>();
+export const useGetAccessTokenDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TGetAccessTokenActions>>();
 
 const selectUserRequest = (state: RootState) => state.user.userRequest;
 const selectUserFailed = (state: RootState) => state.user.userFailed;
@@ -67,8 +67,8 @@ export const userStateToProps = createSelector(
         userMessage
     })
 );
-export const useGetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, GetUserActions>>();
-export const useSetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, SetUserActions>>();
+export const useGetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TGetUserActions>>();
+export const useSetUserDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TSetUserActions>>();
 
 const selectLoginRequest = (state: RootState) => state.login.loginRequest;
 const selectLoginFailed = (state: RootState) => state.login.loginFailed;
@@ -83,8 +83,8 @@ export const loginStateToProps = createSelector(
         loginMessage
     })
 );
-export const useLoginDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, LoginActions>>();
-export const useLogoutDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, LogoutActions>>();
+export const useLoginDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TLoginActions>>();
+export const useLogoutDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TLogoutActions>>();
 
 const selectRegisterRequest = (state: RootState) => state.register.registerRequest;
 const selectRegisterFailed = (state: RootState) => state.register.registerFailed;
@@ -99,7 +99,7 @@ export const registerStateToProps = createSelector(
         registerMessage
     })
 );
-export const useRegisterDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, RegisterActions>>();
+export const useRegisterDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TRegisterActions>>();
 
 const selectOrderRequest = (state: RootState) => state.order.orderRequest;
 const selectOrderFailed = (state: RootState) => state.order.orderFailed;
@@ -112,11 +112,11 @@ export const orderStateToProps = createSelector(
         orderInfo
     })
 );
-export const useOrderDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, OrderActions>>();
+export const useOrderDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TOrderActions>>();
 
 const selectIngredientDetail = (state: RootState) => state.ingredientDetails.ingredientDetails;
 export const detailsSelector = createSelector(selectIngredientDetail, (selectedIngredient) => ({selectedIngredient}));
-export const useDetailDispatch = useDispatch.withTypes<Dispatch<IngredientDetailActionTypes>>();
+export const useDetailDispatch = useDispatch.withTypes<Dispatch<TIngredientDetailActions>>();
 
 const selectDataRequest = (state: RootState) => state.data.dataRequest;
 const selectDataFailed = (state: RootState) => state.data.dataFailed;
@@ -129,12 +129,12 @@ export const dataStateToProps = createSelector(
 );
 const selectDataInfo = (state: RootState) => state.data.dataInfo;
 export const dataInfoSelector = createSelector(selectDataInfo, (data) => ({data}));
-export const useDataDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, DataActions>>();
+export const useDataDispatch = useDispatch.withTypes<ThunkDispatch<RootState, unknown, TDataActions>>();
 
 const selectCart = (state: RootState) => state.cart.cartItems;
 export const cartSelector = createSelector(selectCart, (cart) => ({cart}));
-export const useCartDispatch = useDispatch.withTypes<Dispatch<CartActionTypes>>();
+export const useCartDispatch = useDispatch.withTypes<Dispatch<TCartActions>>();
 
 const selectTotalPrice = (state: RootState) => state.totalPrice.count;
 export const totalPriceSelector = createSelector(selectTotalPrice, (totalPrice) => ({totalPrice}));
-export const useTotalPriceDispatch = useDispatch.withTypes<Dispatch<TotalPriceActionTypes>>();
+export const useTotalPriceDispatch = useDispatch.withTypes<Dispatch<TTotalPriceActions>>();

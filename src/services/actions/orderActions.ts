@@ -5,30 +5,30 @@ import {
     GET_ORDER_NUMBER_SUCCESS,
     ORDER_POST_URL
 } from "../../utils/data";
-import {OrderInfo} from "../../utils/types";
+import {IOrderInfo} from "../../utils/types";
 import {Dispatch} from "redux";
 import {request} from "../../utils/util";
 
-export interface GetOrderNumberAction {
+export interface IGetOrderNumberAction {
     type: typeof GET_ORDER_NUMBER;
 }
 
-export interface GetOrderNumberSuccessAction {
+export interface IGetOrderNumberSuccessAction {
     type: typeof GET_ORDER_NUMBER_SUCCESS;
-    orderInfo: OrderInfo;
+    orderInfo: IOrderInfo;
 }
 
-export interface GetOrderNumberFailedAction {
+export interface IGetOrderNumberFailedAction {
     type: typeof GET_ORDER_NUMBER_FAILED;
 }
 
-export type OrderActions =
-    | GetOrderNumberAction
-    | GetOrderNumberSuccessAction
-    | GetOrderNumberFailedAction;
+export type TOrderActions =
+    | IGetOrderNumberAction
+    | IGetOrderNumberSuccessAction
+    | IGetOrderNumberFailedAction;
 
 export function getOrderNumber(ingredients: string[]) {
-    return async function getOrderNumberThunk(dispatch: Dispatch<OrderActions>) {
+    return async function getOrderNumberThunk(dispatch: Dispatch<TOrderActions>) {
         dispatch({
             type: GET_ORDER_NUMBER
         })
@@ -42,7 +42,7 @@ export function getOrderNumber(ingredients: string[]) {
             });
             dispatch({
                 type: GET_ORDER_NUMBER_SUCCESS,
-                orderInfo: orderInfo as OrderInfo
+                orderInfo: orderInfo as IOrderInfo
             });
         } catch (err) {
             dispatch({
@@ -53,7 +53,7 @@ export function getOrderNumber(ingredients: string[]) {
 }
 
 export function clearOrderNumber() {
-    return async function clearOrderNumberThunk(dispatch: Dispatch<OrderActions>) {
+    return async function clearOrderNumberThunk(dispatch: Dispatch<TOrderActions>) {
         dispatch({
             type: GET_ORDER_NUMBER_SUCCESS,
             orderInfo: EMPTY_ORDER_INFO

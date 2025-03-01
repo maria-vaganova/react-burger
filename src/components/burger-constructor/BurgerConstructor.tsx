@@ -9,7 +9,7 @@ import {
     isUserAuthenticated,
     restoreIngredientListFromCart
 } from "../../utils/util";
-import {Ingredient, CartItem} from "../../utils/types";
+import {IIngredient, ICartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, DraggableTypes} from "../../utils/data";
 import {useDrop} from "react-dnd";
@@ -60,7 +60,7 @@ function BurgerConstructor() {
 
     const [, dropTarget] = useDrop({
         accept: DraggableTypes.ADDED_ITEM,
-        drop(ingredient: CartItem) {
+        drop(ingredient: ICartItem) {
             handleDrop(ingredient.id);
         },
     });
@@ -72,7 +72,7 @@ function BurgerConstructor() {
     const bun = getBunFromCart(cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
-    const cartList: Ingredient[] = useMemo(() => {
+    const cartList: IIngredient[] = useMemo(() => {
         if (cart) {
             return restoreIngredientListFromCart(cart, false, data);
         }

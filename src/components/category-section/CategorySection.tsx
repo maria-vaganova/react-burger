@@ -5,14 +5,14 @@ import IngredientCard from "../ingredient-card/IngredientCard";
 import {dataInfoSelector, useAppSelector, useDetailDispatch} from "../../services/store";
 import {fulfilIngredientDetails} from "../../services/actions/detailActions";
 
-export interface CategorySectionProps {
+export interface ICategorySectionProps {
     id: string,
     name: string,
     type: string,
     openModal: (ingredientId: string) => void
 }
 
-function CategorySection({id, name, type, openModal}: CategorySectionProps) {
+function CategorySection({id, name, type, openModal}: ICategorySectionProps) {
     const {data} = useAppSelector(dataInfoSelector);
 
     const dispatch = useDetailDispatch();

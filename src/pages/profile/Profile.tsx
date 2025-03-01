@@ -9,7 +9,7 @@ import {
     userStateToProps,
     useSetUserDispatch
 } from "../../services/store";
-import {UserAuthorization} from "../../utils/types";
+import {IUserAuthorization} from "../../utils/types";
 import {getUserInfo, setUserInfo} from "../../services/actions/userActions";
 import {EMPTY_SERVER_INFO} from "../../utils/data";
 import {getAccessToken} from "../../services/actions/tokenActions";
@@ -67,7 +67,7 @@ function Profile() {
     const dispatchSetUser = useSetUserDispatch();
     const handleSubmit = () => {
         setLastAction("submit")
-        const user: UserAuthorization = {email: email, password: password, name: name};
+        const user: IUserAuthorization = {email: email, password: password, name: name};
         const setUserInfoThunk = setUserInfo(user, currentToken);
         dispatchSetUser(setUserInfoThunk);
     };

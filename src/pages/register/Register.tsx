@@ -8,7 +8,7 @@ import {
     useRegisterDispatch
 } from "../../services/store";
 import {getRegister} from "../../services/actions/registerActions";
-import {UserAuthorization} from "../../utils/types";
+import {IUserAuthorization} from "../../utils/types";
 import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
 
 function Register() {
@@ -28,7 +28,7 @@ function Register() {
     const dispatchRegister = useRegisterDispatch();
     const {registerRequest, registerFailed, registerInfo, registerMessage} = useAppSelector(registerStateToProps);
     const handleRegister = () => {
-        const user: UserAuthorization = {email: email, password: password, name: name};
+        const user: IUserAuthorization = {email: email, password: password, name: name};
         const getRegisterThunk = getRegister(user);
         dispatchRegister(getRegisterThunk);
     };

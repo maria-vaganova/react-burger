@@ -10,32 +10,32 @@ import {
     TOKEN_URL,
     AUTHORIZED_SERVER_INFO
 } from "../../utils/data";
-import {ServerInfo, TokenInfo} from "../../utils/types";
+import {IServerInfo, ITokenInfo} from "../../utils/types";
 import {request} from "../../utils/util";
 
-export interface GetAccessTokenAction {
+export interface IGetAccessTokenAction {
     type: typeof GET_TOKEN;
 }
 
-export interface GetAccessTokenSuccessAction {
+export interface IGetAccessTokenSuccessAction {
     type: typeof GET_TOKEN_SUCCESS;
-    tokenInfo: TokenInfo;
-    tokenMessage: ServerInfo;
+    tokenInfo: ITokenInfo;
+    tokenMessage: IServerInfo;
 }
 
-export interface GetAccessTokenFailedAction {
+export interface IGetAccessTokenFailedAction {
     type: typeof GET_TOKEN_FAILED;
-    tokenInfo: TokenInfo;
-    tokenMessage: ServerInfo;
+    tokenInfo: ITokenInfo;
+    tokenMessage: IServerInfo;
 }
 
-export type GetAccessTokenActions =
-    | GetAccessTokenAction
-    | GetAccessTokenSuccessAction
-    | GetAccessTokenFailedAction;
+export type TGetAccessTokenActions =
+    | IGetAccessTokenAction
+    | IGetAccessTokenSuccessAction
+    | IGetAccessTokenFailedAction;
 
 export function getAccessToken() {
-    return async function getAccessTokenThunk(dispatch: Dispatch<GetAccessTokenActions>) {
+    return async function getAccessTokenThunk(dispatch: Dispatch<TGetAccessTokenActions>) {
         dispatch({
             type: GET_TOKEN
         })
@@ -50,7 +50,7 @@ export function getAccessToken() {
             });
             dispatch({
                 type: GET_TOKEN_SUCCESS,
-                tokenInfo: tokenInfo as TokenInfo,
+                tokenInfo: tokenInfo as ITokenInfo,
                 tokenMessage: AUTHORIZED_SERVER_INFO
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, tokenInfo.refreshToken)

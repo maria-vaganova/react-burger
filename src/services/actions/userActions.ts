@@ -11,53 +11,53 @@ import {
     SET_USER_SUCCESS,
     SET_USER_FAILED
 } from "../../utils/data";
-import {CurrentUserInfo, ServerInfo, UserAuthorization} from "../../utils/types";
+import {ICurrentUserInfo, IServerInfo, IUserAuthorization} from "../../utils/types";
 import {request} from "../../utils/util";
 
-export interface GetUserAction {
+export interface IGetUserAction {
     type: typeof GET_USER;
 }
 
-export interface GetUserSuccessAction {
+export interface IGetUserSuccessAction {
     type: typeof GET_USER_SUCCESS;
-    userInfo: CurrentUserInfo;
-    userMessage: ServerInfo;
+    userInfo: ICurrentUserInfo;
+    userMessage: IServerInfo;
 }
 
-export interface GetUserFailedAction {
+export interface IGetUserFailedAction {
     type: typeof GET_USER_FAILED;
-    userInfo: CurrentUserInfo;
-    userMessage: ServerInfo;
+    userInfo: ICurrentUserInfo;
+    userMessage: IServerInfo;
 }
 
-export interface SetUserAction {
+export interface ISetUserAction {
     type: typeof SET_USER;
 }
 
-export interface SetUserSuccessAction {
+export interface ISetUserSuccessAction {
     type: typeof SET_USER_SUCCESS;
-    userInfo: CurrentUserInfo;
-    userMessage: ServerInfo;
+    userInfo: ICurrentUserInfo;
+    userMessage: IServerInfo;
 }
 
-export interface SetUserFailedAction {
+export interface ISetUserFailedAction {
     type: typeof SET_USER_FAILED;
-    userInfo: CurrentUserInfo;
-    userMessage: ServerInfo;
+    userInfo: ICurrentUserInfo;
+    userMessage: IServerInfo;
 }
 
-export type GetUserActions =
-    | GetUserAction
-    | GetUserSuccessAction
-    | GetUserFailedAction;
+export type TGetUserActions =
+    | IGetUserAction
+    | IGetUserSuccessAction
+    | IGetUserFailedAction;
 
-export type SetUserActions =
-    | SetUserAction
-    | SetUserSuccessAction
-    | SetUserFailedAction;
+export type TSetUserActions =
+    | ISetUserAction
+    | ISetUserSuccessAction
+    | ISetUserFailedAction;
 
-export function setUserInfo(user: UserAuthorization, accessToken: string) {
-    return async function setUserInfoThunk(dispatch: Dispatch<SetUserActions>) {
+export function setUserInfo(user: IUserAuthorization, accessToken: string) {
+    return async function setUserInfoThunk(dispatch: Dispatch<TSetUserActions>) {
         dispatch({
             type: SET_USER
         })
@@ -72,7 +72,7 @@ export function setUserInfo(user: UserAuthorization, accessToken: string) {
             });
             dispatch({
                 type: SET_USER_SUCCESS,
-                userInfo: userInfo as CurrentUserInfo,
+                userInfo: userInfo as ICurrentUserInfo,
                 userMessage: AUTHORIZED_SERVER_INFO
             });
         } catch (error: any) {
@@ -86,7 +86,7 @@ export function setUserInfo(user: UserAuthorization, accessToken: string) {
 }
 
 export function getUserInfo(accessToken: string) {
-    return async function getUserInfoThunk(dispatch: Dispatch<GetUserActions>) {
+    return async function getUserInfoThunk(dispatch: Dispatch<TGetUserActions>) {
         dispatch({
             type: GET_USER
         })
@@ -100,7 +100,7 @@ export function getUserInfo(accessToken: string) {
             });
             dispatch({
                 type: GET_USER_SUCCESS,
-                userInfo: userInfo as CurrentUserInfo,
+                userInfo: userInfo as ICurrentUserInfo,
                 userMessage: AUTHORIZED_SERVER_INFO
             });
         } catch (error: any) {

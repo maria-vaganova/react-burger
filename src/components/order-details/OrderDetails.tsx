@@ -1,15 +1,15 @@
 import Modal from "../modal/Modal";
 import Done from "../../images/done.svg";
 import orderDetails from './OrderDetails.module.css';
-import {OrderInfo} from "../../utils/types";
+import {IOrderInfo} from "../../utils/types";
 
-export interface OrderDetailsProps {
+export interface IOrderDetailsProps {
     isOpen: boolean,
     closeModal: () => void,
-    orderInfo: OrderInfo
+    orderInfo: IOrderInfo
 }
 
-function OrderDetails({isOpen, closeModal, orderInfo}: OrderDetailsProps) {
+function OrderDetails({isOpen, closeModal, orderInfo}: IOrderDetailsProps) {
     const number = orderInfo ? orderInfo.order.number : 0;
     console.log("orderInfo - ", orderInfo);
     return (

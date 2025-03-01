@@ -1,8 +1,8 @@
-import {CartItem, Ingredient} from "./types";
+import {ICartItem, IIngredient} from "./types";
 import {BUN_TYPE, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "./data";
 
 export function restoreIngredientListFromCart(
-    cart: CartItem[] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
+    cart: ICartItem[] | undefined, isBunIncluded: boolean, data: IIngredient[]): IIngredient[] {
     if (cart) {
         return (isBunIncluded ? cart : cart.filter(elem => elem.type !== BUN_TYPE))
             .flatMap(elem => {
@@ -12,7 +12,7 @@ export function restoreIngredientListFromCart(
     return [];
 }
 
-export function getIngredientCountFromCartById(cart: CartItem[] | undefined, id: string): number {
+export function getIngredientCountFromCartById(cart: ICartItem[] | undefined, id: string): number {
     let count = 0;
     cart?.forEach(elem => {
         if (elem.id === id) {
@@ -22,13 +22,13 @@ export function getIngredientCountFromCartById(cart: CartItem[] | undefined, id:
     return count;
 }
 
-export function getBunFromCart(cart: CartItem[] | undefined, data: Ingredient[]): Ingredient | undefined {
+export function getBunFromCart(cart: ICartItem[] | undefined, data: IIngredient[]): IIngredient | undefined {
     const bun = cart?.find(elem => elem.type === BUN_TYPE);
     if (bun === undefined) return undefined;
     return fulfilIngredient(bun.id, data);
 }
 
-export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
+export function fulfilIngredient(id: string, data: IIngredient[]): IIngredient {
     const findIngredient = data.find(elem => elem._id === id);
     return findIngredient ? findIngredient : {
         _id: "0",
@@ -46,18 +46,18 @@ export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
     };
 }
 
-export function getDataIdsWithType(data: Ingredient[]): { id: string, type: string }[] {
+export function getDataIdsWithType(data: IIngredient[]): { id: string, type: string }[] {
     return data.map((elem) => ({
         id: elem._id,
         type: elem.type
     }));
 }
 
-export function getDataIds(data: Ingredient[]): string[] {
+export function getDataIds(data: IIngredient[]): string[] {
     return data.map((elem) => elem._id);
 }
 
-export function getIngredientTypeById(id: string, data: Ingredient[]): string {
+export function getIngredientTypeById(id: string, data: IIngredient[]): string {
     const ingredient = data.find(elem => elem._id === id);
     return ingredient ? ingredient.type : "";
 }

@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {TokenState} from "../../utils/types";
+import {ITokenState} from "../../utils/types";
 import {
     EMPTY_SERVER_INFO,
     EMPTY_TOKEN_INFO,
@@ -8,14 +8,14 @@ import {
     GET_TOKEN_SUCCESS
 } from "../../utils/data";
 
-const initialState: TokenState = {
+const initialState: ITokenState = {
     tokenRequest: false,
     tokenFailed: false,
     tokenInfo: EMPTY_TOKEN_INFO,
     tokenMessage: EMPTY_SERVER_INFO
 }
 
-const tokenReducer: Reducer<TokenState, {type: string; tokenInfo?: any; tokenMessage?: any}> = (state = initialState, action) => {
+const tokenReducer: Reducer<ITokenState, {type: string; tokenInfo?: any; tokenMessage?: any}> = (state = initialState, action) => {
     switch (action.type) {
         case GET_TOKEN: {
             return {

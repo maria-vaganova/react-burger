@@ -7,7 +7,7 @@ import {
     useAppSelector,
     useLoginDispatch
 } from "../../services/store";
-import {UserToLogIn} from "../../utils/types";
+import {IUserToLogIn} from "../../utils/types";
 import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
 import {getLogin} from "../../services/actions/loginActions";
 
@@ -24,7 +24,7 @@ function Login() {
     const dispatchLogin = useLoginDispatch();
     const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
     const handleLogin = () => {
-        const user: UserToLogIn = {email: email, password: password};
+        const user: IUserToLogIn = {email: email, password: password};
         const getLoginThunk = getLogin(user);
         dispatchLogin(getLoginThunk);
     };

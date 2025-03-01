@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {LoginState} from "../../utils/types";
+import {ILoginState} from "../../utils/types";
 import {
     EMPTY_AUTHORIZATION_INFO,
     POST_LOGIN_FAILED,
@@ -9,14 +9,14 @@ import {
     EMPTY_SERVER_INFO
 } from "../../utils/data";
 
-const initialState: LoginState = {
+const initialState: ILoginState = {
     loginRequest: false,
     loginFailed: false,
     loginInfo: EMPTY_AUTHORIZATION_INFO,
     loginMessage: EMPTY_SERVER_INFO
 }
 
-const loginReducer: Reducer<LoginState, {
+const loginReducer: Reducer<ILoginState, {
     type: string;
     loginInfo?: any;
     loginMessage?: any

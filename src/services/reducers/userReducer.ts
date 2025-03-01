@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {UserState} from "../../utils/types";
+import {IUserState} from "../../utils/types";
 import {
     EMPTY_SERVER_INFO,
     EMPTY_CURRENT_USER_INFO,
@@ -11,14 +11,14 @@ import {
     GET_USER_FAILED
 } from "../../utils/data";
 
-const initialState: UserState = {
+const initialState: IUserState = {
     userRequest: false,
     userFailed: false,
     userInfo: EMPTY_CURRENT_USER_INFO,
     userMessage: EMPTY_SERVER_INFO
 }
 
-const userReducer: Reducer<UserState, { type: string; userInfo?: any; userMessage?: any  }> = (state = initialState, action) => {
+const userReducer: Reducer<IUserState, { type: string; userInfo?: any; userMessage?: any  }> = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER:
         case GET_USER: {

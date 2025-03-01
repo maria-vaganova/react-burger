@@ -1,14 +1,14 @@
-import {OrderState} from "../../utils/types";
+import {IOrderState} from "../../utils/types";
 import {EMPTY_ORDER_INFO, GET_ORDER_NUMBER, GET_ORDER_NUMBER_FAILED, GET_ORDER_NUMBER_SUCCESS} from "../../utils/data";
 import {Reducer} from "redux";
 
-const initialState: OrderState = {
+const initialState: IOrderState = {
     orderRequest: false,
     orderFailed: false,
     orderInfo: EMPTY_ORDER_INFO
 }
 
-const orderReducer: Reducer<OrderState, { type: string; orderInfo?: any }> = (state = initialState, action) => {
+const orderReducer: Reducer<IOrderState, { type: string; orderInfo?: any }> = (state = initialState, action) => {
     switch (action.type) {
         case GET_ORDER_NUMBER: {
             return {

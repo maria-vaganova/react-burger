@@ -1,28 +1,28 @@
 import {DATA_URL, GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
-import {Ingredient} from "../../utils/types";
+import {IIngredient} from "../../utils/types";
 import {Dispatch} from "redux";
 import {request} from "../../utils/util";
 
-export interface GetDataAction {
+export interface IGetDataAction {
     type: typeof GET_DATA;
 }
 
-export interface GetDataSuccessAction {
+export interface IGetDataSuccessAction {
     type: typeof GET_DATA_SUCCESS;
-    dataInfo: Ingredient[];
+    dataInfo: IIngredient[];
 }
 
-export interface GetODataFailedAction {
+export interface IGetODataFailedAction {
     type: typeof GET_DATA_FAILED;
 }
 
-export type DataActions =
-    | GetDataAction
-    | GetDataSuccessAction
-    | GetODataFailedAction;
+export type TDataActions =
+    | IGetDataAction
+    | IGetDataSuccessAction
+    | IGetODataFailedAction;
 
 export function getData() {
-    return async function getDataThunk(dispatch: Dispatch<DataActions>) {
+    return async function getDataThunk(dispatch: Dispatch<TDataActions>) {
         dispatch({
             type: GET_DATA
         })
@@ -30,7 +30,7 @@ export function getData() {
             const dataInfo = await request(DATA_URL);
             dispatch({
                 type: GET_DATA_SUCCESS,
-                dataInfo: dataInfo.data as Ingredient[]
+                dataInfo: dataInfo.data as IIngredient[]
             });
         } catch (err) {
             dispatch({

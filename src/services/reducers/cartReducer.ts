@@ -1,12 +1,12 @@
-import {CartState} from "../../utils/types";
+import {ICartState} from "../../utils/types";
 import {ADD_INGREDIENT, BUN_TYPE, DISCARD_INGREDIENT, MOVE_ITEMS} from "../../utils/data";
-import {CartActionTypes} from "../actions/cartActions";
+import {TCartActions} from "../actions/cartActions";
 
-const initialState: CartState = {
+const initialState: ICartState = {
     cartItems: []
 };
 
-function cartReducer(state = initialState, action: CartActionTypes) {
+function cartReducer(state = initialState, action: TCartActions) {
     switch (action.type) {
         case ADD_INGREDIENT: {
             const newCart = [...state.cartItems];

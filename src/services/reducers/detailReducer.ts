@@ -1,12 +1,12 @@
-import {IngredientDetailState} from "../../utils/types";
+import {IIngredientDetailState} from "../../utils/types";
 import {EMPTY_INGREDIENT_DETAILS, SHOW_INGREDIENT_DETAILS} from "../../utils/data";
-import {IngredientDetailActionTypes} from "../actions/detailActions";
+import {TIngredientDetailActions} from "../actions/detailActions";
 
-const initialState: IngredientDetailState = {
+const initialState: IIngredientDetailState = {
     ingredientDetails: EMPTY_INGREDIENT_DETAILS
 };
 
-function detailReducer (state = initialState, action: IngredientDetailActionTypes) {
+function detailReducer (state = initialState, action: TIngredientDetailActions) {
     switch (action.type) {
         case SHOW_INGREDIENT_DETAILS: {
             return {
