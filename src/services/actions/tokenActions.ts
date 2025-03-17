@@ -34,14 +34,14 @@ export type TGetAccessTokenActions =
     | IGetAccessTokenSuccessAction
     | IGetAccessTokenFailedAction;
 
-export function getAccessToken() {
-    return async function getAccessTokenThunk(dispatch: Dispatch<TGetAccessTokenActions>) {
+export function getAccessToken(): (dispatch: Dispatch<TGetAccessTokenActions>) => Promise<void> {
+    return async function getAccessTokenThunk(dispatch: Dispatch<TGetAccessTokenActions>): Promise<void> {
         dispatch({
             type: GET_TOKEN
         })
         try {
             const token: string = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) || EMPTY_REFRESH_TOKEN;
-            const tokenInfo = await request(TOKEN_URL, {
+            const tokenInfo: ITokenInfo = await request(TOKEN_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

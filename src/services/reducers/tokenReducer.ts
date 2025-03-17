@@ -7,6 +7,12 @@ import {
     GET_TOKEN_FAILED,
     GET_TOKEN_SUCCESS
 } from "../../utils/data";
+import {
+    IGetAccessTokenAction,
+    IGetAccessTokenFailedAction,
+    IGetAccessTokenSuccessAction,
+    TGetAccessTokenActions
+} from "../actions/tokenActions";
 
 const initialState: ITokenState = {
     tokenRequest: false,
@@ -15,9 +21,26 @@ const initialState: ITokenState = {
     tokenMessage: EMPTY_SERVER_INFO
 }
 
-const tokenReducer: Reducer<ITokenState, {type: string; tokenInfo?: any; tokenMessage?: any}> = (state = initialState, action) => {
+function isGetAccessTokenAction(action: TGetAccessTokenActions): action is IGetAccessTokenAction {
+    return action.type === GET_TOKEN;
+}
+function isGetAccessTokenSuccessAction(action: TGetAccessTokenActions): action is IGetAccessTokenSuccessAction {
+    return action.type === GET_TOKEN_SUCCESS;
+}
+function isGetAccessTokenFailedAction(action: TGetAccessTokenActions): action is IGetAccessTokenFailedAction {
+    return action.type === GET_TOKEN_FAILED;
+}
+
+const tokenReducer: Reducer<ITokenState, {
+    type: string;
+    tokenInfo?: any;
+    tokenMessage?: any
+}> = (state: ITokenState = initialState, action: TGetAccessTokenActions): ITokenState => {
     switch (action.type) {
         case GET_TOKEN: {
+            if (!isGetAccessTokenAction(action)) {
+                throw new Error("Invalid action type");
+            }
             return {
                 ...state,
                 tokenRequest: true,
@@ -25,6 +48,9 @@ const tokenReducer: Reducer<ITokenState, {type: string; tokenInfo?: any; tokenMe
             };
         }
         case GET_TOKEN_SUCCESS: {
+            if (!isGetAccessTokenSuccessAction(action)) {
+                throw new Error("Invalid action type");
+            }
             return {
                 ...state,
                 tokenInfo: action.tokenInfo,
@@ -34,6 +60,9 @@ const tokenReducer: Reducer<ITokenState, {type: string; tokenInfo?: any; tokenMe
             };
         }
         case GET_TOKEN_FAILED: {
+            if (!isGetAccessTokenFailedAction(action)) {
+                throw new Error("Invalid action type");
+            }
             return {
                 ...state,
                 tokenInfo: action.tokenInfo,

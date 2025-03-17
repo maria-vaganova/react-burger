@@ -6,6 +6,7 @@ import {
     POST_PASSWORD_FAILED,
     POST_PASSWORD_SUCCESS
 } from "../../utils/data";
+import {TPostPasswordActions} from "../actions/passwordActions";
 
 const initialState: IPasswordState = {
     passwordRequest: false,
@@ -13,13 +14,17 @@ const initialState: IPasswordState = {
     passwordMessage: EMPTY_SERVER_INFO
 }
 
-const passwordReducer: Reducer<IPasswordState, {type: string; passwordMessage?: any}> = (state = initialState, action) => {
+const passwordReducer: Reducer<IPasswordState, {
+    type: string;
+    passwordMessage: any
+}> = (state: IPasswordState = initialState, action: TPostPasswordActions): IPasswordState => {
     switch (action.type) {
         case POST_PASSWORD: {
             return {
                 ...state,
                 passwordRequest: true,
                 passwordFailed: false,
+                passwordMessage: EMPTY_SERVER_INFO
             };
         }
         case POST_PASSWORD_SUCCESS: {

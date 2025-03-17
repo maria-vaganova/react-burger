@@ -1,4 +1,4 @@
-import {combineReducers} from "redux";
+import {combineReducers, Reducer} from "redux";
 import orderReducer from "./orderReducer";
 import detailReducer from "./detailReducer";
 import dataReducer from "./dataReducer";
@@ -10,7 +10,7 @@ import userReducer from "./userReducer";
 import tokenReducer from "./tokenReducer";
 import passwordReducer from "./passwordReducer";
 
-export const rootReducer = combineReducers({
+export const rootReducer: Reducer = combineReducers({
     order: orderReducer,
     ingredientDetails: detailReducer,
     data: dataReducer,

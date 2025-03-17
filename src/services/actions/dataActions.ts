@@ -21,13 +21,13 @@ export type TDataActions =
     | IGetDataSuccessAction
     | IGetODataFailedAction;
 
-export function getData() {
-    return async function getDataThunk(dispatch: Dispatch<TDataActions>) {
+export function getData(): (dispatch: Dispatch<TDataActions>) => Promise<void> {
+    return async function getDataThunk(dispatch: Dispatch<TDataActions>): Promise<void> {
         dispatch({
             type: GET_DATA
         })
         try {
-            const dataInfo = await request(DATA_URL);
+            const dataInfo: any = await request(DATA_URL);
             dispatch({
                 type: GET_DATA_SUCCESS,
                 dataInfo: dataInfo.data as IIngredient[]

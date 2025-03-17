@@ -6,7 +6,7 @@ const initialState: IIngredientDetailState = {
     ingredientDetails: EMPTY_INGREDIENT_DETAILS
 };
 
-function detailReducer (state = initialState, action: TIngredientDetailActions) {
+function detailReducer (state: IIngredientDetailState = initialState, action: TIngredientDetailActions): IIngredientDetailState {
     switch (action.type) {
         case SHOW_INGREDIENT_DETAILS: {
             return {

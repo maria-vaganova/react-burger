@@ -4,7 +4,7 @@ import {ITotalPriceState} from "../../utils/types";
 
 const initialState: ITotalPriceState = {count: 0};
 
-function totalPriceReducer(state = initialState, action: TTotalPriceActions) {
+function totalPriceReducer(state: ITotalPriceState = initialState, action: TTotalPriceActions): ITotalPriceState {
     switch (action.type) {
         case INCREMENT: {
             return {...state, count: state.count + action.totalPrice};

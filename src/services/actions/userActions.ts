@@ -56,13 +56,13 @@ export type TSetUserActions =
     | ISetUserSuccessAction
     | ISetUserFailedAction;
 
-export function setUserInfo(user: IUserAuthorization, accessToken: string) {
-    return async function setUserInfoThunk(dispatch: Dispatch<TSetUserActions>) {
+export function setUserInfo(user: IUserAuthorization, accessToken: string): (dispatch: Dispatch<TSetUserActions>) => Promise<void> {
+    return async function setUserInfoThunk(dispatch: Dispatch<TSetUserActions>): Promise<void> {
         dispatch({
             type: SET_USER
         })
         try {
-            const userInfo = await request(USER_URL, {
+            const userInfo: ICurrentUserInfo = await request(USER_URL, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,8 +85,8 @@ export function setUserInfo(user: IUserAuthorization, accessToken: string) {
     }
 }
 
-export function getUserInfo(accessToken: string) {
-    return async function getUserInfoThunk(dispatch: Dispatch<TGetUserActions>) {
+export function getUserInfo(accessToken: string): (dispatch: Dispatch<TSetUserActions>) => Promise<void> {
+    return async function getUserInfoThunk(dispatch: Dispatch<TGetUserActions>): Promise<void> {
         dispatch({
             type: GET_USER
         })

@@ -12,6 +12,7 @@ import {request} from "../../utils/util";
 
 export interface IPostPasswordAction {
     type: typeof POST_PASSWORD;
+    passwordMessage: IServerInfo;
 }
 
 export interface IPostPasswordSuccessAction {
@@ -29,13 +30,14 @@ export type TPostPasswordActions =
     | IPostPasswordSuccessAction
     | IPostPasswordFailedAction;
 
-export function askToResetPassword(email: string) {
-    return async function askToResetPasswordThunk(dispatch: Dispatch<TPostPasswordActions>) {
+export function askToResetPassword(email: string): (dispatch: Dispatch<TPostPasswordActions>) => Promise<void> {
+    return async function askToResetPasswordThunk(dispatch: Dispatch<TPostPasswordActions>): Promise<void> {
         dispatch({
-            type: POST_PASSWORD
+            type: POST_PASSWORD,
+            passwordMessage: EMPTY_SERVER_INFO
         })
         try {
-            const resetInfo = await request(FORGOT_PASSWORD_URL, {
+            const resetInfo: IServerInfo = await request(FORGOT_PASSWORD_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,13 +57,14 @@ export function askToResetPassword(email: string) {
     }
 }
 
-export function getNewPassword(data: IResetPasswordInfo) {
-    return async function getNewPasswordThunk(dispatch: Dispatch<TPostPasswordActions>) {
+export function getNewPassword(data: IResetPasswordInfo): (dispatch: Dispatch<TPostPasswordActions>) => Promise<void> {
+    return async function getNewPasswordThunk(dispatch: Dispatch<TPostPasswordActions>): Promise<void> {
         dispatch({
-            type: POST_PASSWORD
+            type: POST_PASSWORD,
+            passwordMessage: EMPTY_SERVER_INFO
         })
         try {
-            const passwordInfo = await request(RESET_PASSWORD_URL, {
+            const passwordInfo: IServerInfo = await request(RESET_PASSWORD_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

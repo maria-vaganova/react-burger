@@ -34,14 +34,14 @@ export type TRegisterActions =
     | IPostRegisterSuccessAction
     | IPostRegisterFailedAction;
 
-export function getRegister(newUser: IUserAuthorization) {
-    return async function getRegisterThunk(dispatch: Dispatch<TRegisterActions>) {
+export function getRegister(newUser: IUserAuthorization): (dispatch: Dispatch<TRegisterActions>) => Promise<void> {
+    return async function getRegisterThunk(dispatch: Dispatch<TRegisterActions>): Promise<void> {
         dispatch({
             type: POST_REGISTER
         })
         try {
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
-            const registerInfo = await request(REGISTER_URL, {
+            const registerInfo: IAuthorizationInfo = await request(REGISTER_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

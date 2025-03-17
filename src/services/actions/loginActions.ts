@@ -45,14 +45,14 @@ export type TLogoutActions =
     | IPostLogoutAction
     | IPostLoginFailedAction;
 
-export function getLogin(user: IUserToLogIn) {
-    return async function getLoginThunk(dispatch: Dispatch<TLoginActions>) {
+export function getLogin(user: IUserToLogIn): (dispatch: Dispatch<TLoginActions>) => Promise<void> {
+    return async function getLoginThunk(dispatch: Dispatch<TLoginActions>): Promise<void> {
         dispatch({
             type: POST_LOGIN
         })
         try {
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
-            const loginInfo = await request(LOGIN_URL, {
+            const loginInfo: IAuthorizationInfo | IServerInfo = await request(LOGIN_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export function getLogin(user: IUserToLogIn) {
                 loginInfo: loginInfo as IAuthorizationInfo,
                 loginMessage: AUTHORIZED_SERVER_INFO
             });
-            localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, loginInfo.refreshToken);
+            localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, (loginInfo as IAuthorizationInfo).refreshToken);
         } catch (error: any) {
             dispatch({
                 type: POST_LOGIN_FAILED,
@@ -75,11 +75,11 @@ export function getLogin(user: IUserToLogIn) {
     }
 }
 
-export function getLogout() {
-    return async function getLogoutThunk(dispatch: Dispatch<TLogoutActions>) {
+export function getLogout(): (dispatch: Dispatch<TLogoutActions>) => Promise<void> {
+    return async function getLogoutThunk(dispatch: Dispatch<TLogoutActions>): Promise<void> {
         try {
             const token: string = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) || EMPTY_REFRESH_TOKEN;
-            const logoutInfo = await request(LOGOUT_URL, {
+            const logoutInfo: IServerInfo = await request(LOGOUT_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

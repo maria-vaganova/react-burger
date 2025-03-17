@@ -4,8 +4,8 @@ import {BUN_TYPE, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "./data";
 export function restoreIngredientListFromCart(
     cart: ICartItem[] | undefined, isBunIncluded: boolean, data: IIngredient[]): IIngredient[] {
     if (cart) {
-        return (isBunIncluded ? cart : cart.filter(elem => elem.type !== BUN_TYPE))
-            .flatMap(elem => {
+        return (isBunIncluded ? cart : cart.filter((elem: ICartItem): boolean => elem.type !== BUN_TYPE))
+            .flatMap((elem: ICartItem): IIngredient => {
                 return fulfilIngredient(elem.id, data);
             });
     }
@@ -13,8 +13,8 @@ export function restoreIngredientListFromCart(
 }
 
 export function getIngredientCountFromCartById(cart: ICartItem[] | undefined, id: string): number {
-    let count = 0;
-    cart?.forEach(elem => {
+    let count: number = 0;
+    cart?.forEach((elem: ICartItem): void => {
         if (elem.id === id) {
             count++;
         }
@@ -23,13 +23,13 @@ export function getIngredientCountFromCartById(cart: ICartItem[] | undefined, id
 }
 
 export function getBunFromCart(cart: ICartItem[] | undefined, data: IIngredient[]): IIngredient | undefined {
-    const bun = cart?.find(elem => elem.type === BUN_TYPE);
+    const bun: ICartItem | undefined = cart?.find((elem: ICartItem): boolean => elem.type === BUN_TYPE);
     if (bun === undefined) return undefined;
     return fulfilIngredient(bun.id, data);
 }
 
 export function fulfilIngredient(id: string, data: IIngredient[]): IIngredient {
-    const findIngredient = data.find(elem => elem._id === id);
+    const findIngredient: IIngredient | undefined = data.find((elem: IIngredient): boolean => elem._id === id);
     return findIngredient ? findIngredient : {
         _id: "0",
         name: "Не найдено",
@@ -47,18 +47,18 @@ export function fulfilIngredient(id: string, data: IIngredient[]): IIngredient {
 }
 
 export function getDataIdsWithType(data: IIngredient[]): { id: string, type: string }[] {
-    return data.map((elem) => ({
+    return data.map((elem: IIngredient): { id: string, type: string } => ({
         id: elem._id,
         type: elem.type
     }));
 }
 
 export function getDataIds(data: IIngredient[]): string[] {
-    return data.map((elem) => elem._id);
+    return data.map((elem: IIngredient): string => elem._id);
 }
 
 export function getIngredientTypeById(id: string, data: IIngredient[]): string {
-    const ingredient = data.find(elem => elem._id === id);
+    const ingredient: IIngredient | undefined = data.find((elem: IIngredient): boolean => elem._id === id);
     return ingredient ? ingredient.type : "";
 }
 
@@ -77,7 +77,7 @@ export function request(url: string, options: RequestInit = {}): Promise<any> {
 }
 
 export function isUserAuthenticated(): boolean {
-    const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG);
+    const refreshToken: string | null = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG);
     if (!refreshToken) {
         localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
         return false;

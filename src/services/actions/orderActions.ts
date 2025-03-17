@@ -27,13 +27,13 @@ export type TOrderActions =
     | IGetOrderNumberSuccessAction
     | IGetOrderNumberFailedAction;
 
-export function getOrderNumber(ingredients: string[]) {
-    return async function getOrderNumberThunk(dispatch: Dispatch<TOrderActions>) {
+export function getOrderNumber(ingredients: string[]): (dispatch: Dispatch<TOrderActions>) => Promise<void> {
+    return async function getOrderNumberThunk(dispatch: Dispatch<TOrderActions>): Promise<void> {
         dispatch({
             type: GET_ORDER_NUMBER
         })
         try {
-            const orderInfo = await request(ORDER_POST_URL, {
+            const orderInfo: IOrderInfo = await request(ORDER_POST_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,8 +52,8 @@ export function getOrderNumber(ingredients: string[]) {
     }
 }
 
-export function clearOrderNumber() {
-    return async function clearOrderNumberThunk(dispatch: Dispatch<TOrderActions>) {
+export function clearOrderNumber(): (dispatch: Dispatch<TOrderActions>) => Promise<void> {
+    return async function clearOrderNumberThunk(dispatch: Dispatch<TOrderActions>): Promise<void> {
         dispatch({
             type: GET_ORDER_NUMBER_SUCCESS,
             orderInfo: EMPTY_ORDER_INFO

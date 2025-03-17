@@ -13,6 +13,7 @@ export interface IDecrementAction {
 
 export interface IResetAction {
     type: typeof RESET;
+    totalPrice: number;
 }
 
 export type TTotalPriceActions = IIncrementAction | IDecrementAction | IResetAction;
@@ -34,6 +35,7 @@ export function decrement(ingredient: IIngredient): IDecrementAction {
 
 export function resetPrice(): IResetAction {
     return {
-        type: RESET
+        type: RESET,
+        totalPrice: 0
     };
 }
