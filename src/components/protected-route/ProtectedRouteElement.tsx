@@ -18,7 +18,7 @@ function ProtectedRouteElement({children, redirectPath, isAuthorizedRedirect}: I
     }
 
     if (isAuthenticated && isAuthorizedRedirect) {
-        const targetPath = location.state?.from?.pathname || redirectPath;
+        const targetPath: string = location.state?.from?.pathname || redirectPath;
         if (location.pathname !== targetPath)
             return <Navigate to={targetPath} state={{from: location}} replace/>;
     }

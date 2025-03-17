@@ -2,8 +2,9 @@ import style from './LeftProfileLinks.module.css';
 import {useEffect, useState} from "react";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {loginStateToProps, useAppSelector, useLogoutDispatch} from "../../services/store";
-import {getLogout} from "../../services/actions/loginActions";
+import {getLogout, TLogoutActions} from "../../services/actions/loginActions";
 import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
+import {Dispatch} from "redux";
 
 function LeftProfileLinks() {
     const linkStyle: string = "text text_type_main-medium " + style.item;
@@ -14,7 +15,7 @@ function LeftProfileLinks() {
     const [profileLinkStyle, setProfileLinkStyle] = useState<string>();
     const [ordersLinkStyle, setOrdersLinkStyle] = useState<string>();
 
-    useEffect(() => {
+    useEffect((): void => {
         switch (location.pathname) {
             case "/profile":
                 setProfileLinkStyle(linkStyle + " text_color_primary");
@@ -33,12 +34,12 @@ function LeftProfileLinks() {
 
     const dispatchLogout = useLogoutDispatch();
     const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
-    const handleLogout = () => {
-        const getLogoutThunk = getLogout();
+    const handleLogout: () => void = (): void => {
+        const getLogoutThunk: (dispatch: Dispatch<TLogoutActions>) => Promise<void> = getLogout();
         dispatchLogout(getLogoutThunk);
     };
 
-    useEffect(() => {
+    useEffect((): void => {
         if (loginFailed) {
             let message: string = "Ошибка сети";
             if (loginMessage !== EMPTY_SERVER_INFO) {
@@ -58,7 +59,7 @@ function LeftProfileLinks() {
             <NavLink to={"/profile/orders"} className={ordersLinkStyle}>
                 История заказов
             </NavLink>
-            <a className={linkStyle + " text_color_inactive"} onClick={(e) => {
+            <a className={linkStyle + " text_color_inactive"} onClick={(e): void => {
                 e.preventDefault();
                 handleLogout();
             }}>

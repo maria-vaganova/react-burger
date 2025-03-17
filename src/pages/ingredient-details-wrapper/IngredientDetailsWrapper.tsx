@@ -9,7 +9,7 @@ function IngredientDetailsWrapper() {
     return (
         <div>
             {background ? (
-                <Modal onClose={() => window.history.back()}>
+                <Modal onClose={(): void => window.history.back()}>
                     <IngredientDetails isModal={true}/>
                 </Modal>
             ) : (

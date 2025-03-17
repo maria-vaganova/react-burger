@@ -27,7 +27,7 @@ function App() {
     const dataDispatch = useDataDispatch();
     const {dataRequest, dataFailed} = useAppSelector(dataStateToProps);
 
-    useEffect(() => {
+    useEffect((): void => {
         dataDispatch(getData());
 
         if (dataFailed) {

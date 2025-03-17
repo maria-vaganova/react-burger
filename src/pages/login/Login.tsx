@@ -9,30 +9,31 @@ import {
 } from "../../services/store";
 import {IUserToLogIn} from "../../utils/types";
 import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
-import {getLogin} from "../../services/actions/loginActions";
+import {getLogin, TLoginActions} from "../../services/actions/loginActions";
+import {Dispatch} from "redux";
 
 function Login() {
     const [email, setEmail] = useState<string>('')
-    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value)
     }
     const [password, setPassword] = useState<string>('')
-    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setPassword(e.target.value)
     }
 
     const dispatchLogin = useLoginDispatch();
     const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
-    const handleLogin = () => {
+    const handleLogin: () => void = (): void => {
         const user: IUserToLogIn = {email: email, password: password};
-        const getLoginThunk = getLogin(user);
+        const getLoginThunk: (dispatch: Dispatch<TLoginActions>) => Promise<void> = getLogin(user);
         dispatchLogin(getLoginThunk);
     };
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => {
+    useEffect((): void => {
         if (loginFailed) {
             let message: string = "Ошибка сети";
             if (loginMessage !== EMPTY_SERVER_INFO) {
@@ -40,7 +41,7 @@ function Login() {
             }
             alert(message);
         } else if (!loginRequest && loginInfo !== EMPTY_AUTHORIZATION_INFO) {
-            const targetPath = location.state?.from?.pathname || '/';
+            const targetPath: string = location.state?.from?.pathname || '/';
             if (location.pathname !== targetPath)
                 navigate(targetPath);
         }
@@ -52,7 +53,7 @@ function Login() {
                 Вход
             </p>
             <form className={login.form}
-                  onSubmit={(e) => {
+                  onSubmit={(e): void => {
                       e.preventDefault();
                       handleLogin();
                   }}>

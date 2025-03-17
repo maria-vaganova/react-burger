@@ -12,9 +12,9 @@ interface IIngredientDetailsProps {
 function IngredientDetails({isModal}: IIngredientDetailsProps) {
 
     const {id} = useParams<{ id: string }>();
-    const ingredients = useAppSelector((state) => state.data.dataInfo);
+    const ingredients: IIngredient[] = useAppSelector((state) => state.data.dataInfo);
 
-    const ingredientDetailInfo: IIngredient | undefined = ingredients.find((item: IIngredient) => item._id === id);
+    const ingredientDetailInfo: IIngredient | undefined = ingredients.find((item: IIngredient): boolean => item._id === id);
 
     if (!ingredientDetailInfo) {
         return (
@@ -22,7 +22,7 @@ function IngredientDetails({isModal}: IIngredientDetailsProps) {
         );
     }
 
-    const titleStyle = isModal
+    const titleStyle: string = isModal
         ? "text text_type_main-large " + ingredientDetails.titleModal
         : "text text_type_main-large " + ingredientDetails.title;
 

@@ -3,36 +3,37 @@ import {Button, PasswordInput, Input} from "@ya.praktikum/react-developer-burger
 import {ChangeEvent, useEffect, useState} from "react";
 import {NavLink, useNavigate} from "react-router-dom";
 import {passwordStateToProps, useAppSelector, usePostPasswordDispatch} from "../../services/store";
-import {getNewPassword} from "../../services/actions/passwordActions";
+import {getNewPassword, TPostPasswordActions} from "../../services/actions/passwordActions";
 import {EMPTY_SERVER_INFO, FORGOT_PASSWORD_VISITED_TAG} from "../../utils/data";
 import {IResetPasswordInfo} from "../../utils/types";
+import {Dispatch} from "redux";
 
 function ResetPassword() {
     const [password, setPassword] = useState<string>('')
-    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setPassword(e.target.value)
     }
     const [code, setCode] = useState<string>('')
-    const onCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onCodeChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setCode(e.target.value)
     }
 
     const navigate = useNavigate();
-    const visitedForgotPassword = sessionStorage.getItem(FORGOT_PASSWORD_VISITED_TAG) === 'true';
-    useEffect(() => {
+    const visitedForgotPassword: boolean = sessionStorage.getItem(FORGOT_PASSWORD_VISITED_TAG) === 'true';
+    useEffect((): void => {
         if (!visitedForgotPassword)
             navigate("/forgot-password");
     }, [visitedForgotPassword]);
 
     const {passwordRequest, passwordFailed, passwordMessage} = useAppSelector(passwordStateToProps);
     const dispatchResetPassword = usePostPasswordDispatch();
-    const handleResetPassword = () => {
+    const handleResetPassword: () => void = (): void => {
         const data: IResetPasswordInfo = {token: code, password: password};
-        const getResetPasswordThunk = getNewPassword(data);
+        const getResetPasswordThunk: (dispatch: Dispatch<TPostPasswordActions>) => Promise<void> = getNewPassword(data);
         dispatchResetPassword(getResetPasswordThunk);
     };
 
-    useEffect(() => {
+    useEffect((): void => {
         if (code !== "")
             if (passwordFailed) {
                 let message: string = "Ошибка сети";
@@ -51,7 +52,7 @@ function ResetPassword() {
             <p className="text text_type_main-medium">
                 Восстановление пароля
             </p>
-            <form className={resetStyles.form} onSubmit={(e) => {
+            <form className={resetStyles.form} onSubmit={(e): void => {
                 e.preventDefault();
                 handleResetPassword();
             }}>

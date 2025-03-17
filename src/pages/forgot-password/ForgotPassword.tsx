@@ -7,29 +7,30 @@ import {
     useAppSelector,
     usePostPasswordDispatch
 } from "../../services/store";
-import {askToResetPassword} from "../../services/actions/passwordActions";
+import {askToResetPassword, TPostPasswordActions} from "../../services/actions/passwordActions";
 import {EMPTY_SERVER_INFO, FORGOT_PASSWORD_VISITED_TAG} from "../../utils/data";
+import {Dispatch} from "redux";
 
 function ForgotPassword() {
     const [email, setEmail] = useState<string>('')
-    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value)
     }
 
     const {passwordRequest, passwordFailed, passwordMessage} = useAppSelector(passwordStateToProps);
     const dispatchResetPassword = usePostPasswordDispatch();
-    const handleResetPassword = () => {
-        const getResetPasswordThunk = askToResetPassword(email);
+    const handleResetPassword: () => void = (): void => {
+        const getResetPasswordThunk: (dispatch: Dispatch<TPostPasswordActions>) => Promise<void> = askToResetPassword(email);
         dispatchResetPassword(getResetPasswordThunk);
     };
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    useEffect((): void => {
         sessionStorage.setItem(FORGOT_PASSWORD_VISITED_TAG, 'false');
     }, []);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (passwordFailed) {
             let message: string = "Ошибка сети";
             if (passwordMessage !== EMPTY_SERVER_INFO) {
@@ -47,7 +48,7 @@ function ForgotPassword() {
             <p className="text text_type_main-medium">
                 Восстановление пароля
             </p>
-            <form className={forgotStyles.form} onSubmit={(e) => {
+            <form className={forgotStyles.form} onSubmit={(e): void => {
                 e.preventDefault();
                 handleResetPassword();
             }}>

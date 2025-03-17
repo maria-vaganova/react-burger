@@ -24,7 +24,7 @@ function IngredientCard({id, onClick}: IIngredientCardProps) {
         item: {id}
     });
 
-    useEffect(() => {
+    useEffect((): void => {
         setCounter(getIngredientCountFromCartById(cart, id));
     }, [id, cart]);
 

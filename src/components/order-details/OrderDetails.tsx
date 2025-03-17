@@ -10,7 +10,7 @@ export interface IOrderDetailsProps {
 }
 
 function OrderDetails({isOpen, closeModal, orderInfo}: IOrderDetailsProps) {
-    const number = orderInfo ? orderInfo.order.number : 0;
+    const number: number = orderInfo ? orderInfo.order.number : 0;
     console.log("orderInfo - ", orderInfo);
     return (
         <div>

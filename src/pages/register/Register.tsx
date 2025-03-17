@@ -7,35 +7,36 @@ import {
     useAppSelector,
     useRegisterDispatch
 } from "../../services/store";
-import {getRegister} from "../../services/actions/registerActions";
+import {getRegister, TRegisterActions} from "../../services/actions/registerActions";
 import {IUserAuthorization} from "../../utils/types";
 import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
+import {Dispatch} from "redux";
 
 function Register() {
     const [name, setName] = useState<string>('')
-    const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setName(e.target.value)
     }
     const [email, setEmail] = useState<string>('')
-    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value)
     }
     const [password, setPassword] = useState<string>('')
-    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setPassword(e.target.value)
     }
 
     const dispatchRegister = useRegisterDispatch();
     const {registerRequest, registerFailed, registerInfo, registerMessage} = useAppSelector(registerStateToProps);
-    const handleRegister = () => {
+    const handleRegister: () => void = (): void => {
         const user: IUserAuthorization = {email: email, password: password, name: name};
-        const getRegisterThunk = getRegister(user);
+        const getRegisterThunk: (dispatch: Dispatch<TRegisterActions>) => Promise<void> = getRegister(user);
         dispatchRegister(getRegisterThunk);
     };
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    useEffect((): void => {
         if (registerFailed) {
             let message: string = "Ошибка сети";
             if (registerMessage !== EMPTY_SERVER_INFO) {
@@ -53,7 +54,7 @@ function Register() {
                 Регистрация
             </p>
             <form className={register.form}
-                  onSubmit={(e) => {
+                  onSubmit={(e): void => {
                       e.preventDefault();
                       handleRegister();
                   }}>

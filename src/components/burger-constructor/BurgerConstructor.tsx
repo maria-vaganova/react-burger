@@ -13,75 +13,78 @@ import {IIngredient, ICartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
 import {BUN_TYPE, DraggableTypes} from "../../utils/data";
 import {useDrop} from "react-dnd";
-import {clearOrderNumber, getOrderNumber} from "../../services/actions/orderActions";
+import {clearOrderNumber, getOrderNumber, TOrderActions} from "../../services/actions/orderActions";
 import {
     cartSelector,
     dataInfoSelector,
-    orderStateToProps, totalPriceSelector,
+    orderStateToProps,
+    totalPriceSelector,
     useAppSelector,
     useCartDispatch,
-    useOrderDispatch, useTotalPriceDispatch
+    useOrderDispatch,
+    useTotalPriceDispatch
 } from '../../services/store';
-import {addIngredientToCart} from "../../services/actions/cartActions";
+import {addIngredientToCart, TCartActions} from "../../services/actions/cartActions";
 import {v4 as uuid_v4} from 'uuid';
-import {increment, resetPrice} from "../../services/actions/totalPriceActions";
+import {increment, resetPrice, TTotalPriceActions} from "../../services/actions/totalPriceActions";
 import IndexedContainer from "../indexed-container/IndexedContainer";
 import {useLocation, useNavigate} from "react-router-dom";
+import {Dispatch} from "redux";
 
 function BurgerConstructor() {
     const {data} = useAppSelector(dataInfoSelector);
     const {cart} = useAppSelector(cartSelector);
     const {totalPrice} = useAppSelector(totalPriceSelector);
 
-    const dispatchPrice = useTotalPriceDispatch();
-    const incrementPrice = (ingredientId: string) => {
+    const dispatchPrice: Dispatch<TTotalPriceActions> = useTotalPriceDispatch();
+    const incrementPrice = (ingredientId: string): void => {
         dispatchPrice(increment(fulfilIngredient(ingredientId, data)));
     }
-    const resetTotalPrice = () => {
+    const resetTotalPrice: () => void = (): void => {
         dispatchPrice(resetPrice());
     }
 
-    const dispatchCart = useCartDispatch();
-    const addIngredient = (ingredientId: string) => {
+    const dispatchCart: Dispatch<TCartActions> = useCartDispatch();
+    const addIngredient = (ingredientId: string): void => {
         dispatchCart(addIngredientToCart(ingredientId, getIngredientTypeById(ingredientId, data), uuid_v4()));
     }
 
     const dispatchOrder = useOrderDispatch();
     const {orderRequest, orderFailed, orderInfo} = useAppSelector(orderStateToProps);
-    const handleOrder = () => {
-        const ingredients = getDataIds(restoreIngredientListFromCart(cart, true, data));
-        const getOrderNumberThunk = getOrderNumber(ingredients);
+    const handleOrder: () => void = (): void => {
+        const ingredients: string[] = getDataIds(restoreIngredientListFromCart(cart, true, data));
+        const getOrderNumberThunk: (dispatch: Dispatch<TOrderActions>) => Promise<void> = getOrderNumber(ingredients);
         dispatchOrder(getOrderNumberThunk);
     };
-    const clearOrder = () => {
-        const clearOrderNumberThunk = clearOrderNumber();
+    const clearOrder: () => void = (): void => {
+        const clearOrderNumberThunk: (dispatch: Dispatch<TOrderActions>) => Promise<void> = clearOrderNumber();
         dispatchOrder(clearOrderNumberThunk);
     };
 
     const [, dropTarget] = useDrop({
         accept: DraggableTypes.ADDED_ITEM,
-        drop(ingredient: ICartItem) {
+        drop(ingredient: ICartItem): void {
             handleDrop(ingredient.id);
         },
     });
 
-    const handleDrop = (ingredientId: string) => {
+    const handleDrop = (ingredientId: string): void => {
         addIngredient(ingredientId);
     };
 
-    const bun = getBunFromCart(cart, data);
+    const bun: IIngredient | undefined = getBunFromCart(cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
-    const cartList: IIngredient[] = useMemo(() => {
+    const cartList: IIngredient[] = useMemo((): IIngredient[] => {
         if (cart) {
             return restoreIngredientListFromCart(cart, false, data);
         }
         return [];
     }, [cart, data]);
 
-    useEffect(() => {
+    useEffect((): void => {
         resetTotalPrice();
-        cart.forEach(elem => {
+        cart.forEach((elem: any): void => {
             incrementPrice(elem.id);
             if (elem.type === BUN_TYPE) {
                 incrementPrice(elem.id);
@@ -89,11 +92,11 @@ function BurgerConstructor() {
         });
     }, [cartList, cart, data]);
 
-    const openModal = () => {
+    const openModal: () => void = (): void => {
         setOrderDetailsOpen(true);
     };
 
-    const closeModal = () => {
+    const closeModal: () => void = (): void => {
         setOrderDetailsOpen(false);
         clearOrder();
     };
@@ -101,7 +104,7 @@ function BurgerConstructor() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const placeOrder = () => {
+    const placeOrder: () => void = (): void => {
         const isAuthenticated: boolean = isUserAuthenticated();
         if (!isAuthenticated) {
             navigate("/login", {state: {background: location}})
@@ -113,7 +116,7 @@ function BurgerConstructor() {
         handleOrder();
     }
 
-    useEffect(() => {
+    useEffect((): void => {
         if (orderFailed) {
             return alert(('Ошибка сети'));
         } else if (orderInfo.success) {

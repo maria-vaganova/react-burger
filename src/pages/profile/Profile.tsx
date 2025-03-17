@@ -10,9 +10,10 @@ import {
     useSetUserDispatch
 } from "../../services/store";
 import {IUserAuthorization} from "../../utils/types";
-import {getUserInfo, setUserInfo} from "../../services/actions/userActions";
+import {getUserInfo, setUserInfo, TSetUserActions} from "../../services/actions/userActions";
 import {EMPTY_SERVER_INFO} from "../../utils/data";
-import {getAccessToken} from "../../services/actions/tokenActions";
+import {getAccessToken, TGetAccessTokenActions} from "../../services/actions/tokenActions";
+import {Dispatch} from "redux";
 
 function Profile() {
     const [currentToken, setCurrentToken] = useState<string>("");
@@ -24,26 +25,26 @@ function Profile() {
     const [previousPassword, setPreviousPassword] = useState<string>("");
 
     const [name, setName] = useState<string>(previousName)
-    const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setName(e.target.value)
     }
     const [email, setEmail] = useState<string>(previousEmail)
-    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value)
     }
     const [password, setPassword] = useState<string>(previousPassword)
-    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setPassword(e.target.value)
     }
 
     const {tokenRequest, tokenFailed, tokenInfo, tokenMessage} = useAppSelector(tokenStateToProps);
     const dispatchGetAccessToken = useGetAccessTokenDispatch();
-    const handleGetAccessToken = () => {
-        const getAccessTokenThunk = getAccessToken();
+    const handleGetAccessToken: () => void = (): void => {
+        const getAccessTokenThunk: (dispatch: Dispatch<TGetAccessTokenActions>) => Promise<void> = getAccessToken();
         dispatchGetAccessToken(getAccessTokenThunk);
     };
 
-    useEffect(() => {
+    useEffect((): void => {
         if (tokenFailed) {
             let message: string = "Ошибка сети";
             if (tokenMessage !== EMPTY_SERVER_INFO) {
@@ -58,40 +59,40 @@ function Profile() {
     const {userRequest, userFailed, userInfo, userMessage} = useAppSelector(userStateToProps);
 
     const dispatchGetUser = useGetUserDispatch();
-    const handleGetUser = () => {
+    const handleGetUser: () => void = (): void => {
         setLastAction("get")
-        const getUserInfoThunk = getUserInfo(currentToken);
+        const getUserInfoThunk: (dispatch: Dispatch<TSetUserActions>) => Promise<void> = getUserInfo(currentToken);
         dispatchGetUser(getUserInfoThunk);
     };
 
     const dispatchSetUser = useSetUserDispatch();
-    const handleSubmit = () => {
+    const handleSubmit: () => void = (): void => {
         setLastAction("submit")
         const user: IUserAuthorization = {email: email, password: password, name: name};
-        const setUserInfoThunk = setUserInfo(user, currentToken);
+        const setUserInfoThunk: (dispatch: Dispatch<TSetUserActions>) => Promise<void> = setUserInfo(user, currentToken);
         dispatchSetUser(setUserInfoThunk);
     };
 
-    useEffect(() => {
+    useEffect((): void => {
         if (!currentToken || currentToken === "") {
             handleGetAccessToken();
         }
     }, []);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (currentToken) handleGetUser();
     }, [currentToken]);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (userFailed && (userMessage?.message === "jwt expired" || userMessage?.message === "You should be authorised")) {
-            const retryFunction = lastAction === 'get' ? handleGetUser : handleSubmit;
+            const retryFunction: () => void = lastAction === 'get' ? handleGetUser : handleSubmit;
             if (retryFunction) {
                 retryWithNewToken(retryFunction);
             }
         }
     }, [userFailed, userMessage]);
 
-    useEffect(() => {
+    useEffect((): void => {
         if (userFailed && userMessage?.message !== "jwt expired") {
             let message: string = "Ошибка сети";
             if (userMessage !== EMPTY_SERVER_INFO) {
@@ -105,7 +106,7 @@ function Profile() {
         }
     }, [userRequest, userFailed, userInfo, userMessage]);
 
-    const retryWithNewToken = async (requestFunction: () => void) => {
+    const retryWithNewToken = async (requestFunction: () => void): Promise<void> => {
         if (retrying) return;
         setRetrying(true);
 
@@ -121,27 +122,27 @@ function Profile() {
 
     const [hasChanges, setChanges] = useState<boolean>(false);
 
-    const handleReset = () => {
+    const handleReset: () => void = (): void => {
         setName(previousName);
         setEmail(previousEmail);
         setPassword(previousPassword);
         setChanges(false);
     }
 
-    useEffect(() => {
+    useEffect((): void => {
         if (name === previousName && email === previousEmail && password === previousPassword)
             setChanges(false);
         else setChanges(true);
     }, [name, email, password]);
 
-    useEffect(() => {
+    useEffect((): void => {
         handleReset();
     }, [previousName, previousEmail, previousPassword]);
 
     return (
         <div className={profile.content}>
             <LeftProfileLinks/>
-            <form className={profile.centerItems} onSubmit={(e) => {
+            <form className={profile.centerItems} onSubmit={(e): void => {
                 e.preventDefault();
                 handleSubmit();
             }}>

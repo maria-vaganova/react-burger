@@ -10,14 +10,14 @@ interface IModalProps {
 }
 
 function Modal({onClose, children}: IModalProps) {
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
+    useEffect((): () => void => {
+        const handleKeyDown = (event: KeyboardEvent): void => {
             if (event.key === 'Escape') {
                 onClose();
             }
         };
         window.addEventListener('keydown', handleKeyDown);
-        return () => {
+        return (): void => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [onClose]);
