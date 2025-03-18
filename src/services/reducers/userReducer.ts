@@ -22,10 +22,10 @@ import {
 } from "../actions/userActions";
 
 const initialState: IUserState = {
-    userRequest: false,
-    userFailed: false,
+    request: false,
+    failed: false,
     userInfo: EMPTY_CURRENT_USER_INFO,
-    userMessage: EMPTY_SERVER_INFO
+    message: EMPTY_SERVER_INFO
 }
 
 function isUserAction(action: TGetUserActions | TSetUserActions): action is IGetUserAction | ISetUserAction {
@@ -53,8 +53,8 @@ const userReducer: Reducer<IUserState, {
             }
             return {
                 ...state,
-                userRequest: true,
-                userFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case SET_USER_SUCCESS:
@@ -65,9 +65,9 @@ const userReducer: Reducer<IUserState, {
             return {
                 ...state,
                 userInfo: action.userInfo,
-                userMessage: action.userMessage,
-                userRequest: false,
-                userFailed: false
+                message: action.userMessage,
+                request: false,
+                failed: false
             };
         }
         case SET_USER_FAILED:
@@ -78,9 +78,9 @@ const userReducer: Reducer<IUserState, {
             return {
                 ...state,
                 userInfo: action.userInfo,
-                userMessage: action.userMessage,
-                userFailed: true,
-                userRequest: false
+                message: action.userMessage,
+                failed: true,
+                request: false
             };
         }
         default: {

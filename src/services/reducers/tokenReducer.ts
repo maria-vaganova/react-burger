@@ -15,10 +15,10 @@ import {
 } from "../actions/tokenActions";
 
 const initialState: ITokenState = {
-    tokenRequest: false,
-    tokenFailed: false,
+    request: false,
+    failed: false,
     tokenInfo: EMPTY_TOKEN_INFO,
-    tokenMessage: EMPTY_SERVER_INFO
+    message: EMPTY_SERVER_INFO
 }
 
 function isGetAccessTokenAction(action: TGetAccessTokenActions): action is IGetAccessTokenAction {
@@ -43,8 +43,8 @@ const tokenReducer: Reducer<ITokenState, {
             }
             return {
                 ...state,
-                tokenRequest: true,
-                tokenFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case GET_TOKEN_SUCCESS: {
@@ -54,9 +54,9 @@ const tokenReducer: Reducer<ITokenState, {
             return {
                 ...state,
                 tokenInfo: action.tokenInfo,
-                tokenMessage: action.tokenMessage,
-                tokenRequest: false,
-                tokenFailed: false
+                message: action.tokenMessage,
+                request: false,
+                failed: false
             };
         }
         case GET_TOKEN_FAILED: {
@@ -66,9 +66,9 @@ const tokenReducer: Reducer<ITokenState, {
             return {
                 ...state,
                 tokenInfo: action.tokenInfo,
-                tokenMessage: action.tokenMessage,
-                tokenFailed: true,
-                tokenRequest: false
+                message: action.tokenMessage,
+                failed: true,
+                request: false
             };
         }
         default: {

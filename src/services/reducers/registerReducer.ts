@@ -15,10 +15,10 @@ import {
 } from "../actions/registerActions";
 
 const initialState: IRegisterState = {
-    registerRequest: false,
-    registerFailed: false,
+    request: false,
+    failed: false,
     registerInfo: EMPTY_AUTHORIZATION_INFO,
-    registerMessage: EMPTY_SERVER_INFO
+    message: EMPTY_SERVER_INFO
 }
 
 function isPostRegisterAction(action: TRegisterActions): action is IPostRegisterAction {
@@ -45,8 +45,8 @@ const registerReducer: Reducer<IRegisterState, {
             }
             return {
                 ...state,
-                registerRequest: true,
-                registerFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case POST_REGISTER_SUCCESS: {
@@ -56,9 +56,9 @@ const registerReducer: Reducer<IRegisterState, {
             return {
                 ...state,
                 registerInfo: action.registerInfo,
-                registerMessage: action.registerMessage,
-                registerRequest: false,
-                registerFailed: false
+                message: action.registerMessage,
+                request: false,
+                failed: false
             };
         }
         case POST_REGISTER_FAILED: {
@@ -68,9 +68,9 @@ const registerReducer: Reducer<IRegisterState, {
             return {
                 ...state,
                 registerInfo: action.registerInfo,
-                registerMessage: action.registerMessage,
-                registerFailed: true,
-                registerRequest: false
+                message: action.registerMessage,
+                failed: true,
+                request: false
             };
         }
         default: {

@@ -13,9 +13,21 @@ export interface IIngredient {
     __v: number;
 }
 
-export interface IDataState {
-    dataRequest: boolean;
-    dataFailed: boolean;
+export interface IServerAnswer {
+    request: boolean;
+    failed: boolean;
+}
+
+export interface IServerMessage {
+    message: IServerInfo;
+}
+
+export interface IServerInfo {
+    message: string;
+    success: boolean;
+}
+
+export interface IDataState extends IServerAnswer {
     dataInfo: IIngredient[];
 }
 
@@ -34,9 +46,7 @@ export interface ICartItem {
     key: string;
 }
 
-export interface IOrderState {
-    orderRequest: boolean;
-    orderFailed: boolean;
+export interface IOrderState extends IServerAnswer {
     orderInfo: IOrderInfo;
 }
 
@@ -50,23 +60,12 @@ export interface IOrder {
     number: number;
 }
 
-export interface IRegisterState {
-    registerRequest: boolean;
-    registerFailed: boolean;
+export interface IRegisterState extends IServerAnswer, IServerMessage {
     registerInfo: IAuthorizationInfo;
-    registerMessage: IServerInfo;
 }
 
-export interface ILoginState {
-    loginRequest: boolean;
-    loginFailed: boolean;
+export interface ILoginState extends IServerAnswer, IServerMessage {
     loginInfo: IAuthorizationInfo;
-    loginMessage: IServerInfo;
-}
-
-export interface IServerInfo {
-    message: string;
-    success: boolean;
 }
 
 export interface IAuthorizationInfo {
@@ -92,11 +91,8 @@ export interface IUserAuthorization {
     name: string;
 }
 
-export interface IUserState {
-    userRequest: boolean;
-    userFailed: boolean;
+export interface IUserState extends IServerAnswer, IServerMessage {
     userInfo: ICurrentUserInfo;
-    userMessage: IServerInfo;
 }
 
 export interface ICurrentUserInfo {
@@ -104,11 +100,8 @@ export interface ICurrentUserInfo {
     user: IUserInfo;
 }
 
-export interface ITokenState {
-    tokenRequest: boolean;
-    tokenFailed: boolean;
+export interface ITokenState extends IServerAnswer, IServerMessage {
     tokenInfo: ITokenInfo;
-    tokenMessage: IServerInfo;
 }
 
 export interface ITokenInfo {
@@ -117,10 +110,7 @@ export interface ITokenInfo {
     refreshToken: string;
 }
 
-export interface IPasswordState {
-    passwordRequest: boolean;
-    passwordFailed: boolean;
-    passwordMessage: IServerInfo;
+export interface IPasswordState extends IServerAnswer, IServerMessage {
 }
 
 export interface IResetPasswordInfo {

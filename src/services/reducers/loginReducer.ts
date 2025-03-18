@@ -18,10 +18,10 @@ import {
 } from "../actions/loginActions";
 
 const initialState: ILoginState = {
-    loginRequest: false,
-    loginFailed: false,
+    request: false,
+    failed: false,
     loginInfo: EMPTY_AUTHORIZATION_INFO,
-    loginMessage: EMPTY_SERVER_INFO
+    message: EMPTY_SERVER_INFO
 }
 
 function isPostLoginAction(action: TLoginActions | TLogoutActions): action is IPostLoginAction {
@@ -52,8 +52,8 @@ const loginReducer: Reducer<ILoginState, {
             }
             return {
                 ...state,
-                loginRequest: true,
-                loginFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case POST_LOGIN_SUCCESS: {
@@ -63,9 +63,9 @@ const loginReducer: Reducer<ILoginState, {
             return {
                 ...state,
                 loginInfo: action.loginInfo,
-                loginMessage: action.loginMessage,
-                loginRequest: false,
-                loginFailed: false
+                message: action.loginMessage,
+                request: false,
+                failed: false
             };
         }
         case POST_LOGIN_FAILED: {
@@ -75,9 +75,9 @@ const loginReducer: Reducer<ILoginState, {
             return {
                 ...state,
                 loginInfo: action.loginInfo,
-                loginMessage: action.loginMessage,
-                loginFailed: true,
-                loginRequest: false
+                message: action.loginMessage,
+                failed: true,
+                request: false
             };
         }
         case POST_LOGOUT: {
@@ -87,9 +87,9 @@ const loginReducer: Reducer<ILoginState, {
             return {
                 ...state,
                 loginInfo: EMPTY_AUTHORIZATION_INFO,
-                loginMessage: action.loginMessage,
-                loginFailed: false,
-                loginRequest: false
+                message: action.loginMessage,
+                failed: false,
+                request: false
             };
         }
         default: {

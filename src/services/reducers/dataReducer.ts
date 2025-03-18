@@ -4,8 +4,8 @@ import {GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
 import {TDataActions, IGetDataSuccessAction} from "../actions/dataActions";
 
 const initialState: IDataState = {
-    dataRequest: false,
-    dataFailed: false,
+    request: false,
+    failed: false,
     dataInfo: []
 }
 
@@ -18,8 +18,8 @@ const dataReducer: Reducer<IDataState, TDataActions> = (state: IDataState = init
         case GET_DATA: {
             return {
                 ...state,
-                dataRequest: true,
-                dataFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case GET_DATA_SUCCESS: {
@@ -30,14 +30,14 @@ const dataReducer: Reducer<IDataState, TDataActions> = (state: IDataState = init
             return {
                 ...state,
                 dataInfo: action.dataInfo,
-                dataRequest: false
+                request: false
             };
         }
         case GET_DATA_FAILED: {
             return {
                 ...state,
-                dataFailed: true,
-                dataRequest: false
+                failed: true,
+                request: false
             };
         }
         default: {

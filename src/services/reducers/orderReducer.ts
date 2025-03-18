@@ -9,8 +9,8 @@ import {Reducer} from "redux";
 import {IGetOrderNumberSuccessAction, TOrderActions} from "../actions/orderActions";
 
 const initialState: IOrderState = {
-    orderRequest: false,
-    orderFailed: false,
+    request: false,
+    failed: false,
     orderInfo: EMPTY_ORDER_INFO
 }
 
@@ -26,8 +26,8 @@ const orderReducer: Reducer<IOrderState, {
         case GET_ORDER_NUMBER: {
             return {
                 ...state,
-                orderRequest: true,
-                orderFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case GET_ORDER_NUMBER_SUCCESS: {
@@ -37,14 +37,14 @@ const orderReducer: Reducer<IOrderState, {
             return {
                 ...state,
                 orderInfo: action.orderInfo,
-                orderRequest: false
+                request: false
             };
         }
         case GET_ORDER_NUMBER_FAILED: {
             return {
                 ...state,
-                orderFailed: true,
-                orderRequest: false
+                failed: true,
+                request: false
             };
         }
         default: {
