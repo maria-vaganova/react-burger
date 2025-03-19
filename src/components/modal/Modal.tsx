@@ -4,20 +4,20 @@ import modal from './Modal.module.css';
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "./ModalOverlay";
 
-interface ModalProps {
+interface IModalProps {
     onClose: () => void,
     children: React.ReactNode
 }
 
-function Modal({onClose, children}: ModalProps) {
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
+function Modal({onClose, children}: IModalProps) {
+    useEffect((): () => void => {
+        const handleKeyDown = (event: KeyboardEvent): void => {
             if (event.key === 'Escape') {
                 onClose();
             }
         };
         window.addEventListener('keydown', handleKeyDown);
-        return () => {
+        return (): void => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [onClose]);

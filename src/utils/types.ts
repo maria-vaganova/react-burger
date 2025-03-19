@@ -1,4 +1,4 @@
-export interface Ingredient {
+export interface IIngredient {
     _id: string;
     name: string;
     type: string;
@@ -13,127 +13,117 @@ export interface Ingredient {
     __v: number;
 }
 
-export interface DataState {
-    dataRequest: boolean;
-    dataFailed: boolean;
-    dataInfo: Ingredient[];
+export interface IDataRequest {
+    success: boolean;
+    data: IIngredient[];
 }
 
-export interface TotalPriceState {
+export interface IServerAnswer {
+    request: boolean;
+    failed: boolean;
+}
+
+export interface IServerMessage {
+    message: IServerInfo;
+}
+
+export interface IServerInfo {
+    message: string;
+    success: boolean;
+}
+
+export interface IDataState extends IServerAnswer {
+    dataInfo: IIngredient[];
+}
+
+export interface ITotalPriceState {
     count: number;
 }
 
-export interface TotalPriceAction {
-    type: "increment" | "decrement" | "reset";
-    ingredient?: Ingredient;
+export interface ICartState {
+    cartItems: ICartItem[];
 }
 
-export interface CartState {
-    cartItems: CartItem[];
-}
-
-export interface CartItem {
+export interface ICartItem {
     id: string;
     type: string;
     displayOrder: number;
     key: string;
 }
 
-export interface OrderState {
-    orderRequest: boolean;
-    orderFailed: boolean;
-    orderInfo: OrderInfo;
+export interface IOrderState extends IServerAnswer {
+    orderInfo: IOrderInfo;
 }
 
-export interface OrderInfo {
+export interface IOrderInfo {
     name: string;
-    order: Order;
+    order: IOrder;
     success: boolean;
 }
 
-export interface Order {
+export interface IOrder {
     number: number;
 }
 
-export interface RegisterState {
-    registerRequest: boolean;
-    registerFailed: boolean;
-    registerInfo: AuthorizationInfo;
-    registerMessage: ServerInfo;
+export interface IRegisterState extends IServerAnswer, IServerMessage {
+    registerInfo: IAuthorizationInfo;
 }
 
-export interface LoginState {
-    loginRequest: boolean;
-    loginFailed: boolean;
-    loginInfo: AuthorizationInfo;
-    loginMessage: ServerInfo;
+export interface ILoginState extends IServerAnswer, IServerMessage {
+    loginInfo: IAuthorizationInfo;
 }
 
-export interface ServerInfo {
-    message: string;
-    success: boolean;
-}
-
-export interface AuthorizationInfo {
+export interface IAuthorizationInfo {
     success: boolean;
     accessToken: string;
     refreshToken: string;
-    user: UserInfo;
+    user: IUserInfo;
 }
 
-export interface UserInfo {
+export interface IUserInfo {
     email: string;
     name: string;
 }
 
-export interface UserToLogIn {
+export interface IUserToLogIn {
     email: string;
     password: string;
 }
 
-export interface UserAuthorization {
+export interface IUserAuthorization {
     email: string;
     password: string;
     name: string;
 }
 
-export interface UserState {
-    userRequest: boolean;
-    userFailed: boolean;
-    userInfo: CurrentUserInfo;
-    userMessage: ServerInfo;
+export interface IUserState extends IServerAnswer, IServerMessage {
+    userInfo: ICurrentUserInfo;
 }
 
-export interface CurrentUserInfo {
+export interface ICurrentUserInfo {
     success: boolean;
-    user: UserInfo;
+    user: IUserInfo;
 }
 
-export interface TokenState {
-    tokenRequest: boolean;
-    tokenFailed: boolean;
-    tokenInfo: TokenInfo;
-    tokenMessage: ServerInfo;
+export interface ITokenState extends IServerAnswer, IServerMessage {
+    tokenInfo: ITokenInfo;
 }
 
-export interface TokenInfo {
+export interface ITokenInfo {
     success: boolean;
     accessToken: string;
     refreshToken: string;
 }
 
-export interface PasswordState {
-    passwordRequest: boolean;
-    passwordFailed: boolean;
-    passwordMessage: ServerInfo;
+export interface IPasswordState extends IServerAnswer, IServerMessage {
 }
 
-export interface ResetPasswordInfo {
+export interface IResetPasswordInfo {
     password: string;
     token: string;
 }
 
-export interface IngredientDetailInfo {
+export interface IIngredientDetailInfo {
     image_large: string;
     name: string;
     calories: number;
@@ -142,6 +132,6 @@ export interface IngredientDetailInfo {
     carbohydrates: number;
 }
 
-export interface IngredientDetailState {
-    ingredientDetails: IngredientDetailInfo;
+export interface IIngredientDetailState {
+    ingredientDetails: IIngredientDetailInfo;
 }

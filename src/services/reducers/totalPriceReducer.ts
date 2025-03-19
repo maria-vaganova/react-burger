@@ -1,10 +1,10 @@
 import {INCREMENT, DECREMENT, RESET} from "../../utils/data";
-import {TotalPriceActionTypes} from "../actions/totalPriceActions";
-import {TotalPriceState} from "../../utils/types";
+import {TTotalPriceActions} from "../actions/totalPriceActions";
+import {ITotalPriceState} from "../../utils/types";
 
-const initialState: TotalPriceState = {count: 0};
+const initialState: ITotalPriceState = {count: 0};
 
-function totalPriceReducer(state = initialState, action: TotalPriceActionTypes) {
+function totalPriceReducer(state: ITotalPriceState = initialState, action: TTotalPriceActions): ITotalPriceState {
     switch (action.type) {
         case INCREMENT: {
             return {...state, count: state.count + action.totalPrice};

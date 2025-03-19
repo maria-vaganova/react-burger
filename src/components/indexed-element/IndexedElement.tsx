@@ -1,20 +1,21 @@
-import {Ingredient} from "../../utils/types";
+import {IIngredient} from "../../utils/types";
 import element from "./IndexedElement.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag, useDrop} from "react-dnd";
 import {DraggableTypes} from "../../utils/data";
 import {useCartDispatch} from "../../services/store";
-import {discardIngredientFromCart} from "../../services/actions/cartActions";
+import {discardIngredientFromCart, TCartActions} from "../../services/actions/cartActions";
+import {Dispatch} from "redux";
 
-export interface IndexedElementProps {
-    ingredient: Ingredient,
+export interface IIndexedElementProps {
+    ingredient: IIngredient,
     displayOrder: number,
     moveElement: (dragIndex: number, hoverIndex: number) => void
 }
 
-function IndexedElement({ingredient, displayOrder, moveElement}: IndexedElementProps) {
-    const dispatch = useCartDispatch();
-    const discardIngredient = (displayOrder: number) => {
+function IndexedElement({ingredient, displayOrder, moveElement}: IIndexedElementProps) {
+    const dispatch: Dispatch<TCartActions> = useCartDispatch();
+    const discardIngredient: (displayOrder: number) => void = (displayOrder: number): void => {
         dispatch(discardIngredientFromCart(displayOrder));
     }
 
@@ -28,7 +29,7 @@ function IndexedElement({ingredient, displayOrder, moveElement}: IndexedElementP
 
     const [, drop] = useDrop({
         accept: DraggableTypes.SORTED_ITEM,
-        hover(item: { displayOrder: number }) {
+        hover(item: { displayOrder: number }): void {
             if (item.displayOrder !== displayOrder) {
                 moveElement(item.displayOrder, displayOrder);
                 item.displayOrder = displayOrder; // Обновление позиции элемента
@@ -37,13 +38,13 @@ function IndexedElement({ingredient, displayOrder, moveElement}: IndexedElementP
     });
 
     return (
-        <div ref={(node) => drag(drop(node))} className={element.cartItemContent}>
+        <div ref={(node: HTMLDivElement | null) => drag(drop(node))} className={element.cartItemContent}>
             <DragIcon type="primary" className={"mr-2"}/>
             <ConstructorElement
                 text={ingredient.name}
                 price={ingredient.price}
                 thumbnail={ingredient.image}
-                handleClose={() => discardIngredient(displayOrder)}
+                handleClose={(): void => discardIngredient(displayOrder)}
             />
         </div>
     );

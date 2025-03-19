@@ -1,34 +1,50 @@
-import {OrderState} from "../../utils/types";
-import {EMPTY_ORDER_INFO, GET_ORDER_NUMBER, GET_ORDER_NUMBER_FAILED, GET_ORDER_NUMBER_SUCCESS} from "../../utils/data";
+import {IOrderInfo, IOrderState} from "../../utils/types";
+import {
+    EMPTY_ORDER_INFO,
+    GET_ORDER_NUMBER,
+    GET_ORDER_NUMBER_FAILED,
+    GET_ORDER_NUMBER_SUCCESS
+} from "../../utils/data";
 import {Reducer} from "redux";
+import {IGetOrderNumberSuccessAction, TOrderActions} from "../actions/orderActions";
 
-const initialState: OrderState = {
-    orderRequest: false,
-    orderFailed: false,
+const initialState: IOrderState = {
+    request: false,
+    failed: false,
     orderInfo: EMPTY_ORDER_INFO
 }
 
-const orderReducer: Reducer<OrderState, { type: string; orderInfo?: any }> = (state = initialState, action) => {
+function isGetOrderNumberSuccessAction(action: TOrderActions): action is IGetOrderNumberSuccessAction {
+    return action.type === GET_ORDER_NUMBER_SUCCESS;
+}
+
+const orderReducer: Reducer<IOrderState, {
+    type: string;
+    orderInfo?: IOrderInfo;
+}> = (state: IOrderState = initialState, action: TOrderActions): IOrderState => {
     switch (action.type) {
         case GET_ORDER_NUMBER: {
             return {
                 ...state,
-                orderRequest: true,
-                orderFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case GET_ORDER_NUMBER_SUCCESS: {
+            if (!isGetOrderNumberSuccessAction(action)) {
+                throw new Error("Invalid action type");
+            }
             return {
                 ...state,
                 orderInfo: action.orderInfo,
-                orderRequest: false
+                request: false
             };
         }
         case GET_ORDER_NUMBER_FAILED: {
             return {
                 ...state,
-                orderFailed: true,
-                orderRequest: false
+                failed: true,
+                request: false
             };
         }
         default: {

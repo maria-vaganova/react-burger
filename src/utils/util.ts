@@ -1,20 +1,20 @@
-import {CartItem, Ingredient} from "./types";
+import {ICartItem, IIngredient} from "./types";
 import {BUN_TYPE, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "./data";
 
 export function restoreIngredientListFromCart(
-    cart: CartItem[] | undefined, isBunIncluded: boolean, data: Ingredient[]): Ingredient[] {
+    cart: ICartItem[] | undefined, isBunIncluded: boolean, data: IIngredient[]): IIngredient[] {
     if (cart) {
-        return (isBunIncluded ? cart : cart.filter(elem => elem.type !== BUN_TYPE))
-            .flatMap(elem => {
+        return (isBunIncluded ? cart : cart.filter((elem: ICartItem): boolean => elem.type !== BUN_TYPE))
+            .flatMap((elem: ICartItem): IIngredient => {
                 return fulfilIngredient(elem.id, data);
             });
     }
     return [];
 }
 
-export function getIngredientCountFromCartById(cart: CartItem[] | undefined, id: string): number {
-    let count = 0;
-    cart?.forEach(elem => {
+export function getIngredientCountFromCartById(cart: ICartItem[] | undefined, id: string): number {
+    let count: number = 0;
+    cart?.forEach((elem: ICartItem): void => {
         if (elem.id === id) {
             count++;
         }
@@ -22,14 +22,14 @@ export function getIngredientCountFromCartById(cart: CartItem[] | undefined, id:
     return count;
 }
 
-export function getBunFromCart(cart: CartItem[] | undefined, data: Ingredient[]): Ingredient | undefined {
-    const bun = cart?.find(elem => elem.type === BUN_TYPE);
+export function getBunFromCart(cart: ICartItem[] | undefined, data: IIngredient[]): IIngredient | undefined {
+    const bun: ICartItem | undefined = cart?.find((elem: ICartItem): boolean => elem.type === BUN_TYPE);
     if (bun === undefined) return undefined;
     return fulfilIngredient(bun.id, data);
 }
 
-export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
-    const findIngredient = data.find(elem => elem._id === id);
+export function fulfilIngredient(id: string, data: IIngredient[]): IIngredient {
+    const findIngredient: IIngredient | undefined = data.find((elem: IIngredient): boolean => elem._id === id);
     return findIngredient ? findIngredient : {
         _id: "0",
         name: "Не найдено",
@@ -46,23 +46,23 @@ export function fulfilIngredient(id: string, data: Ingredient[]): Ingredient {
     };
 }
 
-export function getDataIdsWithType(data: Ingredient[]): { id: string, type: string }[] {
-    return data.map((elem) => ({
+export function getDataIdsWithType(data: IIngredient[]): { id: string, type: string }[] {
+    return data.map((elem: IIngredient): { id: string, type: string } => ({
         id: elem._id,
         type: elem.type
     }));
 }
 
-export function getDataIds(data: Ingredient[]): string[] {
-    return data.map((elem) => elem._id);
+export function getDataIds(data: IIngredient[]): string[] {
+    return data.map((elem: IIngredient): string => elem._id);
 }
 
-export function getIngredientTypeById(id: string, data: Ingredient[]): string {
-    const ingredient = data.find(elem => elem._id === id);
+export function getIngredientTypeById(id: string, data: IIngredient[]): string {
+    const ingredient: IIngredient | undefined = data.find((elem: IIngredient): boolean => elem._id === id);
     return ingredient ? ingredient.type : "";
 }
 
-function checkResponse(response: Response): Promise<any> {
+function checkResponse<T>(response: Response): Promise<T> {
     if (response.ok) {
         return response.json();
     } else {
@@ -72,12 +72,12 @@ function checkResponse(response: Response): Promise<any> {
     }
 }
 
-export function request(url: string, options: RequestInit = {}): Promise<any> {
-    return fetch(url, options).then(checkResponse);
+export function request<T>(url: string, options: RequestInit = {}): Promise<T> {
+    return fetch(url, options).then(checkResponse<T>);
 }
 
 export function isUserAuthenticated(): boolean {
-    const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG);
+    const refreshToken: string | null = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG);
     if (!refreshToken) {
         localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
         return false;

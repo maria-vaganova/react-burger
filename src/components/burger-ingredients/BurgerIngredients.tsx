@@ -11,14 +11,14 @@ function BurgerIngredients() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const openModal = (ingredientId: string) => {
+    const openModal = (ingredientId: string): void => {
         navigate(`/ingredients/${ingredientId}`, {state: {background: location}});
     };
 
-    const handleScroll = () => {
-        const bun = document.getElementById("bun");
-        const sauce = document.getElementById("sauce");
-        const main = document.getElementById("main");
+    const handleScroll = (): void => {
+        const bun: HTMLElement | null = document.getElementById("bun");
+        const sauce: HTMLElement | null = document.getElementById("sauce");
+        const main: HTMLElement | null = document.getElementById("main");
 
         if (!bun || !sauce || !main) {
             console.log("Элементы не найдены в DOM");
@@ -29,7 +29,7 @@ function BurgerIngredients() {
         const sauceRect = sauce.getBoundingClientRect();
         const mainRect = main.getBoundingClientRect();
 
-        const scrollY = window.scrollY || window.pageYOffset;
+        const scrollY: number = window.scrollY || window.pageYOffset;
 
         const offsets = {
             bun: bunRect.top + scrollY,
@@ -38,30 +38,30 @@ function BurgerIngredients() {
         };
 
         type IngredientsKeys = "bun" | "sauce" | "main";
-        const closestTab = Object.keys(offsets).reduce((closest, current) => {
-            const closestValue = Math.abs(offsets[closest as IngredientsKeys]);
-            const currentValue = Math.abs(offsets[current as IngredientsKeys]);
+        const closestTab: string = Object.keys(offsets).reduce((closest: string, current: string): string => {
+            const closestValue: number = Math.abs(offsets[closest as IngredientsKeys]);
+            const currentValue: number = Math.abs(offsets[current as IngredientsKeys]);
             return currentValue < closestValue ? current : closest;
         }, "bun" as IngredientsKeys);
 
         setCurrent(closestTab);
     };
 
-    useEffect(() => {
-        const container = document.getElementById('scrollable-container');
+    useEffect((): () => void => {
+        const container: HTMLElement | null = document.getElementById('scrollable-container');
         if (container) {
             container.addEventListener('scroll', handleScroll);
         }
-        return () => {
+        return (): void => {
             if (container) {
                 container.removeEventListener('scroll', handleScroll);
             }
         };
     }, []);
 
-    function setActiveTab(tabName: string) {
+    function setActiveTab(tabName: string): void {
         setCurrent(tabName)
-        const element = document.getElementById(tabName)
+        const element: HTMLElement | null = document.getElementById(tabName)
         element?.scrollIntoView({
             behavior: 'smooth'
         })
@@ -74,19 +74,19 @@ function BurgerIngredients() {
             <div style={{display: 'flex'}}>
                 <Tab value={BUN_TYPE}
                      active={current === BUN_TYPE}
-                     onClick={() => setActiveTab(BUN_TYPE)}
+                     onClick={(): void => setActiveTab(BUN_TYPE)}
                 >
                     Булки
                 </Tab>
                 <Tab value={SAUCE_TYPE}
                      active={current === SAUCE_TYPE}
-                     onClick={() => setActiveTab(SAUCE_TYPE)}
+                     onClick={(): void => setActiveTab(SAUCE_TYPE)}
                 >
                     Соусы
                 </Tab>
                 <Tab value={MAIN_TYPE}
                      active={current === MAIN_TYPE}
-                     onClick={() => setActiveTab(MAIN_TYPE)}
+                     onClick={(): void => setActiveTab(MAIN_TYPE)}
                 >
                     Начинки
                 </Tab>
@@ -95,15 +95,15 @@ function BurgerIngredients() {
                 <CategorySection id="bun"
                                  name="Булки"
                                  type={BUN_TYPE}
-                                 openModal={(ingredientId: string) => openModal(ingredientId)}/>
+                                 openModal={(ingredientId: string): void => openModal(ingredientId)}/>
                 <CategorySection id="sauce"
                                  name="Соусы"
                                  type={SAUCE_TYPE}
-                                 openModal={(ingredientId: string) => openModal(ingredientId)}/>
+                                 openModal={(ingredientId: string): void => openModal(ingredientId)}/>
                 <CategorySection id="main"
                                  name="Начинки"
                                  type={MAIN_TYPE}
-                                 openModal={(ingredientId: string) => openModal(ingredientId)}/>
+                                 openModal={(ingredientId: string): void => openModal(ingredientId)}/>
             </div>
         </div>
     );

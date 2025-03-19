@@ -1,34 +1,43 @@
-import {DataState} from "../../utils/types";
+import {IDataState} from "../../utils/types";
 import {Reducer} from "redux";
 import {GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
+import {TDataActions, IGetDataSuccessAction} from "../actions/dataActions";
 
-const initialState: DataState = {
-    dataRequest: false,
-    dataFailed: false,
+const initialState: IDataState = {
+    request: false,
+    failed: false,
     dataInfo: []
 }
 
-const dataReducer: Reducer<DataState, { type: string; dataInfo?: any }> = (state = initialState, action) => {
+function isGetDataSuccessAction(action: TDataActions): action is IGetDataSuccessAction {
+    return action.type === GET_DATA_SUCCESS;
+}
+
+const dataReducer: Reducer<IDataState, TDataActions> = (state: IDataState = initialState, action: TDataActions): IDataState => {
     switch (action.type) {
         case GET_DATA: {
             return {
                 ...state,
-                dataRequest: true,
-                dataFailed: false,
+                request: true,
+                failed: false,
             };
         }
         case GET_DATA_SUCCESS: {
+            if (!isGetDataSuccessAction(action)) {
+                throw new Error("Invalid action type");
+            }
+
             return {
                 ...state,
                 dataInfo: action.dataInfo,
-                dataRequest: false
+                request: false
             };
         }
         case GET_DATA_FAILED: {
             return {
                 ...state,
-                dataFailed: true,
-                dataRequest: false
+                failed: true,
+                request: false
             };
         }
         default: {

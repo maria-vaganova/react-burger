@@ -2,13 +2,13 @@ import React from 'react';
 import {Navigate, useLocation} from 'react-router-dom';
 import {isUserAuthenticated} from "../../utils/util";
 
-interface ProtectedRouteProps {
+interface IProtectedRouteProps {
     redirectPath: string;
     children: React.ReactNode;
     isAuthorizedRedirect: boolean;
 }
 
-function ProtectedRouteElement({children, redirectPath, isAuthorizedRedirect}: ProtectedRouteProps) {
+function ProtectedRouteElement({children, redirectPath, isAuthorizedRedirect}: IProtectedRouteProps) {
     const location = useLocation();
 
     const isAuthenticated: boolean = isUserAuthenticated();
@@ -18,7 +18,7 @@ function ProtectedRouteElement({children, redirectPath, isAuthorizedRedirect}: P
     }
 
     if (isAuthenticated && isAuthorizedRedirect) {
-        const targetPath = location.state?.from?.pathname || redirectPath;
+        const targetPath: string = location.state?.from?.pathname || redirectPath;
         if (location.pathname !== targetPath)
             return <Navigate to={targetPath} state={{from: location}} replace/>;
     }

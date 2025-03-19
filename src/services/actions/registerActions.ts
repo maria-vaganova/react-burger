@@ -10,38 +10,38 @@ import {
     EMPTY_SERVER_INFO,
     AUTHORIZED_SERVER_INFO
 } from "../../utils/data";
-import {AuthorizationInfo, ServerInfo, UserAuthorization} from "../../utils/types";
+import {IAuthorizationInfo, IServerInfo, IUserAuthorization} from "../../utils/types";
 import {request} from "../../utils/util";
 
-export interface PostRegisterAction {
+export interface IPostRegisterAction {
     type: typeof POST_REGISTER;
 }
 
-export interface PostRegisterSuccessAction {
+export interface IPostRegisterSuccessAction {
     type: typeof POST_REGISTER_SUCCESS;
-    registerInfo: AuthorizationInfo;
-    registerMessage: ServerInfo;
+    registerInfo: IAuthorizationInfo;
+    registerMessage: IServerInfo;
 }
 
-export interface PostRegisterFailedAction {
+export interface IPostRegisterFailedAction {
     type: typeof POST_REGISTER_FAILED;
-    registerInfo: AuthorizationInfo;
-    registerMessage: ServerInfo;
+    registerInfo: IAuthorizationInfo;
+    registerMessage: IServerInfo;
 }
 
-export type RegisterActions =
-    | PostRegisterAction
-    | PostRegisterSuccessAction
-    | PostRegisterFailedAction;
+export type TRegisterActions =
+    | IPostRegisterAction
+    | IPostRegisterSuccessAction
+    | IPostRegisterFailedAction;
 
-export function getRegister(newUser: UserAuthorization) {
-    return async function getRegisterThunk(dispatch: Dispatch<RegisterActions>) {
+export function getRegister(newUser: IUserAuthorization): (dispatch: Dispatch<TRegisterActions>) => Promise<void> {
+    return async function getRegisterThunk(dispatch: Dispatch<TRegisterActions>): Promise<void> {
         dispatch({
             type: POST_REGISTER
         })
         try {
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
-            const registerInfo = await request(REGISTER_URL, {
+            const registerInfo: IAuthorizationInfo = await request(REGISTER_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,15 +50,15 @@ export function getRegister(newUser: UserAuthorization) {
             });
             dispatch({
                 type: POST_REGISTER_SUCCESS,
-                registerInfo: registerInfo as AuthorizationInfo,
+                registerInfo: registerInfo as IAuthorizationInfo,
                 registerMessage: AUTHORIZED_SERVER_INFO
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, registerInfo.refreshToken);
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: POST_REGISTER_FAILED,
                 registerInfo: EMPTY_AUTHORIZATION_INFO,
-                registerMessage: error || EMPTY_SERVER_INFO
+                registerMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }
