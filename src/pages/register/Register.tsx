@@ -11,6 +11,7 @@ import {getRegister, TRegisterActions} from "../../services/actions/registerActi
 import {IUserAuthorization} from "../../utils/types";
 import {EMPTY_AUTHORIZATION_INFO, EMPTY_SERVER_INFO} from "../../utils/data";
 import {Dispatch} from "redux";
+import WarningModal from "../../components/modal/WarningModal";
 
 function Register() {
     const [name, setName] = useState<string>('')
@@ -25,6 +26,19 @@ function Register() {
     const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setPassword(e.target.value)
     }
+
+    const [modalMessage, setModalMessage] = useState("");
+    const [isMessageModalOpen, setMessageModalOpen] = useState(false);
+
+    const openMessageModal = (message: string): void => {
+        setModalMessage(message);
+        setMessageModalOpen(true);
+    };
+
+    const closeMessageModal = (): void => {
+        setMessageModalOpen(false);
+        setModalMessage("");
+    };
 
     const dispatchRegister = useRegisterDispatch();
     const {registerRequest, registerFailed, registerInfo, registerMessage} = useAppSelector(registerStateToProps);
@@ -42,56 +56,61 @@ function Register() {
             if (registerMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + registerMessage.message;
             }
-            alert(message);
+            openMessageModal(message);
         } else if (!registerRequest && registerInfo !== EMPTY_AUTHORIZATION_INFO) {
             navigate('/');
         }
     }, [registerFailed, registerRequest, registerInfo, registerMessage, navigate]);
 
     return (
-        <div className={register.content}>
-            <p className="text text_type_main-medium">
-                Регистрация
-            </p>
-            <form className={register.form}
-                  onSubmit={(e): void => {
-                      e.preventDefault();
-                      handleRegister();
-                  }}>
-                <Input
-                    type={'text'}
-                    onChange={onNameChange}
-                    value={name}
-                    placeholder={"Имя"}
-                    extraClass={"mb-3 mt-6"}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                />
-                <EmailInput
-                    onChange={onEmailChange}
-                    value={email}
-                    placeholder={"E-mail"}
-                    isIcon={false}
-                    extraClass={"mb-3 mt-3"}
-                />
-                <PasswordInput
-                    onChange={onPasswordChange}
-                    value={password}
-                    placeholder={"Пароль"}
-                    extraClass={"mb-6 mt-3"}
-                />
-                <Button htmlType="submit" type="primary" size="medium">
-                    Зарегистрироваться
-                </Button>
-            </form>
-            <div className={"mt-20"}>
-                <a className={"text text_type_main-default text_color_inactive mr-2"}>
-                    Уже зарегистрированы?
-                </a>
-                <NavLink to={"/login"}
-                         className={"text text_type_main-default text_color_accent " + register.navLink}>
-                    Войти
-                </NavLink>
+        <div>
+            {isMessageModalOpen && (
+                <WarningModal closeModal={closeMessageModal} message={modalMessage}/>
+            )}
+            <div className={register.content}>
+                <p className="text text_type_main-medium">
+                    Регистрация
+                </p>
+                <form className={register.form}
+                      onSubmit={(e): void => {
+                          e.preventDefault();
+                          handleRegister();
+                      }}>
+                    <Input
+                        type={'text'}
+                        onChange={onNameChange}
+                        value={name}
+                        placeholder={"Имя"}
+                        extraClass={"mb-3 mt-6"}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                    />
+                    <EmailInput
+                        onChange={onEmailChange}
+                        value={email}
+                        placeholder={"E-mail"}
+                        isIcon={false}
+                        extraClass={"mb-3 mt-3"}
+                    />
+                    <PasswordInput
+                        onChange={onPasswordChange}
+                        value={password}
+                        placeholder={"Пароль"}
+                        extraClass={"mb-6 mt-3"}
+                    />
+                    <Button htmlType="submit" type="primary" size="medium">
+                        Зарегистрироваться
+                    </Button>
+                </form>
+                <div className={"mt-20"}>
+                    <a className={"text text_type_main-default text_color_inactive mr-2"}>
+                        Уже зарегистрированы?
+                    </a>
+                    <NavLink to={"/login"}
+                             className={"text text_type_main-default text_color_accent " + register.navLink}>
+                        Войти
+                    </NavLink>
+                </div>
             </div>
         </div>
     );

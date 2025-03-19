@@ -10,12 +10,26 @@ import {
 import {askToResetPassword, TPostPasswordActions} from "../../services/actions/passwordActions";
 import {EMPTY_SERVER_INFO, FORGOT_PASSWORD_VISITED_TAG} from "../../utils/data";
 import {Dispatch} from "redux";
+import WarningModal from "../../components/modal/WarningModal";
 
 function ForgotPassword() {
     const [email, setEmail] = useState<string>('')
     const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value)
     }
+
+    const [modalMessage, setModalMessage] = useState("");
+    const [isMessageModalOpen, setMessageModalOpen] = useState(false);
+
+    const openMessageModal = (message: string): void => {
+        setModalMessage(message);
+        setMessageModalOpen(true);
+    };
+
+    const closeMessageModal = (): void => {
+        setMessageModalOpen(false);
+        setModalMessage("");
+    };
 
     const {passwordRequest, passwordFailed, passwordMessage} = useAppSelector(passwordStateToProps);
     const dispatchResetPassword = usePostPasswordDispatch();
@@ -36,7 +50,7 @@ function ForgotPassword() {
             if (passwordMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + passwordMessage.message;
             }
-            alert(message);
+            openMessageModal(message);
         } else if (!passwordRequest && passwordMessage.success) {
             sessionStorage.setItem(FORGOT_PASSWORD_VISITED_TAG, 'true');
             navigate("/reset-password");
@@ -44,33 +58,38 @@ function ForgotPassword() {
     }, [passwordFailed, passwordRequest, passwordMessage, navigate]);
 
     return (
-        <div className={forgotStyles.content}>
-            <p className="text text_type_main-medium">
-                Восстановление пароля
-            </p>
-            <form className={forgotStyles.form} onSubmit={(e): void => {
-                e.preventDefault();
-                handleResetPassword();
-            }}>
-                <EmailInput
-                    onChange={onEmailChange}
-                    value={email}
-                    placeholder={"Укажите e-mail"}
-                    isIcon={false}
-                    extraClass={"mb-6 mt-6"}
-                />
-                <Button htmlType="submit" type="primary" size="medium" extraClass={""}>
-                    Восстановить
-                </Button>
-            </form>
-            <div className={"mt-20"}>
-                <a className={"text text_type_main-default text_color_inactive mr-2"}>
-                    Вспомнили пароль?
-                </a>
-                <NavLink to={"/login"}
-                         className={"text text_type_main-default text_color_accent " + forgotStyles.navLink}>
-                    Войти
-                </NavLink>
+        <div>
+            {isMessageModalOpen && (
+                <WarningModal closeModal={closeMessageModal} message={modalMessage}/>
+            )}
+            <div className={forgotStyles.content}>
+                <p className="text text_type_main-medium">
+                    Восстановление пароля
+                </p>
+                <form className={forgotStyles.form} onSubmit={(e): void => {
+                    e.preventDefault();
+                    handleResetPassword();
+                }}>
+                    <EmailInput
+                        onChange={onEmailChange}
+                        value={email}
+                        placeholder={"Укажите e-mail"}
+                        isIcon={false}
+                        extraClass={"mb-6 mt-6"}
+                    />
+                    <Button htmlType="submit" type="primary" size="medium" extraClass={""}>
+                        Восстановить
+                    </Button>
+                </form>
+                <div className={"mt-20"}>
+                    <a className={"text text_type_main-default text_color_inactive mr-2"}>
+                        Вспомнили пароль?
+                    </a>
+                    <NavLink to={"/login"}
+                             className={"text text_type_main-default text_color_accent " + forgotStyles.navLink}>
+                        Войти
+                    </NavLink>
+                </div>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import app from './App.module.css';
 import AppHeader from "../app-header/AppHeader";
 import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
@@ -21,17 +21,31 @@ import ResetPassword from "../../pages/reset-password/ResetPassword";
 import Profile from "../../pages/profile/Profile";
 import ProtectedRouteElement from "../protected-route/ProtectedRouteElement";
 import Orders from "../../pages/orders/Orders";
+import WarningModal from "../modal/WarningModal";
 
 
 function App() {
     const dataDispatch = useDataDispatch();
     const {dataRequest, dataFailed} = useAppSelector(dataStateToProps);
 
+    const [modalMessage, setModalMessage] = useState("");
+    const [isMessageModalOpen, setMessageModalOpen] = useState(false);
+
+    const openModal = (message: string): void => {
+        setModalMessage(message);
+        setMessageModalOpen(true);
+    };
+
+    const closeModal = (): void => {
+        setMessageModalOpen(false);
+        setModalMessage("");
+    };
+
     useEffect((): void => {
         dataDispatch(getData());
 
         if (dataFailed) {
-            return alert(('Ошибка сети'));
+            openModal("Ошибка сети: не удалось получить данные");
         } else if (dataRequest) {
             return alert(('Загрузка...'));
         }
@@ -39,6 +53,9 @@ function App() {
 
     return (
         <BrowserRouter>
+            {isMessageModalOpen && (
+                <WarningModal closeModal={closeModal} message={modalMessage}/>
+            )}
             <div>
                 <AppHeader/>
                 <DndProvider backend={HTML5Backend}>
@@ -48,9 +65,9 @@ function App() {
                                 <BurgerIngredients/>
                                 <BurgerConstructor/>
                             </div>
-                        }>
-                            <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
-                        </Route>
+                        }/>
+                        <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
+
                         <Route path="/login" element={
                             <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
                                 <Login/>

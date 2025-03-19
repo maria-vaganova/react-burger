@@ -29,9 +29,23 @@ import {v4 as uuid_v4} from 'uuid';
 import {increment, resetPrice, TTotalPriceActions} from "../../services/actions/totalPriceActions";
 import IndexedContainer from "../indexed-container/IndexedContainer";
 import {useLocation, useNavigate} from "react-router-dom";
-import {Dispatch} from "redux";
+import WarningModal from "../modal/WarningModal";
 
 function BurgerConstructor() {
+
+    const [modalMessage, setModalMessage] = useState("");
+    const [isMessageModalOpen, setMessageModalOpen] = useState(false);
+
+    const openMessageModal = (message: string): void => {
+        setModalMessage(message);
+        setMessageModalOpen(true);
+    };
+
+    const closeMessageModal = (): void => {
+        setMessageModalOpen(false);
+        setModalMessage("");
+    };
+
     const {data} = useAppSelector(dataInfoSelector);
     const {cart} = useAppSelector(cartSelector);
     const {totalPrice} = useAppSelector(totalPriceSelector);
@@ -111,14 +125,15 @@ function BurgerConstructor() {
             return;
         }
         if (cart.length === 0) {
-            return alert("Ошибка запроса: добавьте ингредиенты");
+            openMessageModal("Ошибка запроса: добавьте ингредиенты");
+            return;
         }
         handleOrder();
     }
 
     useEffect((): void => {
         if (orderFailed) {
-            return alert(('Ошибка сети'));
+            openMessageModal('Ошибка сети');
         } else if (orderInfo.success) {
             console.log("orderInfo", orderInfo);
             openModal();
@@ -129,6 +144,9 @@ function BurgerConstructor() {
         <div style={{width: '600px'}}>
             {isOrderDetailsOpen && (
                 <OrderDetails isOpen={isOrderDetailsOpen} closeModal={closeModal} orderInfo={orderInfo}/>
+            )}
+            {isMessageModalOpen && (
+                <WarningModal closeModal={closeMessageModal} message={modalMessage}/>
             )}
             <div className={constructor.main}>
                 <div ref={dropTarget} className={constructor.scrollableContainer}>

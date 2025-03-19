@@ -14,8 +14,22 @@ import {getUserInfo, setUserInfo, TSetUserActions} from "../../services/actions/
 import {EMPTY_SERVER_INFO} from "../../utils/data";
 import {getAccessToken, TGetAccessTokenActions} from "../../services/actions/tokenActions";
 import {Dispatch} from "redux";
+import WarningModal from "../../components/modal/WarningModal";
 
 function Profile() {
+    const [modalMessage, setModalMessage] = useState("");
+    const [isMessageModalOpen, setMessageModalOpen] = useState(false);
+
+    const openMessageModal = (message: string): void => {
+        setModalMessage(message);
+        setMessageModalOpen(true);
+    };
+
+    const closeMessageModal = (): void => {
+        setMessageModalOpen(false);
+        setModalMessage("");
+    };
+
     const [currentToken, setCurrentToken] = useState<string>("");
     const [retrying, setRetrying] = useState(false); // only one retry
     const [lastAction, setLastAction] = useState<'get' | 'submit' | null>(null);
@@ -50,7 +64,7 @@ function Profile() {
             if (tokenMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + tokenMessage.message;
             }
-            alert(message);
+            openMessageModal(message);
         } else if (!tokenRequest && tokenInfo.success) {
             setCurrentToken(tokenInfo.accessToken);
         }
@@ -98,7 +112,7 @@ function Profile() {
             if (userMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + userMessage.message;
             }
-            alert(message);
+            openMessageModal(message);
         } else if (!userRequest && userInfo.success) {
             setPreviousName(userInfo.user.name);
             setPreviousEmail(userInfo.user.email);
@@ -114,7 +128,7 @@ function Profile() {
             await handleGetAccessToken();
             requestFunction();
         } catch (error) {
-            alert("Не удалось обновить данные. Пожалуйста, попробуйте позже.");
+            openMessageModal("Не удалось обновить данные. Пожалуйста, попробуйте позже.");
         } finally {
             setRetrying(false);
         }
@@ -140,45 +154,50 @@ function Profile() {
     }, [previousName, previousEmail, previousPassword]);
 
     return (
-        <div className={profile.content}>
-            <LeftProfileLinks/>
-            <form className={profile.centerItems} onSubmit={(e): void => {
-                e.preventDefault();
-                handleSubmit();
-            }}>
-                <Input
-                    type={"text"}
-                    onChange={onNameChange}
-                    value={name}
-                    placeholder={"Имя"}
-                    extraClass={"mb-2"}
-                    icon={"EditIcon"}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                />
-                <EmailInput
-                    onChange={onEmailChange}
-                    value={email}
-                    placeholder={"Логин"}
-                    isIcon={true}
-                    extraClass={"mb-2"}
-                />
-                <PasswordInput
-                    onChange={onPasswordChange}
-                    value={password}
-                    placeholder={"Пароль"}
-                    icon={"EditIcon"}
-                />
-                <div className={hasChanges ? profile.justButtons : profile.hiddenButtons}>
-                    <Button htmlType={"reset"} type={"secondary"} size={"medium"} disabled={!hasChanges}
-                            onClick={handleReset}>
-                        Отмена
-                    </Button>
-                    <Button htmlType={"submit"} type={"primary"} size={"medium"} disabled={!hasChanges}>
-                        Сохранить
-                    </Button>
-                </div>
-            </form>
+        <div>
+            {isMessageModalOpen && (
+                <WarningModal closeModal={closeMessageModal} message={modalMessage}/>
+            )}
+            <div className={profile.content}>
+                <LeftProfileLinks/>
+                <form className={profile.centerItems} onSubmit={(e): void => {
+                    e.preventDefault();
+                    handleSubmit();
+                }}>
+                    <Input
+                        type={"text"}
+                        onChange={onNameChange}
+                        value={name}
+                        placeholder={"Имя"}
+                        extraClass={"mb-2"}
+                        icon={"EditIcon"}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                    />
+                    <EmailInput
+                        onChange={onEmailChange}
+                        value={email}
+                        placeholder={"Логин"}
+                        isIcon={true}
+                        extraClass={"mb-2"}
+                    />
+                    <PasswordInput
+                        onChange={onPasswordChange}
+                        value={password}
+                        placeholder={"Пароль"}
+                        icon={"EditIcon"}
+                    />
+                    <div className={hasChanges ? profile.justButtons : profile.hiddenButtons}>
+                        <Button htmlType={"reset"} type={"secondary"} size={"medium"} disabled={!hasChanges}
+                                onClick={handleReset}>
+                            Отмена
+                        </Button>
+                        <Button htmlType={"submit"} type={"primary"} size={"medium"} disabled={!hasChanges}>
+                            Сохранить
+                        </Button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

@@ -7,6 +7,7 @@ import {getNewPassword, TPostPasswordActions} from "../../services/actions/passw
 import {EMPTY_SERVER_INFO, FORGOT_PASSWORD_VISITED_TAG} from "../../utils/data";
 import {IResetPasswordInfo} from "../../utils/types";
 import {Dispatch} from "redux";
+import WarningModal from "../../components/modal/WarningModal";
 
 function ResetPassword() {
     const [password, setPassword] = useState<string>('')
@@ -17,6 +18,19 @@ function ResetPassword() {
     const onCodeChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setCode(e.target.value)
     }
+
+    const [modalMessage, setModalMessage] = useState("");
+    const [isMessageModalOpen, setMessageModalOpen] = useState(false);
+
+    const openMessageModal = (message: string): void => {
+        setModalMessage(message);
+        setMessageModalOpen(true);
+    };
+
+    const closeMessageModal = (): void => {
+        setMessageModalOpen(false);
+        setModalMessage("");
+    };
 
     const navigate = useNavigate();
     const visitedForgotPassword: boolean = sessionStorage.getItem(FORGOT_PASSWORD_VISITED_TAG) === 'true';
@@ -40,7 +54,7 @@ function ResetPassword() {
                 if (passwordMessage !== EMPTY_SERVER_INFO) {
                     message += ": " + passwordMessage.message;
                 }
-                alert(message);
+                openMessageModal(message);
             } else if (!passwordRequest && passwordMessage.success) {
                 sessionStorage.setItem(FORGOT_PASSWORD_VISITED_TAG, 'false');
                 navigate("/login");
@@ -48,41 +62,46 @@ function ResetPassword() {
     }, [passwordFailed, passwordRequest, passwordMessage, navigate]);
 
     return (
-        <div className={resetStyles.content}>
-            <p className="text text_type_main-medium">
-                Восстановление пароля
-            </p>
-            <form className={resetStyles.form} onSubmit={(e): void => {
-                e.preventDefault();
-                handleResetPassword();
-            }}>
-                <PasswordInput
-                    onChange={onPasswordChange}
-                    value={password}
-                    name={'Введите новый пароль'}
-                    extraClass={"mb-3 mt-6"}
-                />
-                <Input
-                    type={"text"}
-                    onChange={onCodeChange}
-                    value={code}
-                    placeholder={"Введите код из письма"}
-                    extraClass={"mb-6 mt-3"}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                />
-                <Button htmlType="submit" type="primary" size="medium" extraClass={""}>
-                    Сохранить
-                </Button>
-            </form>
-            <div className={"mt-20"}>
-                <a className={"text text_type_main-default text_color_inactive mr-2"}>
-                    Вспомнили пароль?
-                </a>
-                <NavLink to={"/login"}
-                         className={"text text_type_main-default text_color_accent " + resetStyles.navLink}>
-                    Войти
-                </NavLink>
+        <div>
+            {isMessageModalOpen && (
+                <WarningModal closeModal={closeMessageModal} message={modalMessage}/>
+            )}
+            <div className={resetStyles.content}>
+                <p className="text text_type_main-medium">
+                    Восстановление пароля
+                </p>
+                <form className={resetStyles.form} onSubmit={(e): void => {
+                    e.preventDefault();
+                    handleResetPassword();
+                }}>
+                    <PasswordInput
+                        onChange={onPasswordChange}
+                        value={password}
+                        name={'Введите новый пароль'}
+                        extraClass={"mb-3 mt-6"}
+                    />
+                    <Input
+                        type={"text"}
+                        onChange={onCodeChange}
+                        value={code}
+                        placeholder={"Введите код из письма"}
+                        extraClass={"mb-6 mt-3"}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                    />
+                    <Button htmlType="submit" type="primary" size="medium" extraClass={""}>
+                        Сохранить
+                    </Button>
+                </form>
+                <div className={"mt-20"}>
+                    <a className={"text text_type_main-default text_color_inactive mr-2"}>
+                        Вспомнили пароль?
+                    </a>
+                    <NavLink to={"/login"}
+                             className={"text text_type_main-default text_color_accent " + resetStyles.navLink}>
+                        Войти
+                    </NavLink>
+                </div>
             </div>
         </div>
     );
