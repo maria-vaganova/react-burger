@@ -54,11 +54,11 @@ export function getRegister(newUser: IUserAuthorization): (dispatch: Dispatch<TR
                 registerMessage: AUTHORIZED_SERVER_INFO
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, registerInfo.refreshToken);
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: POST_REGISTER_FAILED,
                 registerInfo: EMPTY_AUTHORIZATION_INFO,
-                registerMessage: error || EMPTY_SERVER_INFO
+                registerMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }

@@ -65,11 +65,11 @@ export function getLogin(user: IUserToLogIn): (dispatch: Dispatch<TLoginActions>
                 loginMessage: AUTHORIZED_SERVER_INFO
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, (loginInfo as IAuthorizationInfo).refreshToken);
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: POST_LOGIN_FAILED,
                 loginInfo: EMPTY_AUTHORIZATION_INFO,
-                loginMessage: error || EMPTY_SERVER_INFO
+                loginMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }
@@ -92,11 +92,11 @@ export function getLogout(): (dispatch: Dispatch<TLogoutActions>) => Promise<voi
                 loginMessage: logoutInfo as IServerInfo
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, EMPTY_REFRESH_TOKEN);
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: POST_LOGIN_FAILED,
                 loginInfo: EMPTY_AUTHORIZATION_INFO,
-                loginMessage: error || EMPTY_SERVER_INFO
+                loginMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }

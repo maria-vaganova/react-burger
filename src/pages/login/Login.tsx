@@ -24,7 +24,7 @@ function Login() {
 
     const dispatchLogin = useLoginDispatch();
     const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
-    const handleLogin: () => void = (): void => {
+    const handleLogin = (): void => {
         const user: IUserToLogIn = {email: email, password: password};
         const getLoginThunk: (dispatch: Dispatch<TLoginActions>) => Promise<void> = getLogin(user);
         dispatchLogin(getLoginThunk);

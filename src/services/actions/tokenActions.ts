@@ -54,11 +54,11 @@ export function getAccessToken(): (dispatch: Dispatch<TGetAccessTokenActions>) =
                 tokenMessage: AUTHORIZED_SERVER_INFO
             });
             localStorage.setItem(REFRESH_TOKEN_STORAGE_TAG, tokenInfo.refreshToken)
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: GET_TOKEN_FAILED,
                 tokenInfo: EMPTY_TOKEN_INFO,
-                tokenMessage: error || EMPTY_SERVER_INFO
+                tokenMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }

@@ -6,6 +6,7 @@ import {cartSelector, dataInfoSelector, useAppSelector, useCartDispatch} from ".
 import {useCallback} from "react";
 import {moveItems, TCartActions} from "../../services/actions/cartActions";
 import {Dispatch} from "redux";
+import {ICartItem} from "../../utils/types";
 
 function IndexedContainer() {
     const {cart} = useAppSelector(cartSelector);
@@ -22,7 +23,7 @@ function IndexedContainer() {
 
     return (
         <div className={container.cart}>
-            {cart.map((elem: any)=> {
+            {cart.map((elem: ICartItem)=> {
                 if (elem.type !== BUN_TYPE) {
                     return (
                         <IndexedElement key={elem.key}

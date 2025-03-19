@@ -28,7 +28,7 @@ function Register() {
 
     const dispatchRegister = useRegisterDispatch();
     const {registerRequest, registerFailed, registerInfo, registerMessage} = useAppSelector(registerStateToProps);
-    const handleRegister: () => void = (): void => {
+    const handleRegister = (): void => {
         const user: IUserAuthorization = {email: email, password: password, name: name};
         const getRegisterThunk: (dispatch: Dispatch<TRegisterActions>) => Promise<void> = getRegister(user);
         dispatchRegister(getRegisterThunk);

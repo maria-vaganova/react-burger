@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {ILoginState} from "../../utils/types";
+import {IAuthorizationInfo, ILoginState, IServerInfo} from "../../utils/types";
 import {
     EMPTY_AUTHORIZATION_INFO,
     POST_LOGIN_FAILED,
@@ -42,8 +42,8 @@ function isPostLogoutAction(action: TLoginActions | TLogoutActions): action is I
 
 const loginReducer: Reducer<ILoginState, {
     type: string;
-    loginInfo?: any;
-    loginMessage?: any
+    loginInfo?: IAuthorizationInfo;
+    loginMessage?: IServerInfo;
 }> = (state: ILoginState = initialState, action: TLoginActions | TLogoutActions): ILoginState => {
     switch (action.type) {
         case POST_LOGIN: {

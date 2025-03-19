@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {IUserState} from "../../utils/types";
+import {ICurrentUserInfo, IServerInfo, IUserState} from "../../utils/types";
 import {
     EMPTY_SERVER_INFO,
     EMPTY_CURRENT_USER_INFO,
@@ -42,8 +42,8 @@ function isUserFailedAction(action: TGetUserActions | TSetUserActions): action i
 
 const userReducer: Reducer<IUserState, {
     type: string;
-    userInfo?: any;
-    userMessage?: any
+    userInfo?: ICurrentUserInfo;
+    userMessage?: IServerInfo;
 }> = (state: IUserState = initialState, action: TGetUserActions | TSetUserActions): IUserState => {
     switch (action.type) {
         case SET_USER:

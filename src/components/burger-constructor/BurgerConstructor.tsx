@@ -36,28 +36,28 @@ function BurgerConstructor() {
     const {cart} = useAppSelector(cartSelector);
     const {totalPrice} = useAppSelector(totalPriceSelector);
 
-    const dispatchPrice: Dispatch<TTotalPriceActions> = useTotalPriceDispatch();
+    const dispatchPrice = useTotalPriceDispatch();
     const incrementPrice = (ingredientId: string): void => {
         dispatchPrice(increment(fulfilIngredient(ingredientId, data)));
     }
-    const resetTotalPrice: () => void = (): void => {
+    const resetTotalPrice = (): void => {
         dispatchPrice(resetPrice());
     }
 
-    const dispatchCart: Dispatch<TCartActions> = useCartDispatch();
+    const dispatchCart = useCartDispatch();
     const addIngredient = (ingredientId: string): void => {
         dispatchCart(addIngredientToCart(ingredientId, getIngredientTypeById(ingredientId, data), uuid_v4()));
     }
 
     const dispatchOrder = useOrderDispatch();
     const {orderRequest, orderFailed, orderInfo} = useAppSelector(orderStateToProps);
-    const handleOrder: () => void = (): void => {
+    const handleOrder = (): void => {
         const ingredients: string[] = getDataIds(restoreIngredientListFromCart(cart, true, data));
-        const getOrderNumberThunk: (dispatch: Dispatch<TOrderActions>) => Promise<void> = getOrderNumber(ingredients);
+        const getOrderNumberThunk = getOrderNumber(ingredients);
         dispatchOrder(getOrderNumberThunk);
     };
-    const clearOrder: () => void = (): void => {
-        const clearOrderNumberThunk: (dispatch: Dispatch<TOrderActions>) => Promise<void> = clearOrderNumber();
+    const clearOrder = (): void => {
+        const clearOrderNumberThunk = clearOrderNumber();
         dispatchOrder(clearOrderNumberThunk);
     };
 
@@ -72,7 +72,7 @@ function BurgerConstructor() {
         addIngredient(ingredientId);
     };
 
-    const bun: IIngredient | undefined = getBunFromCart(cart, data);
+    const bun = getBunFromCart(cart, data);
     const [isOrderDetailsOpen, setOrderDetailsOpen] = useState(false);
 
     const cartList: IIngredient[] = useMemo((): IIngredient[] => {
@@ -84,7 +84,7 @@ function BurgerConstructor() {
 
     useEffect((): void => {
         resetTotalPrice();
-        cart.forEach((elem: any): void => {
+        cart.forEach((elem: ICartItem): void => {
             incrementPrice(elem.id);
             if (elem.type === BUN_TYPE) {
                 incrementPrice(elem.id);
@@ -92,11 +92,11 @@ function BurgerConstructor() {
         });
     }, [cartList, cart, data]);
 
-    const openModal: () => void = (): void => {
+    const openModal = (): void => {
         setOrderDetailsOpen(true);
     };
 
-    const closeModal: () => void = (): void => {
+    const closeModal = (): void => {
         setOrderDetailsOpen(false);
         clearOrder();
     };
@@ -104,7 +104,7 @@ function BurgerConstructor() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const placeOrder: () => void = (): void => {
+    const placeOrder = (): void => {
         const isAuthenticated: boolean = isUserAuthenticated();
         if (!isAuthenticated) {
             navigate("/login", {state: {background: location}})

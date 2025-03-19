@@ -62,7 +62,7 @@ export function getIngredientTypeById(id: string, data: IIngredient[]): string {
     return ingredient ? ingredient.type : "";
 }
 
-function checkResponse(response: Response): Promise<any> {
+function checkResponse<T>(response: Response): Promise<T> {
     if (response.ok) {
         return response.json();
     } else {
@@ -72,8 +72,8 @@ function checkResponse(response: Response): Promise<any> {
     }
 }
 
-export function request(url: string, options: RequestInit = {}): Promise<any> {
-    return fetch(url, options).then(checkResponse);
+export function request<T>(url: string, options: RequestInit = {}): Promise<T> {
+    return fetch(url, options).then(checkResponse<T>);
 }
 
 export function isUserAuthenticated(): boolean {

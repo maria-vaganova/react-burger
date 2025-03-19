@@ -39,7 +39,7 @@ function Profile() {
 
     const {tokenRequest, tokenFailed, tokenInfo, tokenMessage} = useAppSelector(tokenStateToProps);
     const dispatchGetAccessToken = useGetAccessTokenDispatch();
-    const handleGetAccessToken: () => void = (): void => {
+    const handleGetAccessToken = (): void => {
         const getAccessTokenThunk: (dispatch: Dispatch<TGetAccessTokenActions>) => Promise<void> = getAccessToken();
         dispatchGetAccessToken(getAccessTokenThunk);
     };
@@ -59,14 +59,14 @@ function Profile() {
     const {userRequest, userFailed, userInfo, userMessage} = useAppSelector(userStateToProps);
 
     const dispatchGetUser = useGetUserDispatch();
-    const handleGetUser: () => void = (): void => {
+    const handleGetUser = (): void => {
         setLastAction("get")
         const getUserInfoThunk: (dispatch: Dispatch<TSetUserActions>) => Promise<void> = getUserInfo(currentToken);
         dispatchGetUser(getUserInfoThunk);
     };
 
     const dispatchSetUser = useSetUserDispatch();
-    const handleSubmit: () => void = (): void => {
+    const handleSubmit = (): void => {
         setLastAction("submit")
         const user: IUserAuthorization = {email: email, password: password, name: name};
         const setUserInfoThunk: (dispatch: Dispatch<TSetUserActions>) => Promise<void> = setUserInfo(user, currentToken);
@@ -122,7 +122,7 @@ function Profile() {
 
     const [hasChanges, setChanges] = useState<boolean>(false);
 
-    const handleReset: () => void = (): void => {
+    const handleReset = (): void => {
         setName(previousName);
         setEmail(previousEmail);
         setPassword(previousPassword);

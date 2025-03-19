@@ -1,5 +1,5 @@
 import {DATA_URL, GET_DATA, GET_DATA_FAILED, GET_DATA_SUCCESS} from "../../utils/data";
-import {IIngredient} from "../../utils/types";
+import {IDataRequest, IIngredient} from "../../utils/types";
 import {Dispatch} from "redux";
 import {request} from "../../utils/util";
 
@@ -27,7 +27,7 @@ export function getData(): (dispatch: Dispatch<TDataActions>) => Promise<void> {
             type: GET_DATA
         })
         try {
-            const dataInfo: any = await request(DATA_URL);
+            const dataInfo: IDataRequest = await request(DATA_URL);
             dispatch({
                 type: GET_DATA_SUCCESS,
                 dataInfo: dataInfo.data as IIngredient[]

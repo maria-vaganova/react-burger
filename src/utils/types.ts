@@ -13,6 +13,11 @@ export interface IIngredient {
     __v: number;
 }
 
+export interface IDataRequest {
+    success: boolean;
+    data: IIngredient[];
+}
+
 export interface IServerAnswer {
     request: boolean;
     failed: boolean;

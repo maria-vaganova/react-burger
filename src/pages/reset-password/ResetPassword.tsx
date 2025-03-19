@@ -27,7 +27,7 @@ function ResetPassword() {
 
     const {passwordRequest, passwordFailed, passwordMessage} = useAppSelector(passwordStateToProps);
     const dispatchResetPassword = usePostPasswordDispatch();
-    const handleResetPassword: () => void = (): void => {
+    const handleResetPassword = (): void => {
         const data: IResetPasswordInfo = {token: code, password: password};
         const getResetPasswordThunk: (dispatch: Dispatch<TPostPasswordActions>) => Promise<void> = getNewPassword(data);
         dispatchResetPassword(getResetPasswordThunk);

@@ -19,7 +19,7 @@ function ForgotPassword() {
 
     const {passwordRequest, passwordFailed, passwordMessage} = useAppSelector(passwordStateToProps);
     const dispatchResetPassword = usePostPasswordDispatch();
-    const handleResetPassword: () => void = (): void => {
+    const handleResetPassword = (): void => {
         const getResetPasswordThunk: (dispatch: Dispatch<TPostPasswordActions>) => Promise<void> = askToResetPassword(email);
         dispatchResetPassword(getResetPasswordThunk);
     };

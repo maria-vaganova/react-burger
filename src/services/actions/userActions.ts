@@ -75,11 +75,11 @@ export function setUserInfo(user: IUserAuthorization, accessToken: string): (dis
                 userInfo: userInfo as ICurrentUserInfo,
                 userMessage: AUTHORIZED_SERVER_INFO
             });
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: SET_USER_FAILED,
                 userInfo: EMPTY_CURRENT_USER_INFO,
-                userMessage: error || EMPTY_SERVER_INFO
+                userMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }
@@ -103,11 +103,11 @@ export function getUserInfo(accessToken: string): (dispatch: Dispatch<TSetUserAc
                 userInfo: userInfo as ICurrentUserInfo,
                 userMessage: AUTHORIZED_SERVER_INFO
             });
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: GET_USER_FAILED,
                 userInfo: EMPTY_CURRENT_USER_INFO,
-                userMessage: error || EMPTY_SERVER_INFO
+                userMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }

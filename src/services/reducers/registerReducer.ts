@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {IRegisterState} from "../../utils/types";
+import {IAuthorizationInfo, IRegisterState, IServerInfo} from "../../utils/types";
 import {
     EMPTY_AUTHORIZATION_INFO,
     POST_REGISTER_FAILED,
@@ -35,8 +35,8 @@ function isPostRegisterFailedAction(action: TRegisterActions): action is IPostRe
 
 const registerReducer: Reducer<IRegisterState, {
     type: string;
-    registerInfo?: any;
-    registerMessage?: any
+    registerInfo?: IAuthorizationInfo;
+    registerMessage?: IServerInfo;
 }> = (state: IRegisterState = initialState, action: TRegisterActions): IRegisterState => {
     switch (action.type) {
         case POST_REGISTER: {

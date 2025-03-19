@@ -1,4 +1,4 @@
-import {IOrderState} from "../../utils/types";
+import {IOrderInfo, IOrderState} from "../../utils/types";
 import {
     EMPTY_ORDER_INFO,
     GET_ORDER_NUMBER,
@@ -20,7 +20,7 @@ function isGetOrderNumberSuccessAction(action: TOrderActions): action is IGetOrd
 
 const orderReducer: Reducer<IOrderState, {
     type: string;
-    orderInfo?: any
+    orderInfo?: IOrderInfo;
 }> = (state: IOrderState = initialState, action: TOrderActions): IOrderState => {
     switch (action.type) {
         case GET_ORDER_NUMBER: {

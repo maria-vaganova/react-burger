@@ -15,7 +15,7 @@ function BurgerIngredients() {
         navigate(`/ingredients/${ingredientId}`, {state: {background: location}});
     };
 
-    const handleScroll: () => void = (): void => {
+    const handleScroll = (): void => {
         const bun: HTMLElement | null = document.getElementById("bun");
         const sauce: HTMLElement | null = document.getElementById("sauce");
         const main: HTMLElement | null = document.getElementById("main");
@@ -25,9 +25,9 @@ function BurgerIngredients() {
             return;
         }
 
-        const bunRect: DOMRect = bun.getBoundingClientRect();
-        const sauceRect: DOMRect = sauce.getBoundingClientRect();
-        const mainRect: DOMRect = main.getBoundingClientRect();
+        const bunRect = bun.getBoundingClientRect();
+        const sauceRect = sauce.getBoundingClientRect();
+        const mainRect = main.getBoundingClientRect();
 
         const scrollY: number = window.scrollY || window.pageYOffset;
 

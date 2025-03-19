@@ -48,10 +48,10 @@ export function askToResetPassword(email: string): (dispatch: Dispatch<TPostPass
                 type: POST_PASSWORD_SUCCESS,
                 passwordMessage: resetInfo as IServerInfo
             });
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: POST_PASSWORD_FAILED,
-                passwordMessage: error || EMPTY_SERVER_INFO
+                passwordMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }
@@ -75,10 +75,10 @@ export function getNewPassword(data: IResetPasswordInfo): (dispatch: Dispatch<TP
                 type: POST_PASSWORD_SUCCESS,
                 passwordMessage: passwordInfo as IServerInfo
             });
-        } catch (error: any) {
+        } catch (error) {
             dispatch({
                 type: POST_PASSWORD_FAILED,
-                passwordMessage: error || EMPTY_SERVER_INFO
+                passwordMessage: error as IServerInfo || EMPTY_SERVER_INFO
             });
         }
     }

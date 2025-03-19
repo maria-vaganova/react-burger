@@ -34,12 +34,12 @@ function LeftProfileLinks() {
 
     const dispatchLogout = useLogoutDispatch();
     const {loginRequest, loginFailed, loginInfo, loginMessage} = useAppSelector(loginStateToProps);
-    const handleLogout: () => void = (): void => {
-        const getLogoutThunk: (dispatch: Dispatch<TLogoutActions>) => Promise<void> = getLogout();
+    const handleLogout = (): void => {
+        const getLogoutThunk = getLogout();
         dispatchLogout(getLogoutThunk);
     };
 
-    useEffect((): void => {
+    useEffect(() => {
         if (loginFailed) {
             let message: string = "Ошибка сети";
             if (loginMessage !== EMPTY_SERVER_INFO) {

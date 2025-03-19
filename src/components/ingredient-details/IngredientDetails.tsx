@@ -14,7 +14,7 @@ function IngredientDetails({isModal}: IIngredientDetailsProps) {
     const {id} = useParams<{ id: string }>();
     const ingredients: IIngredient[] = useAppSelector((state) => state.data.dataInfo);
 
-    const ingredientDetailInfo: IIngredient | undefined = ingredients.find((item: IIngredient): boolean => item._id === id);
+    const ingredientDetailInfo: IIngredient | undefined = ingredients.find((item: IIngredient) => item._id === id);
 
     if (!ingredientDetailInfo) {
         return (

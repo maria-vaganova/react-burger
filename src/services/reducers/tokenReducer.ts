@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {ITokenState} from "../../utils/types";
+import {IServerInfo, ITokenInfo, ITokenState} from "../../utils/types";
 import {
     EMPTY_SERVER_INFO,
     EMPTY_TOKEN_INFO,
@@ -33,8 +33,8 @@ function isGetAccessTokenFailedAction(action: TGetAccessTokenActions): action is
 
 const tokenReducer: Reducer<ITokenState, {
     type: string;
-    tokenInfo?: any;
-    tokenMessage?: any
+    tokenInfo?: ITokenInfo;
+    tokenMessage?: IServerInfo;
 }> = (state: ITokenState = initialState, action: TGetAccessTokenActions): ITokenState => {
     switch (action.type) {
         case GET_TOKEN: {
