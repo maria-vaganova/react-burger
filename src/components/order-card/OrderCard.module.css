@@ -1,0 +1,98 @@
+.card {
+    padding: 24px;
+    background: #1C1C21;
+    border-radius: 40px;
+}
+
+.line {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.priceLine {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.ingredientLine {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    gap: 24px;
+    height: 64px;
+}
+
+
+.iconList {
+    display: flex;
+}
+
+.iconItem {
+    position: relative;
+    height: 64px;
+    width: 64px;
+    background: linear-gradient(90deg, #4C4CFF, #801AB2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconItem[data-index="0"] {
+    left: 0;
+    z-index: 997;
+}
+
+.iconItem[data-index="1"] {
+    left: -16px;
+    z-index: 996;
+}
+
+.iconItem[data-index="2"] {
+    left: -32px;
+    z-index: 995;
+}
+
+.iconItem[data-index="3"] {
+    left: -48px;
+    z-index: 994;
+}
+
+.iconItem[data-index="4"] {
+    left: -64px;
+    z-index: 993;
+}
+
+.iconItem[data-index="5"] {
+    left: -80px;
+    z-index: 992;
+}
+
+.img {
+    position: absolute; /* Абсолютное позиционирование */
+    background: black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 50%; /* Круглая форма для картинки */
+    object-fit: cover; /* Сохранение пропорций изображения */
+    /*z-index: 997;*/
+}
+
+.span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    font-size: 18px;
+    color: white;
+    background-color: #00000088;
+    border-radius: 50%;
+    z-index: 998;
+}

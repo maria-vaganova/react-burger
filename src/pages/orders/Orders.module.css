@@ -2,15 +2,32 @@
     display: flex;
     flex-flow: row nowrap;
     gap: 60px;
-    justify-content: center;
-    position: relative;
+    justify-content: left;
+    margin-left: calc(50% - 630px);
+}
+
+.leftLinks {
+    width: 320px;
     margin-top: 120px;
 }
 
 .centerItems {
-    width: 480px;
-    position: static;
+    width: 840px;
     display: flex;
     flex-direction: column;
     gap: 24px;
+    margin-right: 16px;
+}
+
+.scrollableContainer {
+    padding-right: 16px;
+    margin-top: 28px;
+    display: block;
+    height: 85vh;
+    max-width: 840px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
 }

@@ -135,3 +135,24 @@ export interface IIngredientDetailInfo {
 export interface IIngredientDetailState {
     ingredientDetails: IIngredientDetailInfo;
 }
+
+export interface IOrderFeedInfo {
+    ingredients: string[];
+    _id: string;
+    status: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IFeedInfo {
+    success: boolean;
+    orders: IOrderFeedInfo[];
+    total: number;
+    totalToday: number;
+}
+
+export interface IIconData {
+    id: string;
+    src: string;
+}

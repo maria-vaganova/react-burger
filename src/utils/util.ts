@@ -84,3 +84,20 @@ export function isUserAuthenticated(): boolean {
     }
     return refreshToken !== EMPTY_REFRESH_TOKEN;
 }
+
+export function getOrderNumberForCard(number: number): string {
+    return number.toString().padStart(6, '0');
+}
+
+export function getRussianNameForStatus(status: string): string {
+    switch (status) {
+        case "done":
+            return "Выполнен";
+        case "pending":
+            return "Готовится";
+        case "created":
+            return "Создан";
+        default:
+            return "Отменён";
+    }
+}

@@ -22,6 +22,7 @@ import Profile from "../../pages/profile/Profile";
 import ProtectedRouteElement from "../protected-route/ProtectedRouteElement";
 import Orders from "../../pages/orders/Orders";
 import WarningModal from "../modal/WarningModal";
+import OrderByIdWrapper from "../../pages/order-by-id-wrapper/OrderByIdWrapper";
 
 
 function App() {
@@ -100,7 +101,7 @@ function App() {
                         />
                         <Route path={'/profile/orders/:number'} element={
                             <ProtectedRouteElement redirectPath={"/login"} isAuthorizedRedirect={false}>
-                                <NotFound404/>
+                                <OrderByIdWrapper/>
                             </ProtectedRouteElement>}
                         />
 
