@@ -3,6 +3,7 @@ import {thunk, ThunkDispatch} from 'redux-thunk';
 import {useDispatch, useSelector} from "react-redux";
 import {createSelector} from "@reduxjs/toolkit";
 import {rootReducer} from "./reducers/rootReducer";
+import {socketMiddleware} from "./middleware/socketMiddleware";
 import {TOrderActions} from "./actions/orderActions";
 import {TIngredientDetailActions} from "./actions/detailActions";
 import {TDataActions} from "./actions/dataActions";
@@ -14,6 +15,8 @@ import {TGetUserActions, TSetUserActions} from "./actions/userActions";
 import {TGetAccessTokenActions} from "./actions/tokenActions";
 import {TPostPasswordActions} from "./actions/passwordActions";
 import {TLoadingActions} from "./actions/loadingActions";
+import {TWSActions} from "./actions/wsActionTypes";
+import {BASE_WS} from "../utils/data";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 declare global {
@@ -22,14 +25,26 @@ declare global {
     }
 }
 
-const initialState = {};
+// const initialState = {};
 const composeEnhancers = (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk) as StoreEnhancer));
+// const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk) as StoreEnhancer));
+const store = createStore(
+    rootReducer,
+    undefined,
+    composeEnhancers(
+        applyMiddleware(
+            thunk,
+            socketMiddleware(BASE_WS)
+        )
+    )
+);
 
 export default store;
 
 type AppStore = typeof store;
-type RootState = ReturnType<AppStore['getState']>;
+export type RootState = ReturnType<AppStore['getState']>;
+export type SocketActions = TWSActions;
+export type SocketDispatch = ThunkDispatch<RootState, unknown, SocketActions>;
 
 export const useAppSelector = useSelector.withTypes<RootState>();
 

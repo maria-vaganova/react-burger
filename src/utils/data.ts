@@ -13,6 +13,8 @@ export const BUN_TYPE: string = "bun";
 export const SAUCE_TYPE: string = "sauce";
 export const MAIN_TYPE: string = "main";
 
+export const BASE_WS: string = 'wss://norma.nomoreparties.space/orders';
+export const ALL_WS: string = BASE_WS + '/all';
 export const BASE_URL: string = 'https://norma.nomoreparties.space/api/';
 export const DATA_URL: string = BASE_URL + 'ingredients';
 export const ORDER_POST_URL: string = BASE_URL + 'orders';

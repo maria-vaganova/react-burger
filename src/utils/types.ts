@@ -160,3 +160,10 @@ export interface IIconData {
     id: string;
     src: string;
 }
+
+export interface IMessage {
+    success: boolean;
+    orders: IOrderFeedInfo[];
+    total: number;
+    totalToday: number;
+}
