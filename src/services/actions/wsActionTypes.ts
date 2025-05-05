@@ -10,5 +10,5 @@ export type TWSActions =
     | { type: 'WS_CONNECTION_SUCCESS'; payload: any }
     | { type: 'WS_CONNECTION_ERROR'; payload: any }
     | { type: 'WS_CONNECTION_CLOSED'; payload: any }
-    | { type: 'WS_GET_MESSAGE'; payload: any }
+    | { type: 'WS_GET_MESSAGE'; payload: string }
     | { type: 'WS_SEND_MESSAGE'; payload: any }

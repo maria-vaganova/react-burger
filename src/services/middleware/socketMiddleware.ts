@@ -28,7 +28,15 @@ export const socketMiddleware = (baseWsUrl: string): Middleware => {
 
                 // функция, которая вызывается при получения события от сервера
                 socket.onmessage = event => {
-                    const {data} = event;
+                    const data = event.data;
+                    if (data.message === 'Invalid or missing token') {
+                        dispatch({
+                            type: 'WS_CONNECTION_ERROR',
+                            payload: {error: data.message},
+                        });
+                        socket?.close();
+                        return;
+                    }
                     dispatch({type: 'WS_GET_MESSAGE', payload: data});
                 };
                 // функция, которая вызывается при закрытии соединения
