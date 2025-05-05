@@ -16,7 +16,6 @@ import {TGetAccessTokenActions} from "./actions/tokenActions";
 import {TPostPasswordActions} from "./actions/passwordActions";
 import {TLoadingActions} from "./actions/loadingActions";
 import {TWSActions} from "./actions/wsActionTypes";
-import {BASE_WS} from "../utils/data";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 declare global {
@@ -34,7 +33,7 @@ const store = createStore(
     composeEnhancers(
         applyMiddleware(
             thunk,
-            socketMiddleware(BASE_WS)
+            socketMiddleware()
         )
     )
 );

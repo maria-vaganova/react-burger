@@ -6,9 +6,9 @@ export const WS_GET_MESSAGE: 'WS_GET_MESSAGE' = 'WS_GET_MESSAGE';
 export const WS_SEND_MESSAGE: 'WS_SEND_MESSAGE' = 'WS_SEND_MESSAGE';
 
 export type TWSActions =
-    | { type: 'WS_CONNECTION_START'; payload: string }
-    | { type: 'WS_CONNECTION_SUCCESS'; payload: any }
-    | { type: 'WS_CONNECTION_ERROR'; payload: any }
-    | { type: 'WS_CONNECTION_CLOSED'; payload: any }
-    | { type: 'WS_GET_MESSAGE'; payload: string }
-    | { type: 'WS_SEND_MESSAGE'; payload: any }
+    | { type: typeof WS_CONNECTION_START; payload: { url: string; accessToken: string }; socketId: string }
+    | { type: typeof WS_CONNECTION_SUCCESS; payload: Event; socketId: string }
+    | { type: typeof WS_CONNECTION_ERROR; payload: { error: string } | Event; socketId: string }
+    | { type: typeof WS_CONNECTION_CLOSED; payload: Event; socketId: string }
+    | { type: typeof WS_GET_MESSAGE; payload: string; socketId: string }
+    | { type: typeof WS_SEND_MESSAGE; payload: any; socketId: string };

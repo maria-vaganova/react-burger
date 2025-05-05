@@ -66,6 +66,8 @@ export const DECREMENT: string = "DECREMENT";
 export const RESET: string = "RESET";
 export const LOADING_START = 'LOADING_START';
 export const LOADING_STOP = 'LOADING_STOP';
+export const BASE_SOCKET_ID = 'BASE_SOCKET_ID';
+export const ALL_SOCKET_ID = 'ALL_SOCKET_ID';
 
 export const FORGOT_PASSWORD_VISITED_TAG: string = "forgotPasswordVisited";
 export const REFRESH_TOKEN_STORAGE_TAG: string = "refreshToken";

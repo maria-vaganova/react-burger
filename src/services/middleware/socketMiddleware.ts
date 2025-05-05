@@ -1,57 +1,67 @@
 import type {Middleware, MiddlewareAPI} from 'redux';
 import type {SocketActions, SocketDispatch, RootState} from '../store';
+import {
+    WS_CONNECTION_CLOSED,
+    WS_CONNECTION_ERROR,
+    WS_CONNECTION_START,
+    WS_CONNECTION_SUCCESS,
+    WS_GET_MESSAGE, WS_SEND_MESSAGE
+} from "../actions/wsActionTypes";
 
-export const socketMiddleware = (baseWsUrl: string): Middleware => {
+export const socketMiddleware = (): Middleware => {
+    const sockets: Record<string, WebSocket> = {}; // Храним сокеты по socketId
+    const connections: Record<string, string> = {}; // Храним URL для каждого socketId
+
     return ((store: MiddlewareAPI<SocketDispatch, RootState>) => {
-        let socket: WebSocket | null = null;
-
-        return next => (action: SocketActions) => {
+        return (next) => (action: SocketActions) => {
             const {dispatch, getState} = store;
-            const {type, payload} = action;
+            const {type, payload, socketId} = action;
 
-            if (type === 'WS_CONNECTION_START') {
-                const accessToken = payload;
-                const wsUrl = `${baseWsUrl}?token=${accessToken}`;
-                socket = new WebSocket(wsUrl);
-            }
-            if (socket) {
+            // Подключение
+            if (type === WS_CONNECTION_START) {
+                const {url, accessToken} = payload;
+                const wsUrl = `${url}?token=${accessToken}`;
+                connections[socketId] = url; // Сохраняем URL для socketId
+                sockets[socketId] = new WebSocket(wsUrl);
 
-                // функция, которая вызывается при открытии сокета
-                socket.onopen = event => {
-                    dispatch({type: 'WS_CONNECTION_SUCCESS', payload: event});
+                // Обработчики событий
+                sockets[socketId].onopen = (event) => {
+                    dispatch({type: WS_CONNECTION_SUCCESS, payload: event, socketId});
                 };
 
-                // функция, которая вызывается при ошибке соединения
-                socket.onerror = event => {
-                    dispatch({type: 'WS_CONNECTION_ERROR', payload: event});
+                sockets[socketId].onerror = (event) => {
+                    dispatch({type: WS_CONNECTION_ERROR, payload: event, socketId});
                 };
 
-                // функция, которая вызывается при получения события от сервера
-                socket.onmessage = event => {
-                    const data = event.data;
+                sockets[socketId].onmessage = (event) => {
+                    const data = JSON.parse(event.data);
                     if (data.message === 'Invalid or missing token') {
                         dispatch({
-                            type: 'WS_CONNECTION_ERROR',
+                            type: WS_CONNECTION_ERROR,
                             payload: {error: data.message},
+                            socketId,
                         });
-                        socket?.close();
+                        sockets[socketId].close();
                         return;
                     }
-                    dispatch({type: 'WS_GET_MESSAGE', payload: data});
-                };
-                // функция, которая вызывается при закрытии соединения
-                socket.onclose = event => {
-                    dispatch({type: 'WS_CONNECTION_CLOSED', payload: event});
+                    dispatch({type: WS_GET_MESSAGE, payload: data, socketId});
                 };
 
-                if (type === 'WS_SEND_MESSAGE') {
-                    const message = payload;
-                    // функция для отправки сообщения на сервер
+                sockets[socketId].onclose = (event) => {
+                    dispatch({type: WS_CONNECTION_CLOSED, payload: event, socketId});
+                };
+            }
+
+            // Отправка сообщений
+            if (type === WS_SEND_MESSAGE) {
+                const message = payload;
+                const socket = sockets[socketId];
+                if (socket && socket.readyState === WebSocket.OPEN) {
                     socket.send(JSON.stringify(message));
                 }
             }
 
-            next(action);
+            return next(action);
         };
     }) as Middleware;
 };
