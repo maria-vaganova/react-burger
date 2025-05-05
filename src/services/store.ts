@@ -13,6 +13,7 @@ import {TLoginActions, TLogoutActions} from "./actions/loginActions";
 import {TGetUserActions, TSetUserActions} from "./actions/userActions";
 import {TGetAccessTokenActions} from "./actions/tokenActions";
 import {TPostPasswordActions} from "./actions/passwordActions";
+import {TLoadingActions} from "./actions/loadingActions";
 // первый редьюсер вместе с настройкой стора занял 7 (!)(!!!!) часов
 
 declare global {
@@ -144,3 +145,7 @@ export const useCartDispatch = useDispatch.withTypes<Dispatch<TCartActions>>();
 const selectTotalPrice = (state: RootState) => state.totalPrice.count;
 export const totalPriceSelector = createSelector(selectTotalPrice, (totalPrice) => ({totalPrice}));
 export const useTotalPriceDispatch = useDispatch.withTypes<Dispatch<TTotalPriceActions>>();
+
+const selectLoading = (state: RootState) => state.loading.isLoading;
+export const loadingSelector = createSelector(selectLoading, (loading) => ({loading}));
+export const useLoadingDispatch = useDispatch.withTypes<Dispatch<TLoadingActions>>();

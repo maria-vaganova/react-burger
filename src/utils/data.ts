@@ -62,6 +62,8 @@ export const MOVE_ITEMS: string = "MOVE_ITEMS";
 export const INCREMENT: string = "INCREMENT";
 export const DECREMENT: string = "DECREMENT";
 export const RESET: string = "RESET";
+export const LOADING_START = 'LOADING_START';
+export const LOADING_STOP = 'LOADING_STOP';
 
 export const FORGOT_PASSWORD_VISITED_TAG: string = "forgotPasswordVisited";
 export const REFRESH_TOKEN_STORAGE_TAG: string = "refreshToken";

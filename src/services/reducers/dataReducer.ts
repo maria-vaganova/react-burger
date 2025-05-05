@@ -19,7 +19,7 @@ const dataReducer: Reducer<IDataState, TDataActions> = (state: IDataState = init
             return {
                 ...state,
                 request: true,
-                failed: false,
+                failed: false
             };
         }
         case GET_DATA_SUCCESS: {
@@ -30,7 +30,8 @@ const dataReducer: Reducer<IDataState, TDataActions> = (state: IDataState = init
             return {
                 ...state,
                 dataInfo: action.dataInfo,
-                request: false
+                request: false,
+                failed: false
             };
         }
         case GET_DATA_FAILED: {

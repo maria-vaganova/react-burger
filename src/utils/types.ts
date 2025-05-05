@@ -13,6 +13,10 @@ export interface IIngredient {
     __v: number;
 }
 
+export interface ILoadingState {
+    isLoading: boolean;
+}
+
 export interface IDataRequest {
     success: boolean;
     data: IIngredient[];
