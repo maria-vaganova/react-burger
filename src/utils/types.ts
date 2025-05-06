@@ -56,7 +56,7 @@ export interface ICartItem {
 }
 
 export interface IOrderState extends IServerAnswer {
-    orderInfo: IOrderInfo;
+    orderInfo: IOrderInfo | IMessage;
 }
 
 export interface IOrderInfo {
@@ -164,6 +164,6 @@ export interface IIconData {
 export interface IMessage {
     success: boolean;
     orders: IOrderFeedInfo[];
-    total: number;
-    totalToday: number;
+    total?: number;
+    totalToday?: number;
 }
