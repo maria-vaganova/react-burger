@@ -37,3 +37,28 @@
     scrollbar-width: thin;
     scrollbar-gutter: stable;
 }
+
+.statuses {
+    display: flex;
+    flex-direction: row;
+    gap: 36px;
+}
+
+.listByStatus {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 272px;
+}
+
+.numberList {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 8px;
+}
+
+.numberListContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}

@@ -128,3 +128,11 @@ export function convertIngredients(ingredients: IIngredient[]): IIngredientForSh
     });
     return Object.values(ingredientMap);
 }
+
+export function chunkNumberArray(array: number[], size: number): number[][] {
+    const result: number[][] = [];
+    for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size));
+    }
+    return result;
+}
