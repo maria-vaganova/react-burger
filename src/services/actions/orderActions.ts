@@ -8,7 +8,7 @@ import {
     GET_ORDER_FAILED,
     ORDER_POST_URL
 } from "../../utils/data";
-import {IMessage, IOrderInfo} from "../../utils/types";
+import {IFeedInfo, IOrderInfo} from "../../utils/types";
 import {Dispatch} from "redux";
 import {request} from "../../utils/util";
 
@@ -31,7 +31,7 @@ export interface IGetOrderByNumberAction {
 
 export interface IGetOrderByNumberSuccessAction {
     type: typeof GET_ORDER_SUCCESS;
-    orderInfo: IMessage;
+    orderInfo: IFeedInfo;
 }
 
 export interface IGetOrderByNumberFailedAction {
@@ -71,13 +71,13 @@ export function getOrderNumber(ingredients: string[]): (dispatch: Dispatch<TOrde
     }
 }
 
-export function getOrderByNumber(id: number): (dispatch: Dispatch<TOrderActions>) => Promise<void> {
+export function getOrderByNumber(id: string): (dispatch: Dispatch<TOrderActions>) => Promise<void> {
     return async function getOrderByNumberThunk(dispatch: Dispatch<TOrderActions>): Promise<void> {
         dispatch({
             type: GET_ORDER
         })
         try {
-            const orderInfo: IMessage = await request(`${ORDER_POST_URL}/${encodeURIComponent(id)}`, {
+            const orderInfo: IFeedInfo = await request(`${ORDER_POST_URL}/${encodeURIComponent(id)}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export function getOrderByNumber(id: number): (dispatch: Dispatch<TOrderActions>
             });
             dispatch({
                 type: GET_ORDER_SUCCESS,
-                orderInfo: orderInfo as IMessage
+                orderInfo: orderInfo as IFeedInfo
             });
         } catch (err) {
             dispatch({

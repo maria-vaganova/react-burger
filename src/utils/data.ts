@@ -5,7 +5,8 @@ import {
     IIngredientDetailInfo,
     IOrderInfo,
     IServerInfo,
-    ITokenInfo
+    ITokenInfo,
+    IOrderFeedInfo
 } from "./types";
 
 
@@ -114,6 +115,16 @@ export const EMPTY_ORDER_INFO: IOrderInfo = {
     name: "Ingredient ids must be provided",
     order: {number: 0},
     success: false
+};
+
+export const EMPTY_ORDER_FEED_INFO: IOrderFeedInfo = {
+    ingredients: ["643d69a5c3f7b9001cfa093c", "643d69a5c3f7b9001cfa0941", "643d69a5c3f7b9001cfa094a"],
+    _id: "681afd18e8e61d001cec69c9",
+    name: "Death Star Starship Main бургер",
+    status: "created",
+    number: 0,
+    createdAt: "2024-06-23T23:13:23.654Z",
+    updatedAt: "2024-06-23T23:13:23.654Z"
 };
 
 export const EMPTY_INGREDIENT_DETAILS: IIngredientDetailInfo = {

@@ -6,12 +6,12 @@ import {
     WS_GET_MESSAGE,
     TWSActions
 } from '../actions/wsActionTypes';
-import type {IMessage} from '../../utils/types';
+import type {IFeedInfo} from '../../utils/types';
 
 type TWSState = {
     [socketId: string]: {
         wsConnected: boolean;
-        messages: IMessage[];
+        messages: IFeedInfo[];
         error?: string;
     };
 };

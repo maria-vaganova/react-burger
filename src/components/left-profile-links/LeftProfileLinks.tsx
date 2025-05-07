@@ -41,6 +41,8 @@ function LeftProfileLinks() {
                 setSectionDescription("В этом разделе вы можете просмотреть свою историю заказов");
                 break;
             default:
+                setProfileLinkStyle(linkStyle + " text_color_inactive");
+                setOrdersLinkStyle(linkStyle + " text_color_inactive");
                 setSectionDescription("");
         }
     }, [location]);

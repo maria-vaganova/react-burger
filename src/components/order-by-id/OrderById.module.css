@@ -1,0 +1,131 @@
+.center {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.centerModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.centerText {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.modalTitleText {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 680px;
+    width: 620px;
+}
+
+.iconItem {
+    position: relative;
+    min-height: 64px;
+    min-width: 64px;
+    background: linear-gradient(90deg, #4C4CFF, #801AB2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img {
+    position: absolute; /* Абсолютное позиционирование */
+    background: black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 50%; /* Круглая форма для картинки */
+    object-fit: cover; /* Сохранение пропорций изображения */
+    /*z-index: 997;*/
+}
+
+.priceLine {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 8px;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.line {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.bottomLine {
+    position: fixed;
+    bottom: 0;
+    width: inherit;
+}
+
+.scrollableContainer {
+    padding-right: 24px;
+    display: block;
+    height: inherit;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    margin-bottom: 64px;
+}
+
+.ingredientContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+}
+
+.ingredientLine {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 16px;
+}
+
+.ingredientName {
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+    width: 100%;
+}
+
+.errorContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 28px;
+
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.errorContentModal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 28px;
+
+    margin-top: 80px;
+    margin-bottom: 60px;
+    margin-right: 60px;
+    margin-left: 60px;
+}

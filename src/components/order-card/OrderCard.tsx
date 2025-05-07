@@ -2,9 +2,10 @@ import orderCard from './OrderCard.module.css';
 import {IIconData, IIngredient, IOrderFeedInfo} from "../../utils/types";
 import {useEffect, useState} from "react";
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
-import {fulfilIngredient, getOrderNumberForCard, getRussianNameForStatus} from "../../utils/util";
+import {countOrderPrice, fulfilIngredient, getOrderNumberForCard, getRussianNameForStatus} from "../../utils/util";
 import {dataInfoSelector, useAppSelector} from "../../services/store";
 import {v4 as uuid_v4} from 'uuid';
+import {useLocation, useNavigate} from "react-router-dom";
 
 export interface IOrderCardProps {
     isStatusShown: boolean;
@@ -12,10 +13,6 @@ export interface IOrderCardProps {
 }
 
 function OrderCard({orderInfo, isStatusShown}: IOrderCardProps) {
-    const [orderNumber, setOrderNumber] = useState<string>("none");
-    const [orderDate, setOrderDate] = useState<string>("never");
-    const [burgerName, setBurgerName] = useState<string>("Death Star Starship Main бургер");
-    const [status, setStatus] = useState<string>("none");
     const [burgerPrice, setBurgerPrice] = useState<number>(480);
     const [ingredientList, setIngredientList] = useState<IIngredient[]>([]);
     const [ingredientCount, setIngredientCount] = useState<number>(0);
@@ -27,21 +24,13 @@ function OrderCard({orderInfo, isStatusShown}: IOrderCardProps) {
     const [isAllIconsVisible, setIconsVisible] = useState<boolean>();
 
     useEffect(() => {
-        setOrderNumber(getOrderNumberForCard(orderInfo.number));
-        setOrderDate(orderInfo.createdAt);
-        // ??? setBurgerName();
-        if (isStatusShown) setStatus(getRussianNameForStatus(orderInfo.status));
         setIngredientList(orderInfo.ingredients.map((id: string) => fulfilIngredient(id, data)));
     }, []);
 
     useEffect(() => {
         setIngredientCount(ingredientList?.length || 0);
-        let price = 0;
-        ingredientList.forEach((ingredient: IIngredient) => {
-            price += ingredient.price;
-        });
         setIcons(ingredientList.map((ingredient: IIngredient) => ({id: ingredient._id, src: ingredient.image_mobile})));
-        setBurgerPrice(price);
+        setBurgerPrice(countOrderPrice(ingredientList));
     }, [ingredientList]);
 
     useEffect(() => {
@@ -51,17 +40,25 @@ function OrderCard({orderInfo, isStatusShown}: IOrderCardProps) {
             setIconsVisible(false);
     }, [ingredientCount]);
 
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const openModal = (number: number): void => {
+        navigate(`/profile/orders/${number}`, {state: {background: location}});
+    };
+
     return (
         <div>
-            <div className={orderCard.card}>
+            <div className={orderCard.card} onClick={() => openModal(orderInfo.number)}>
                 <div className={orderCard.line}>
-                    <p className="text text_type_digits-default">#{orderNumber}</p>
+                    <p className="text text_type_digits-default">#{getOrderNumberForCard(orderInfo.number)}</p>
                     <p className="text text_type_main-default text_color_inactive">
-                        <FormattedDate date={new Date(orderDate)}/>
+                        <FormattedDate date={new Date(orderInfo.createdAt)}/>
                     </p>
                 </div>
-                <p className="text text_type_main-medium mt-6">{burgerName}</p>
-                {isStatusShown && (<p className="text text_type_main-default mt-2">{status}</p>)}
+                <p className="text text_type_main-medium mt-6">{orderInfo.name}</p>
+                {isStatusShown && (
+                    <p className="text text_type_main-default mt-2">{getRussianNameForStatus(orderInfo.status)}</p>)}
                 <div className={orderCard.ingredientLine + " mt-6"}>
                     <div>
                         <div className={orderCard.iconList}>
