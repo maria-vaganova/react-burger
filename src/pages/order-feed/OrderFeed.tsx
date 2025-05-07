@@ -5,7 +5,7 @@ import {v4 as uuid_v4} from "uuid";
 
 function OrderFeed() {
     const order1: IOrderFeedInfo = {
-        ingredients: ["643d69a5c3f7b9001cfa093d", "643d69a5c3f7b9001cfa0941", "643d69a5c3f7b9001cfa094a", "643d69a5c3f7b9001cfa0949", "643d69a5c3f7b9001cfa0948", "643d69a5c3f7b9001cfa0945","643d69a5c3f7b9001cfa0946", "643d69a5c3f7b9001cfa0945"],
+        ingredients: ["643d69a5c3f7b9001cfa093d", "643d69a5c3f7b9001cfa0941", "643d69a5c3f7b9001cfa094a", "643d69a5c3f7b9001cfa0949", "643d69a5c3f7b9001cfa0948", "643d69a5c3f7b9001cfa0945", "643d69a5c3f7b9001cfa0946", "643d69a5c3f7b9001cfa0945"],
         _id: "", // Здесь пустая строка, так как в данных _id отсутствует
         status: "done",
         number: 1,
@@ -32,15 +32,21 @@ function OrderFeed() {
     };
 
     return (
-        <div className={style.content}>
-            <div className={style.scrollableContainer}>
-                <div className={style.leftItems}>
-                    {feedInfo.orders.map((order: IOrderFeedInfo) => {
-                        return (
-                            <OrderCard key={uuid_v4()} isStatusShown={false} orderInfo={order}/>
-                        );
-                    })}
+        <div>
+            <div className={style.title}>
+                <h1 className="text_type_main-large">Лента заказов</h1>
+            </div>
+            <div className={style.content}>
+                <div className={style.scrollableContainer}>
+                    <div className={style.leftItems}>
+                        {feedInfo.orders.map((order: IOrderFeedInfo) => {
+                            return (
+                                <OrderCard key={uuid_v4()} isStatusShown={false} orderInfo={order}/>
+                            );
+                        })}
+                    </div>
                 </div>
+                <div className={style.rightItems}></div>
             </div>
         </div>
     );
