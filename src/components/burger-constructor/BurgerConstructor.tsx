@@ -136,7 +136,7 @@ function BurgerConstructor() {
             openMessageModal('Ошибка сети');
         } else if (orderInfo.success) {
             console.log("orderInfo", orderInfo);
-            openModal();
+            if ("order" in orderInfo) openModal();
         }
     }, [orderRequest, orderFailed, orderInfo]);
 

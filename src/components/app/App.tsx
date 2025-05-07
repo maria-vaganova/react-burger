@@ -27,6 +27,7 @@ import Orders from "../../pages/orders/Orders";
 import WarningModal from "../modal/WarningModal";
 import OrderByIdWrapper from "../../pages/order-by-id-wrapper/OrderByIdWrapper";
 import Loader from "../loader/Loader";
+import OrderFeed from "../../pages/order-feed/OrderFeed";
 
 function App() {
     const dataDispatch = useDataDispatch();
@@ -90,6 +91,7 @@ function App() {
                         }/>
                         <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
 
+                        <Route path="/order-list/" element={<OrderFeed/>}/> {/* или /feed ?*/}
                         <Route path="/order-list/:number" element={<OrderByIdWrapper/>}/>
 
                         <Route path="/login" element={
