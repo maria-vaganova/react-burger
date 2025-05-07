@@ -46,19 +46,31 @@ export type TOrderActions =
     | IGetOrderByNumberSuccessAction
     | IGetOrderByNumberFailedAction;
 
-export function getOrderNumber(ingredients: string[]): (dispatch: Dispatch<TOrderActions>) => Promise<void> {
+export function getOrderNumber(ingredients: string[], accessToken?: string): (dispatch: Dispatch<TOrderActions>) => Promise<void> {
     return async function getOrderNumberThunk(dispatch: Dispatch<TOrderActions>): Promise<void> {
         dispatch({
             type: GET_ORDER_NUMBER
         })
         try {
-            const orderInfo: IOrderInfo = await request(ORDER_POST_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ingredients})
-            });
+            let orderInfo: IOrderInfo;
+            if (accessToken) {
+                orderInfo = await request(ORDER_POST_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${accessToken}`,
+                    },
+                    body: JSON.stringify({ingredients})
+                });
+            } else {
+                orderInfo = await request(ORDER_POST_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ingredients})
+                });
+            }
             dispatch({
                 type: GET_ORDER_NUMBER_SUCCESS,
                 orderInfo: orderInfo as IOrderInfo

@@ -11,16 +11,25 @@ import {
 } from "../../utils/util";
 import {IIngredient, ICartItem} from "../../utils/types";
 import OrderDetails from "../order-details/OrderDetails";
-import {BUN_TYPE, DraggableTypes} from "../../utils/data";
+import {
+    BUN_TYPE,
+    DraggableTypes,
+    EMPTY_REFRESH_TOKEN,
+    EMPTY_SERVER_INFO,
+    REFRESH_TOKEN_STORAGE_TAG
+} from "../../utils/data";
 import {useDrop} from "react-dnd";
 import {clearOrderNumber, getOrderNumber, TOrderActions} from "../../services/actions/orderActions";
 import {
     cartSelector,
     dataInfoSelector,
     orderStateToProps,
+    tokenStateToProps,
     totalPriceSelector,
     useAppSelector,
     useCartDispatch,
+    useGetAccessTokenDispatch,
+    useLoadingDispatch,
     useOrderDispatch,
     useTotalPriceDispatch
 } from '../../services/store';
@@ -30,8 +39,18 @@ import {increment, resetPrice, TTotalPriceActions} from "../../services/actions/
 import IndexedContainer from "../indexed-container/IndexedContainer";
 import {useLocation, useNavigate} from "react-router-dom";
 import WarningModal from "../modal/WarningModal";
+import {Dispatch} from "redux";
+import {getAccessToken, TGetAccessTokenActions} from "../../services/actions/tokenActions";
+import {startLoading, stopLoading} from "../../services/actions/loadingActions";
 
 function BurgerConstructor() {
+    const [currentToken, setCurrentToken] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        const token: string = localStorage.getItem(REFRESH_TOKEN_STORAGE_TAG) || EMPTY_REFRESH_TOKEN;
+        if (token !== EMPTY_REFRESH_TOKEN)
+            handleGetAccessToken();
+    }, []);
 
     const [modalMessage, setModalMessage] = useState("");
     const [isMessageModalOpen, setMessageModalOpen] = useState(false);
@@ -67,7 +86,7 @@ function BurgerConstructor() {
     const {orderRequest, orderFailed, orderInfo} = useAppSelector(orderStateToProps);
     const handleOrder = (): void => {
         const ingredients: string[] = getDataIds(restoreIngredientListFromCart(cart, true, data));
-        const getOrderNumberThunk = getOrderNumber(ingredients);
+        const getOrderNumberThunk = getOrderNumber(ingredients, currentToken);
         dispatchOrder(getOrderNumberThunk);
     };
     const clearOrder = (): void => {
@@ -134,11 +153,40 @@ function BurgerConstructor() {
     useEffect((): void => {
         if (orderFailed) {
             openMessageModal('Ошибка сети');
+            dispatchLoading(stopLoading());
+        } else if (orderRequest) {
+            dispatchLoading(startLoading());
         } else if (orderInfo.success) {
             console.log("orderInfo", orderInfo);
+            dispatchLoading(stopLoading());
             if ("order" in orderInfo) openModal();
         }
     }, [orderRequest, orderFailed, orderInfo]);
+
+    const {tokenRequest, tokenFailed, tokenInfo, tokenMessage} = useAppSelector(tokenStateToProps);
+    const dispatchGetAccessToken = useGetAccessTokenDispatch();
+    const handleGetAccessToken = (): void => {
+        const getAccessTokenThunk: (dispatch: Dispatch<TGetAccessTokenActions>) => Promise<void> = getAccessToken();
+        dispatchGetAccessToken(getAccessTokenThunk);
+    };
+
+    const dispatchLoading = useLoadingDispatch();
+
+    useEffect((): void => {
+        if (tokenFailed) {
+            let message: string = "Ошибка сети";
+            if (tokenMessage !== EMPTY_SERVER_INFO) {
+                message += ": " + tokenMessage.message;
+            }
+            dispatchLoading(stopLoading());
+            console.log(message);
+        } else if (tokenRequest) {
+            dispatchLoading(startLoading());
+        } else if (!tokenRequest && tokenInfo.success) {
+            dispatchLoading(stopLoading());
+            setCurrentToken(tokenInfo.accessToken);
+        }
+    }, [tokenRequest, tokenFailed, tokenInfo, tokenMessage]);
 
     return (
         <div style={{width: '600px'}}>
