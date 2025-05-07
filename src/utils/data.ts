@@ -6,7 +6,8 @@ import {
     IOrderInfo,
     IServerInfo,
     ITokenInfo,
-    IOrderFeedInfo
+    IOrderFeedInfo,
+    IFeedInfo
 } from "./types";
 
 
@@ -135,6 +136,13 @@ export const EMPTY_INGREDIENT_DETAILS: IIngredientDetailInfo = {
     fat: 0,
     carbohydrates: 0
 };
+
+export const EMPTY_FEED: IFeedInfo = {
+    success: false,
+    orders: [],
+    total: 0,
+    totalToday: 0
+}
 
 export const BACKUP_DATA_LIST: IIngredient[] = [
     {

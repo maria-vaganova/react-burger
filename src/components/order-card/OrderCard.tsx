@@ -13,7 +13,7 @@ export interface IOrderCardProps {
 }
 
 function OrderCard({orderInfo, isStatusShown}: IOrderCardProps) {
-    const [burgerPrice, setBurgerPrice] = useState<number>(480);
+    const [burgerPrice, setBurgerPrice] = useState<number>(0);
     const [ingredientList, setIngredientList] = useState<IIngredient[]>([]);
     const [ingredientCount, setIngredientCount] = useState<number>(0);
 

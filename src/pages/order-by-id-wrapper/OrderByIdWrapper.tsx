@@ -2,6 +2,7 @@ import {useLocation} from "react-router-dom";
 import Modal from "../../components/modal/Modal";
 import OrderById from "../../components/order-by-id/OrderById";
 import Orders from "../orders/Orders";
+import OrderFeed from "../order-feed/OrderFeed";
 
 function OrderByIdWrapper() {
     const location = useLocation();
@@ -19,7 +20,8 @@ function OrderByIdWrapper() {
 
     return (
         <>
-            <Orders/>
+            {(background.pathname === "/feed") && <OrderFeed/>}
+            {(background.pathname === "/profile/orders") && <Orders/>}
             <Modal onClose={(): void => window.history.back()}>
                 <OrderById isModal={true}/>
             </Modal>

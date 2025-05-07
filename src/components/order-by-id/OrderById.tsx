@@ -92,7 +92,7 @@ function OrderById({isModal}: IOrderByIdProps) {
                         #{getOrderNumberForCard(orderFeedInfo.number)}
                     </p>
                     <p className="text text_type_main-medium mt-10">{orderFeedInfo.name}</p>
-                    <p className="text text_type_main-default mt-3 text_color_accent">{getRussianNameForStatus(orderFeedInfo.status)}</p>
+                    <p className="text text_type_main-default mt-3 text_color_success">{getRussianNameForStatus(orderFeedInfo.status)}</p>
                     <p className="text text_type_main-medium mt-15 mb-6">Состав:</p>
                     <div className={style.scrollableContainer}>
                         <div className={style.ingredientContent}>

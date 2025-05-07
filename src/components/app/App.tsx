@@ -91,8 +91,8 @@ function App() {
                         }/>
                         <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
 
-                        <Route path="/order-list/" element={<OrderFeed/>}/> {/* или /feed ?*/}
-                        <Route path="/order-list/:number" element={<OrderByIdWrapper/>}/>
+                        <Route path="/feed/" element={<OrderFeed/>}/>
+                        <Route path="/feed/:number" element={<OrderByIdWrapper/>}/>
 
                         <Route path="/login" element={
                             <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
