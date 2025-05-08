@@ -44,6 +44,7 @@ type AppStore = typeof store;
 export type RootState = ReturnType<AppStore['getState']>;
 export type SocketActions = TWSActions;
 export type SocketDispatch = ThunkDispatch<RootState, unknown, SocketActions>;
+export const useSocketDispatch = useDispatch.withTypes<SocketDispatch>();
 
 export const useAppSelector = useSelector.withTypes<RootState>();
 

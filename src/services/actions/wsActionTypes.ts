@@ -5,10 +5,46 @@ export const WS_CONNECTION_CLOSED: 'WS_CONNECTION_CLOSED' = 'WS_CONNECTION_CLOSE
 export const WS_GET_MESSAGE: 'WS_GET_MESSAGE' = 'WS_GET_MESSAGE';
 export const WS_SEND_MESSAGE: 'WS_SEND_MESSAGE' = 'WS_SEND_MESSAGE';
 
+export interface IStartSocketAction {
+    type: typeof WS_CONNECTION_START;
+    payload: { url: string; accessToken: string };
+    socketId: string;
+}
+
+export interface ISuccessSocketAction {
+    type: typeof WS_CONNECTION_SUCCESS;
+    payload: Event;
+    socketId: string;
+}
+
+export interface IErrorSocketAction {
+    type: typeof WS_CONNECTION_ERROR;
+    payload: { error: string } | Event;
+    socketId: string;
+}
+
+export interface IClosedSocketAction {
+    type: typeof WS_CONNECTION_CLOSED;
+    payload: { code: number } | Event;
+    socketId: string;
+}
+
+export interface IGetMessageSocketAction {
+    type: typeof WS_GET_MESSAGE;
+    payload: string;
+    socketId: string;
+}
+
+export interface ISendMessageSocketAction {
+    type: typeof WS_SEND_MESSAGE;
+    payload: any;
+    socketId: string;
+}
+
 export type TWSActions =
-    | { type: typeof WS_CONNECTION_START; payload: { url: string; accessToken: string }; socketId: string }
-    | { type: typeof WS_CONNECTION_SUCCESS; payload: Event; socketId: string }
-    | { type: typeof WS_CONNECTION_ERROR; payload: { error: string } | Event; socketId: string }
-    | { type: typeof WS_CONNECTION_CLOSED; payload: Event; socketId: string }
-    | { type: typeof WS_GET_MESSAGE; payload: string; socketId: string }
-    | { type: typeof WS_SEND_MESSAGE; payload: any; socketId: string };
+    | IStartSocketAction
+    | ISuccessSocketAction
+    | IErrorSocketAction
+    | IClosedSocketAction
+    | IGetMessageSocketAction
+    | ISendMessageSocketAction;

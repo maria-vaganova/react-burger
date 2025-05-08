@@ -3,20 +3,21 @@ import LeftProfileLinks from "../../components/left-profile-links/LeftProfileLin
 import {IFeedInfo, IOrderFeedInfo} from "../../utils/types";
 import OrderCard from "../../components/order-card/OrderCard";
 import {useEffect, useState} from "react";
-import {BASE_SOCKET_ID, BASE_WS, EMPTY_FEED, EMPTY_SERVER_INFO} from "../../utils/data";
+import {BASE_SOCKET_ID, EMPTY_FEED, EMPTY_SERVER_INFO} from "../../utils/data";
 import {
     RootState,
+    SocketActions,
     tokenStateToProps,
     useAppSelector,
     useGetAccessTokenDispatch,
-    useLoadingDispatch
+    useLoadingDispatch,
+    useSocketDispatch
 } from "../../services/store";
 import {Dispatch} from "redux";
 import {getAccessToken, TGetAccessTokenActions} from "../../services/actions/tokenActions";
 import {startLoading, stopLoading} from "../../services/actions/loadingActions";
-import {useDispatch, useSelector} from "react-redux";
-import {WS_CONNECTION_CLOSED, WS_CONNECTION_START} from "../../services/actions/wsActionTypes";
 import WarningModal from "../../components/modal/WarningModal";
+import {startBaseSocket, stopBaseSocket} from "../../services/actions/socketActions";
 
 function Orders() {
     const [currentToken, setCurrentToken] = useState<string>("");
@@ -66,11 +67,18 @@ function Orders() {
     }, [tokenRequest, tokenFailed, tokenInfo, tokenMessage]);
 
     // websocket logic start
-    const dispatch = useDispatch();
-    const socketId = BASE_SOCKET_ID;
-    const {wsConnected, messages, error} = useSelector(
-        (state: RootState) => state.websocket[socketId] || {wsConnected: false}
+    const socketDispatch = useSocketDispatch();
+    const {wsConnected, messages, error} = useAppSelector(
+        (state: RootState) => state.websocket[BASE_SOCKET_ID] || {wsConnected: false}
     );
+    const handleStartSocket = (): void => {
+        const startSocketThunk: (dispatch: Dispatch<SocketActions>) => Promise<void> = startBaseSocket(currentToken);
+        socketDispatch(startSocketThunk);
+    };
+    const handleStopSocket = (): void => {
+        const stopSocketThunk: (dispatch: Dispatch<SocketActions>) => Promise<void> = stopBaseSocket();
+        socketDispatch(stopSocketThunk);
+    };
 
     useEffect(() => {
         if (messages) messages.map((msg: IFeedInfo) => (
@@ -79,24 +87,18 @@ function Orders() {
     }, [messages]);
 
     useEffect(() => {
-        if (currentToken)
-            dispatch({
-                type: WS_CONNECTION_START,
-                payload: {url: BASE_WS, accessToken: currentToken.replace("Bearer ", "")},
-                socketId,
-            });
-
+        if (currentToken) handleStartSocket();
         return () => {
-            dispatch({type: WS_CONNECTION_CLOSED, payload: {code: 1000}, socketId});
+            handleStopSocket();
         };
-    }, [currentToken, dispatch]);
+    }, [currentToken, socketDispatch]);
 
     useEffect(() => {
         if (error) {
-            alert('Ошибка вебсокета: ' + error);
-            dispatch({type: WS_CONNECTION_CLOSED, payload: {code: 1000}, socketId});
+            openMessageModal('Ошибка вебсокета: ' + error);
+            handleStopSocket();
         }
-    }, [error, dispatch]);
+    }, [error, socketDispatch]);
     // websocket logic end
 
     return (
