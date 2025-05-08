@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import style from './OrderFeed.module.css';
 import {IFeedInfo, IOrderFeedInfo} from "../../utils/types";
 import OrderCard from "../../components/order-card/OrderCard";
-import {v4 as uuid_v4} from "uuid";
 import {chunkNumberArray, getOrderNumberForCard} from "../../utils/util";
 import {
     RootState,
@@ -132,7 +131,7 @@ function OrderFeed() {
                         <div className={style.orderCardList}>
                             {orderData.orders.map((order: IOrderFeedInfo) => {
                                 return (
-                                    <OrderCard key={uuid_v4()} isStatusShown={false} orderInfo={order}/>
+                                    <OrderCard key={order._id} isStatusShown={false} orderInfo={order}/>
                                 );
                             })}
                         </div>
@@ -147,8 +146,8 @@ function OrderFeed() {
                                     <div className={style.numberListContainer}>
                                         {doneOrderNumbers.map((chunk, index) => (
                                             <div key={`done-chunk-${index}`} className={style.numberList}>
-                                                {chunk.map((number) => (
-                                                    <p key={uuid_v4()}
+                                                {chunk.map((number, chunkIndex) => (
+                                                    <p key={`done-number-${chunkIndex}`}
                                                        className="text text_type_digits-default text_color_success">
                                                         {getOrderNumberForCard(number)}
                                                     </p>
@@ -162,8 +161,9 @@ function OrderFeed() {
                                     <div className={style.numberList}>
                                         {pendingOrderNumbers.map((chunk, index) => (
                                             <div key={`pending-chunk-${index}`} className={style.numberList}>
-                                                {chunk.map((number) => (
-                                                    <p key={uuid_v4()} className="text text_type_digits-default">
+                                                {chunk.map((number, chunkIndex) => (
+                                                    <p key={`pending-number-${chunkIndex}`}
+                                                       className="text text_type_digits-default">
                                                         {getOrderNumberForCard(number)}
                                                     </p>
                                                 ))}

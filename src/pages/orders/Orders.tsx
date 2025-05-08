@@ -2,7 +2,6 @@ import style from './Orders.module.css';
 import LeftProfileLinks from "../../components/left-profile-links/LeftProfileLinks";
 import {IFeedInfo, IOrderFeedInfo} from "../../utils/types";
 import OrderCard from "../../components/order-card/OrderCard";
-import {v4 as uuid_v4} from "uuid";
 import {useEffect, useState} from "react";
 import {BASE_SOCKET_ID, BASE_WS, EMPTY_FEED, EMPTY_SERVER_INFO} from "../../utils/data";
 import {
@@ -113,7 +112,7 @@ function Orders() {
                     <div className={style.centerItems}>
                         {orderData.orders.map((order: IOrderFeedInfo) => {
                             return (
-                                <OrderCard key={uuid_v4()} isStatusShown={true} orderInfo={order}/>
+                                <OrderCard key={order._id} isStatusShown={true} orderInfo={order}/>
                             );
                         })}
                     </div>

@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
 import {countOrderPrice, fulfilIngredient, getOrderNumberForCard, getRussianNameForStatus} from "../../utils/util";
 import {dataInfoSelector, useAppSelector} from "../../services/store";
-import {v4 as uuid_v4} from 'uuid';
 import {useLocation, useNavigate} from "react-router-dom";
 
 export interface IOrderCardProps {
@@ -63,7 +62,7 @@ function OrderCard({orderInfo, isStatusShown}: IOrderCardProps) {
                     <div>
                         <div className={orderCard.iconList}>
                             {icons.slice(0, visibleIconsCount).map((icon, index) => (
-                                <div key={uuid_v4()} className={orderCard.iconItem} data-index={index}>
+                                <div key={index} className={orderCard.iconItem} data-index={index}>
                                     {isAllIconsVisible && (index === visibleIconsCount - 1) &&
                                         <p className={orderCard.span + " text text_type_main-default"}
                                            data-index={visibleIconsCount}>
