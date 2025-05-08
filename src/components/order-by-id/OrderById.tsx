@@ -96,8 +96,8 @@ function OrderById({isModal}: IOrderByIdProps) {
                     <p className="text text_type_main-medium mt-15 mb-6">Состав:</p>
                     <div className={style.scrollableContainer}>
                         <div className={style.ingredientContent}>
-                            {ingredientForShowList.map((ingredient: IIngredientForShow) => (
-                                <div className={style.ingredientLine}>
+                            {ingredientForShowList.map((ingredient: IIngredientForShow, index) => (
+                                <div key={index} className={style.ingredientLine}>
                                     <div className={style.iconItem}>
                                         <img className={style.img}
                                              src={ingredient.image_mobile}

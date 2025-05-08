@@ -8,8 +8,6 @@ function OrderByIdWrapper() {
     const location = useLocation();
     const background = location.state?.background;
 
-    console.log("Background:", background);
-
     if (!background) {
         return (
             <div>

@@ -157,7 +157,6 @@ function BurgerConstructor() {
         } else if (orderRequest) {
             dispatchLoading(startLoading());
         } else if (orderInfo.success) {
-            console.log("orderInfo", orderInfo);
             dispatchLoading(stopLoading());
             if ("order" in orderInfo) openModal();
         }
