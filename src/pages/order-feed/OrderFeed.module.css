@@ -1,0 +1,74 @@
+.title {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-left: calc(50% - 630px);
+    margin-top: 20px;
+}
+
+.content {
+    /*display: flex;*/
+    /*flex-flow: row nowrap;*/
+    /*gap: 60px;*/
+    /*justify-content: center;*/
+}
+
+.leftItems {
+    width: 600px;
+    position: fixed;
+    right: calc(50% + 30px);
+}
+
+.rightItems {
+    position: fixed;
+    left: calc(50% + 30px);
+}
+
+.scrollableContainer {
+    display: block;
+    height: 75vh;
+    max-width: 840px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+}
+
+.orderCardList {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-right: 8px;
+}
+
+.statusData {
+    /*width: 600px;*/
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+.statuses {
+    display: flex;
+    flex-direction: row;
+    gap: 36px;
+}
+
+.listByStatus {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 272px;
+}
+
+.numberList {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 8px;
+}
+
+.numberListContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}

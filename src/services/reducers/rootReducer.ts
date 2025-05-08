@@ -9,6 +9,8 @@ import loginReducer from "./loginReducer";
 import userReducer from "./userReducer";
 import tokenReducer from "./tokenReducer";
 import passwordReducer from "./passwordReducer";
+import loadingReducer from "./loadingReducer";
+import wsReducer from "./socketReducer";
 
 export const rootReducer: Reducer = combineReducers({
     order: orderReducer,
@@ -20,5 +22,7 @@ export const rootReducer: Reducer = combineReducers({
     login: loginReducer,
     user: userReducer,
     token: tokenReducer,
-    password: passwordReducer
+    password: passwordReducer,
+    loading: loadingReducer,
+    websocket: wsReducer
 })

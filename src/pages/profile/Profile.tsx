@@ -5,7 +5,7 @@ import LeftProfileLinks from "../../components/left-profile-links/LeftProfileLin
 import {
     tokenStateToProps,
     useAppSelector, useGetAccessTokenDispatch,
-    useGetUserDispatch,
+    useGetUserDispatch, useLoadingDispatch,
     userStateToProps,
     useSetUserDispatch
 } from "../../services/store";
@@ -15,6 +15,7 @@ import {EMPTY_SERVER_INFO} from "../../utils/data";
 import {getAccessToken, TGetAccessTokenActions} from "../../services/actions/tokenActions";
 import {Dispatch} from "redux";
 import WarningModal from "../../components/modal/WarningModal";
+import {startLoading, stopLoading} from "../../services/actions/loadingActions";
 
 function Profile() {
     const [modalMessage, setModalMessage] = useState("");
@@ -58,14 +59,20 @@ function Profile() {
         dispatchGetAccessToken(getAccessTokenThunk);
     };
 
+    const dispatchLoading = useLoadingDispatch();
+
     useEffect((): void => {
         if (tokenFailed) {
             let message: string = "Ошибка сети";
             if (tokenMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + tokenMessage.message;
             }
+            dispatchLoading(stopLoading());
             openMessageModal(message);
+        } else if (tokenRequest) {
+            dispatchLoading(startLoading());
         } else if (!tokenRequest && tokenInfo.success) {
+            dispatchLoading(stopLoading());
             setCurrentToken(tokenInfo.accessToken);
         }
     }, [tokenRequest, tokenFailed, tokenInfo, tokenMessage]);
@@ -112,8 +119,12 @@ function Profile() {
             if (userMessage !== EMPTY_SERVER_INFO) {
                 message += ": " + userMessage.message;
             }
+            dispatchLoading(stopLoading());
             openMessageModal(message);
+        }  else if (userRequest) {
+            dispatchLoading(startLoading());
         } else if (!userRequest && userInfo.success) {
+            dispatchLoading(stopLoading());
             setPreviousName(userInfo.user.name);
             setPreviousEmail(userInfo.user.email);
             setPreviousPassword(password);

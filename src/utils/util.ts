@@ -1,4 +1,4 @@
-import {ICartItem, IIngredient} from "./types";
+import {ICartItem, IIngredient, IIngredientForShow} from "./types";
 import {BUN_TYPE, EMPTY_REFRESH_TOKEN, REFRESH_TOKEN_STORAGE_TAG} from "./data";
 
 export function restoreIngredientListFromCart(
@@ -83,4 +83,56 @@ export function isUserAuthenticated(): boolean {
         return false;
     }
     return refreshToken !== EMPTY_REFRESH_TOKEN;
+}
+
+export function getOrderNumberForCard(number: number): string {
+    if (!number) number = 0;
+    return number.toString().padStart(6, '0');
+}
+
+export function getRussianNameForStatus(status: string): string {
+    switch (status) {
+        case "done":
+            return "Выполнен";
+        case "pending":
+            return "Готовится";
+        case "created":
+            return "Создан";
+        default:
+            return "Отменён";
+    }
+}
+
+export function countOrderPrice(ingredients: IIngredient[]): number {
+    let price = 0;
+    ingredients.forEach((ingredient: IIngredient) => {
+        price += ingredient.price;
+    });
+    return price;
+}
+
+export function convertIngredients(ingredients: IIngredient[]): IIngredientForShow[] {
+    const ingredientMap: { [key: string]: IIngredientForShow } = {};
+
+    ingredients.forEach(ingredient => {
+        if (ingredientMap[ingredient.name]) {
+            ingredientMap[ingredient.name].count += 1;
+        } else {
+            ingredientMap[ingredient.name] = {
+                name: ingredient.name,
+                price: ingredient.price,
+                image_mobile: ingredient.image_mobile,
+                count: 1
+            };
+        }
+    });
+    return Object.values(ingredientMap);
+}
+
+export function chunkNumberArray(array: number[], size: number): number[][] {
+    const result: number[][] = [];
+    for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size));
+    }
+    return result;
 }

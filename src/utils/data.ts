@@ -5,7 +5,9 @@ import {
     IIngredientDetailInfo,
     IOrderInfo,
     IServerInfo,
-    ITokenInfo
+    ITokenInfo,
+    IOrderFeedInfo,
+    IFeedInfo
 } from "./types";
 
 
@@ -13,6 +15,8 @@ export const BUN_TYPE: string = "bun";
 export const SAUCE_TYPE: string = "sauce";
 export const MAIN_TYPE: string = "main";
 
+export const BASE_WS: string = 'wss://norma.nomoreparties.space/orders';
+export const ALL_WS: string = BASE_WS + '/all';
 export const BASE_URL: string = 'https://norma.nomoreparties.space/api/';
 export const DATA_URL: string = BASE_URL + 'ingredients';
 export const ORDER_POST_URL: string = BASE_URL + 'orders';
@@ -51,6 +55,9 @@ export const POST_REGISTER_SUCCESS: string = "POST_REGISTER_SUCCESS";
 export const GET_ORDER_NUMBER: string = "GET_ORDER_NUMBER";
 export const GET_ORDER_NUMBER_FAILED: string = "GET_ORDER_NUMBER_FAILED";
 export const GET_ORDER_NUMBER_SUCCESS: string = "GET_ORDER_NUMBER_SUCCESS";
+export const GET_ORDER: string = "GET_ORDER";
+export const GET_ORDER_FAILED: string = "GET_ORDER_FAILED";
+export const GET_ORDER_SUCCESS: string = "GET_ORDER_SUCCESS";
 export const SHOW_INGREDIENT_DETAILS: string = "SHOW_INGREDIENT_DETAILS";
 export const CLEAR_INGREDIENT_DETAILS: string = "CLEAR_INGREDIENT_DETAILS";
 export const GET_DATA: string = "GET_DATA";
@@ -62,6 +69,10 @@ export const MOVE_ITEMS: string = "MOVE_ITEMS";
 export const INCREMENT: string = "INCREMENT";
 export const DECREMENT: string = "DECREMENT";
 export const RESET: string = "RESET";
+export const LOADING_START = 'LOADING_START';
+export const LOADING_STOP = 'LOADING_STOP';
+export const BASE_SOCKET_ID = 'BASE_SOCKET_ID';
+export const ALL_SOCKET_ID = 'ALL_SOCKET_ID';
 
 export const FORGOT_PASSWORD_VISITED_TAG: string = "forgotPasswordVisited";
 export const REFRESH_TOKEN_STORAGE_TAG: string = "refreshToken";
@@ -107,6 +118,16 @@ export const EMPTY_ORDER_INFO: IOrderInfo = {
     success: false
 };
 
+export const EMPTY_ORDER_FEED_INFO: IOrderFeedInfo = {
+    ingredients: ["643d69a5c3f7b9001cfa093c", "643d69a5c3f7b9001cfa0941", "643d69a5c3f7b9001cfa094a"],
+    _id: "681afd18e8e61d001cec69c9",
+    name: "Death Star Starship Main бургер",
+    status: "created",
+    number: 0,
+    createdAt: "2024-06-23T23:13:23.654Z",
+    updatedAt: "2024-06-23T23:13:23.654Z"
+};
+
 export const EMPTY_INGREDIENT_DETAILS: IIngredientDetailInfo = {
     image_large: "none",
     name: "Ingredient must be provided",
@@ -115,6 +136,13 @@ export const EMPTY_INGREDIENT_DETAILS: IIngredientDetailInfo = {
     fat: 0,
     carbohydrates: 0
 };
+
+export const EMPTY_FEED: IFeedInfo = {
+    success: false,
+    orders: [],
+    total: 0,
+    totalToday: 0
+}
 
 export const BACKUP_DATA_LIST: IIngredient[] = [
     {

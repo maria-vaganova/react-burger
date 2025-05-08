@@ -13,6 +13,17 @@ export interface IIngredient {
     __v: number;
 }
 
+export interface IIngredientForShow {
+    name: string;
+    price: number;
+    image_mobile: string;
+    count: number;
+}
+
+export interface ILoadingState {
+    isLoading: boolean;
+}
+
 export interface IDataRequest {
     success: boolean;
     data: IIngredient[];
@@ -52,7 +63,7 @@ export interface ICartItem {
 }
 
 export interface IOrderState extends IServerAnswer {
-    orderInfo: IOrderInfo;
+    orderInfo: IOrderInfo | IFeedInfo;
 }
 
 export interface IOrderInfo {
@@ -134,4 +145,26 @@ export interface IIngredientDetailInfo {
 
 export interface IIngredientDetailState {
     ingredientDetails: IIngredientDetailInfo;
+}
+
+export interface IOrderFeedInfo {
+    ingredients: string[];
+    _id: string;
+    name: string;
+    status: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IFeedInfo {
+    success: boolean;
+    orders: IOrderFeedInfo[];
+    total?: number;
+    totalToday?: number;
+}
+
+export interface IIconData {
+    id: string;
+    src: string;
 }

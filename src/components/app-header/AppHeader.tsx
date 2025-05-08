@@ -17,7 +17,7 @@ function AppHeader() {
                         </div>
                     )}
                 </NavLink>
-                <NavLink to={"/order-list"} className={appHeader.navLink + " ml-2"}>
+                <NavLink to={"/feed"} className={appHeader.navLink + " ml-2"}>
                     {({isActive}) => (
                         <div className={appHeader.buttonContent}>
                             <ListIcon type={isActive ? "primary" : "secondary"} className={"ml-5 mr-2"}/>

@@ -7,10 +7,13 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {
     dataStateToProps,
+    loadingSelector,
     useAppSelector,
-    useDataDispatch
+    useDataDispatch,
+    useLoadingDispatch
 } from "../../services/store";
 import {getData} from "../../services/actions/dataActions";
+import {startLoading, stopLoading} from "../../services/actions/loadingActions";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import IngredientDetailsWrapper from "../../pages/ingredient-details-wrapper/IngredientDetailsWrapper";
 import NotFound404 from "../../pages/not-found/NotFound404";
@@ -22,11 +25,16 @@ import Profile from "../../pages/profile/Profile";
 import ProtectedRouteElement from "../protected-route/ProtectedRouteElement";
 import Orders from "../../pages/orders/Orders";
 import WarningModal from "../modal/WarningModal";
-
+import OrderByIdWrapper from "../../pages/order-by-id-wrapper/OrderByIdWrapper";
+import Loader from "../loader/Loader";
+import OrderFeed from "../../pages/order-feed/OrderFeed";
 
 function App() {
     const dataDispatch = useDataDispatch();
     const {dataRequest, dataFailed} = useAppSelector(dataStateToProps);
+    const {loading} = useAppSelector(loadingSelector);
+
+    const dispatchLoading = useLoadingDispatch();
 
     const [modalMessage, setModalMessage] = useState("");
     const [isMessageModalOpen, setMessageModalOpen] = useState(false);
@@ -41,18 +49,33 @@ function App() {
         setModalMessage("");
     };
 
-    useEffect((): void => {
-        dataDispatch(getData());
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await dataDispatch(getData());
+                dispatchLoading(stopLoading());
+            } catch (error) {
+                dispatchLoading(stopLoading());
+            }
+        };
 
+        fetchData();
+    }, []);
+
+    useEffect(() => {
         if (dataFailed) {
+            dispatchLoading(stopLoading());
             openModal("Ошибка сети: не удалось получить данные");
         } else if (dataRequest) {
-            return alert(('Загрузка...'));
+            dispatchLoading(startLoading());
         }
-    }, []);
+    }, [dataFailed, dataRequest]);
 
     return (
         <BrowserRouter>
+            {loading && (
+                <Loader/>
+            )}
             {isMessageModalOpen && (
                 <WarningModal closeModal={closeModal} message={modalMessage}/>
             )}
@@ -67,6 +90,9 @@ function App() {
                             </div>
                         }/>
                         <Route path="/ingredients/:id" element={<IngredientDetailsWrapper/>}/>
+
+                        <Route path="/feed/" element={<OrderFeed/>}/>
+                        <Route path="/feed/:number" element={<OrderByIdWrapper/>}/>
 
                         <Route path="/login" element={
                             <ProtectedRouteElement redirectPath={"/"} isAuthorizedRedirect={true}>
@@ -100,7 +126,7 @@ function App() {
                         />
                         <Route path={'/profile/orders/:number'} element={
                             <ProtectedRouteElement redirectPath={"/login"} isAuthorizedRedirect={false}>
-                                <NotFound404/>
+                                <OrderByIdWrapper/>
                             </ProtectedRouteElement>}
                         />
 
