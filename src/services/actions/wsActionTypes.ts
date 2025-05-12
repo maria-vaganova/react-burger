@@ -1,3 +1,5 @@
+import {IFeedInfo} from "../../utils/types";
+
 export const WS_CONNECTION_START: 'WS_CONNECTION_START' = 'WS_CONNECTION_START';
 export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = 'WS_CONNECTION_SUCCESS';
 export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
@@ -31,7 +33,7 @@ export interface IClosedSocketAction {
 
 export interface IGetMessageSocketAction {
     type: typeof WS_GET_MESSAGE;
-    payload: string;
+    payload: IFeedInfo;
     socketId: string;
 }
 

@@ -1,4 +1,4 @@
-import {IOrderInfo, IOrderState} from "../../utils/types";
+import {IOrderState} from "../../utils/types";
 import {
     EMPTY_ORDER_INFO,
     GET_ORDER_NUMBER,
@@ -8,7 +8,6 @@ import {
     GET_ORDER_SUCCESS,
     GET_ORDER_FAILED
 } from "../../utils/data";
-import {Reducer} from "redux";
 import {IGetOrderByNumberSuccessAction, IGetOrderNumberSuccessAction, TOrderActions} from "../actions/orderActions";
 
 const initialState: IOrderState = {
@@ -24,10 +23,7 @@ function isGetOrderByNumberSuccessAction(action: TOrderActions): action is IGetO
     return action.type === GET_ORDER_SUCCESS;
 }
 
-const orderReducer: Reducer<IOrderState, {
-    type: string;
-    orderInfo?: IOrderInfo;
-}> = (state: IOrderState = initialState, action: TOrderActions): IOrderState => {
+function orderReducer(state: IOrderState = initialState, action: TOrderActions): IOrderState {
     switch (action.type) {
         case GET_ORDER_NUMBER: {
             return {
@@ -81,6 +77,6 @@ const orderReducer: Reducer<IOrderState, {
             return state;
         }
     }
-};
+}
 
 export default orderReducer;
