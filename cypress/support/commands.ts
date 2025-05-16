@@ -37,7 +37,7 @@
 // }
 
 Cypress.Commands.add('login', () => {
-    cy.visit('http://localhost:3000/login'); // Замените на реальный URL вашей страницы логина
+    cy.visit('http://localhost:3000/#login'); // Замените на реальный URL вашей страницы логина
     cy.fixture('login').then((loginData) => {
         cy.get('input[name="email"]').type(loginData.email);
         cy.get('input[name="password"]').type(loginData.password);
