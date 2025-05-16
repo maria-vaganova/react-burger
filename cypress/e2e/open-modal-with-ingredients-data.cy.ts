@@ -1,19 +1,19 @@
+import {SELECTORS} from "../support/selectors";
+
 context('BurgerIngredients Modal', () => {
     beforeEach(() => {
         cy.login();
     });
 
     it('should show modal on ingredient click', () => {
-        cy.contains('Соберите бургер');
-
-        cy.get('#scrollable-container').within(() => {
-            cy.get('#bun').next().find('[data-test-id^=ingredient-card-]').first().click();
+        cy.get(SELECTORS.SCROLLABLE_CONTAINER).within(() => {
+            cy.get(SELECTORS.BUN).next().find(SELECTORS.INGREDIENT_CARD).first().click();
         });
 
-        cy.get('[data-test-id="modal"]').should('exist');
-        cy.get('[data-test-id="modal"]').contains('Детали ингредиента');
+        cy.get(SELECTORS.MODAL).should('exist');
+        cy.get(SELECTORS.MODAL).contains('Детали ингредиента');
 
-        cy.get('[data-test-id="closeButton"]').click();
-        cy.get('[data-test-id="modal"]').should('not.exist');
+        cy.get(SELECTORS.CLOSE_BUTTON).click();
+        cy.get(SELECTORS.MODAL).should('not.exist');
     });
 });
