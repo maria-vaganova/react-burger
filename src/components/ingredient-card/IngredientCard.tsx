@@ -29,7 +29,7 @@ function IngredientCard({id, onClick}: IIngredientCardProps) {
     }, [id, cart]);
 
     return (
-        <div className={card.ingredientCard} onClick={onClick}>
+        <div className={card.ingredientCard} onClick={onClick} data-test-id={`ingredient-card-${id}`}>
             <div>
                 {counter > 0 && (
                     <Counter count={counter} size="default" extraClass={card.counter}/>

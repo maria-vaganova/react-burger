@@ -81,12 +81,14 @@ function Login() {
                         placeholder={"E-mail"}
                         isIcon={false}
                         extraClass={"mb-3 mt-6"}
+                        name={"email"}
                     />
                     <PasswordInput
                         onChange={onPasswordChange}
                         value={password}
                         placeholder={"Пароль"}
                         extraClass={"mb-6 mt-3"}
+                        name={"password"}
                     />
                     <Button htmlType="submit" type="primary" size="medium">
                         Войти
