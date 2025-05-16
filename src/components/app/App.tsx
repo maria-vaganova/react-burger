@@ -14,7 +14,7 @@ import {
 } from "../../services/store";
 import {getData} from "../../services/actions/dataActions";
 import {startLoading, stopLoading} from "../../services/actions/loadingActions";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import IngredientDetailsWrapper from "../../pages/ingredient-details-wrapper/IngredientDetailsWrapper";
 import NotFound404 from "../../pages/not-found/NotFound404";
 import Login from "../../pages/login/Login";
@@ -72,7 +72,7 @@ function App() {
     }, [dataFailed, dataRequest]);
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             {loading && (
                 <Loader/>
             )}
@@ -134,7 +134,7 @@ function App() {
                     </Routes>
                 </DndProvider>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
