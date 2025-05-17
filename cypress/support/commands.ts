@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 import {SELECTORS} from "./selectors";
 
 Cypress.Commands.add('login', () => {

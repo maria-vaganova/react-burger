@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 export const SELECTORS = {
     ORDER_BUTTON_TEXT: 'Оформить заказ',
 

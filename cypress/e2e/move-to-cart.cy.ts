@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 import {SELECTORS} from "../support/selectors";
 
 context('BurgerConstructor drag-n-drop', () => {

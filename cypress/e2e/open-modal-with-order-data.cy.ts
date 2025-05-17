@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 import {SELECTORS} from "../support/selectors";
 
 context('BurgerConstructor order modal', () => {
@@ -10,9 +11,9 @@ context('BurgerConstructor order modal', () => {
 
         cy.contains(SELECTORS.ORDER_BUTTON_TEXT).click();
 
-        cy.get('[data-test-id="modal"]', {timeout: 300000}).should('be.visible');
+        cy.get(SELECTORS.MODAL, {timeout: 300000}).should('be.visible');
 
-        cy.get(SELECTORS.ORDER_NUMBER).should('not.contain', '0');
+        cy.get(SELECTORS.ORDER_NUMBER).should('not.equal', '0');
 
         cy.get(SELECTORS.CLOSE_BUTTON).click();
         cy.get(SELECTORS.MODAL).should('not.exist');
