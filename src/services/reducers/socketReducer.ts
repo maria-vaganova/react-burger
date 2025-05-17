@@ -6,19 +6,11 @@ import {
     WS_GET_MESSAGE,
     TWSActions
 } from '../actions/wsActionTypes';
-import type {IFeedInfo} from '../../utils/types';
-
-type TWSState = {
-    [socketId: string]: {
-        wsConnected: boolean;
-        messages: IFeedInfo[];
-        error?: string;
-    };
-};
+import type {TWSState} from '../../utils/types';
 
 const initialState: TWSState = {};
 
-const wsReducer = (state: TWSState = initialState, action: TWSActions) => {
+function socketReducer(state: TWSState = initialState, action: TWSActions) {
     const {socketId} = action;
     switch (action.type) {
         case WS_CONNECTION_START:
@@ -77,6 +69,6 @@ const wsReducer = (state: TWSState = initialState, action: TWSActions) => {
         default:
             return state;
     }
-};
+}
 
-export default wsReducer;
+export default socketReducer;

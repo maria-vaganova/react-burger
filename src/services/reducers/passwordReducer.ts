@@ -1,5 +1,4 @@
-import {Reducer} from "redux";
-import {IPasswordState, IServerInfo} from "../../utils/types";
+import {IPasswordState} from "../../utils/types";
 import {
     EMPTY_SERVER_INFO,
     POST_PASSWORD,
@@ -14,17 +13,14 @@ const initialState: IPasswordState = {
     message: EMPTY_SERVER_INFO
 }
 
-const passwordReducer: Reducer<IPasswordState, {
-    type: string;
-    passwordMessage: IServerInfo;
-}> = (state: IPasswordState = initialState, action: TPostPasswordActions): IPasswordState => {
+function passwordReducer(state: IPasswordState = initialState, action: TPostPasswordActions): IPasswordState {
     switch (action.type) {
         case POST_PASSWORD: {
             return {
                 ...state,
                 request: true,
                 failed: false,
-                message: EMPTY_SERVER_INFO
+                message: action.passwordMessage
             };
         }
         case POST_PASSWORD_SUCCESS: {
@@ -47,6 +43,6 @@ const passwordReducer: Reducer<IPasswordState, {
             return state;
         }
     }
-};
+}
 
 export default passwordReducer;

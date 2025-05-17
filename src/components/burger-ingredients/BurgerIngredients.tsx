@@ -72,24 +72,30 @@ function BurgerIngredients() {
             <Outlet/>
             <h1 className="text_type_main-large mt-10 mb-5">Соберите бургер</h1>
             <div style={{display: 'flex'}}>
-                <Tab value={BUN_TYPE}
-                     active={current === BUN_TYPE}
-                     onClick={(): void => setActiveTab(BUN_TYPE)}
-                >
-                    Булки
-                </Tab>
-                <Tab value={SAUCE_TYPE}
-                     active={current === SAUCE_TYPE}
-                     onClick={(): void => setActiveTab(SAUCE_TYPE)}
-                >
-                    Соусы
-                </Tab>
-                <Tab value={MAIN_TYPE}
-                     active={current === MAIN_TYPE}
-                     onClick={(): void => setActiveTab(MAIN_TYPE)}
-                >
-                    Начинки
-                </Tab>
+                <div data-test-id="tab-bun">
+                    <Tab value={BUN_TYPE}
+                         active={current === BUN_TYPE}
+                         onClick={(): void => setActiveTab(BUN_TYPE)}
+                    >
+                        Булки
+                    </Tab>
+                </div>
+                <div data-test-id="tab-sauce">
+                    <Tab value={SAUCE_TYPE}
+                         active={current === SAUCE_TYPE}
+                         onClick={(): void => setActiveTab(SAUCE_TYPE)}
+                    >
+                        Соусы
+                    </Tab>
+                </div>
+                <div data-test-id="tab-main">
+                    <Tab value={MAIN_TYPE}
+                         active={current === MAIN_TYPE}
+                         onClick={(): void => setActiveTab(MAIN_TYPE)}
+                    >
+                        Начинки
+                    </Tab>
+                </div>
             </div>
             <div className={"mt-10 " + ingredients.scrollableContainer} id="scrollable-container">
                 <CategorySection id="bun"

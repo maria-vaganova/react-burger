@@ -196,8 +196,8 @@ function BurgerConstructor() {
                 <WarningModal closeModal={closeMessageModal} message={modalMessage}/>
             )}
             <div className={constructor.main}>
-                <div ref={dropTarget} className={constructor.scrollableContainer}>
-                    <div className={constructor.cart}>
+                <div ref={dropTarget} className={constructor.scrollableContainer} id="constructorArea">
+                    <div className={constructor.cart} id="cart">
                         {bun && (<ConstructorElement
                             type="top"
                             isLocked={true}

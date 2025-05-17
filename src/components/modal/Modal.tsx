@@ -25,8 +25,10 @@ function Modal({onClose, children}: IModalProps) {
     return ReactDOM.createPortal(
         <div>
             <ModalOverlay onClose={onClose}/>
-            <div className={modal.modal}>
-                <CloseIcon type="primary" onClick={onClose} className={modal.closeButton}/>
+            <div className={modal.modal} data-test-id={"modal"}>
+                <div onClick={onClose} className={modal.closeButton} data-test-id={"closeButton"}>
+                    <CloseIcon type="primary"/>
+                </div>
                 <div className={modal.modalContent}>
                     {children}
                 </div>

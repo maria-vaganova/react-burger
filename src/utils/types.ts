@@ -168,3 +168,11 @@ export interface IIconData {
     id: string;
     src: string;
 }
+
+export type TWSState = {
+    [socketId: string]: {
+        wsConnected: boolean;
+        messages: IFeedInfo[];
+        error?: string;
+    };
+};

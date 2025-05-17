@@ -31,23 +31,39 @@ function IngredientDetails({isModal}: IIngredientDetailsProps) {
             <p className={titleStyle}>Детали ингредиента</p>
             <img alt={"Illustration"} src={ingredientDetailInfo.image_large}
                  className={ingredientDetails.illustration}/>
-            <p className="text text_type_main-medium mt-4 mb-8">{ingredientDetailInfo.name}</p>
+            <p className="text text_type_main-medium mt-4 mb-8" data-test-id="ingredient-name">{ingredientDetailInfo.name}</p>
             <div className={ingredientDetails.info}>
                 <div className={ingredientDetails.nutrient}>
                     <p className="text text_type_main-default text_color_inactive">Калории,ккал</p>
-                    <p className="text text_type_digits-default text_color_inactive">{ingredientDetailInfo.calories}</p>
+                    <p className="text text_type_digits-default text_color_inactive"
+                       data-test-id="calories-value"
+                    >
+                        {ingredientDetailInfo.calories}
+                    </p>
                 </div>
                 <div className={ingredientDetails.nutrient}>
                     <p className="text text_type_main-default text_color_inactive">Белки, г</p>
-                    <p className="text text_type_digits-default text_color_inactive">{ingredientDetailInfo.proteins}</p>
+                    <p className="text text_type_digits-default text_color_inactive"
+                       data-test-id="proteins-value"
+                    >
+                        {ingredientDetailInfo.proteins}
+                    </p>
                 </div>
                 <div className={ingredientDetails.nutrient}>
                     <p className="text text_type_main-default text_color_inactive">Жиры, г</p>
-                    <p className="text text_type_digits-default text_color_inactive">{ingredientDetailInfo.fat}</p>
+                    <p className="text text_type_digits-default text_color_inactive"
+                       data-test-id="fat-value"
+                    >
+                        {ingredientDetailInfo.fat}
+                    </p>
                 </div>
                 <div className={ingredientDetails.nutrient}>
                     <p className="text text_type_main-default text_color_inactive">Углеводы, г</p>
-                    <p className="text text_type_digits-default text_color_inactive">{ingredientDetailInfo.carbohydrates}</p>
+                    <p className="text text_type_digits-default text_color_inactive"
+                       data-test-id="carbohydrates-value"
+                    >
+                        {ingredientDetailInfo.carbohydrates}
+                    </p>
                 </div>
             </div>
         </div>
